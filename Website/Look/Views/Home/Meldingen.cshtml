@@ -4,13 +4,13 @@
     <link rel="stylesheet" href="~/css/site.css" />
 <header>
     <div class ="row p-0 m-0">
-        <div class="col-md-7 p-0 m-0">
-            <div>
-                <button class="btn">bericht maken <i class="fa fa-plus"></i></button>
-                <input type="text" placeholder="Search.." name="search">
-                <button class="btn"><i class="fa fa-search"></i></button>
+        <div class="row-md-4 p-0 m-0">
+                <button class="btn" data-toggle="modal" data-target="#NieuwBericht">bericht maken <i class="fa fa-plus"></i></button>
+                </div>
+                <div class="row-md-4 p-0 m-0">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button class="btn"><i class="fa fa-search"></i></button>
             </div>
-        </div>
         <div class="col-md-3 p-0 m-0">
             <Button></Button>
         </div>
@@ -62,3 +62,26 @@
             </div>
         </div>
     </div>
+
+<!--- Modal voor het inloggen---->
+<div class="modal fade" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nieuw Bericht</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Plaats bericht</button>
+      </div>
+    </div>
+  </div>
+</div>
