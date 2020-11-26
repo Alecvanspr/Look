@@ -87,9 +87,8 @@ a:hover {
   padding: 10px 25px;
 }
 
-.navbar a {
+.navbar .nav-links a {
   font-size: 20px;
-  letter-spacing: 1.5px;
 }
 
 .navbar i {
@@ -102,6 +101,11 @@ a:hover {
 
 .navbar .btn {
   margin: 0 0 0 8px;
+}
+
+.navbar #loginModal a {
+  font-size: 1rem;
+  letter-spacing: 
 }
 
 /*INTRODUCTION*/

@@ -23,10 +23,9 @@
 
                 <div class="navbar-collapse collapse justify-content-between">
                     <ul class="nav">
-                        <li class="nav-item text-center">
-                        </li>
+
                     </ul>
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav nav-links">
                         <li class="nav-item text-center">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">link</a>
                         </li>
@@ -57,16 +56,137 @@
                             </a>
                         </li>
                         <li class="nav-item text-center">
+<<<<<<< Updated upstream
                             <button type="button" class="btn btn-dark nav-link" asp-controller="Home" asp-action="Inloggen">Inloggen</button>
                         </li>
                         <li class="nav-item text-center">
                             <button type="button" class="btn btn-dark nav-link" onclick="location.href='@Url.Action("Registreren", "Home")'" >Registreren</button>
+=======
+                            <button type="button" class="btn btn-dark nav-link" data-toggle="modal" data-target="#loginModal">inloggen</button>
+>>>>>>> Stashed changes
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content border-0 rounded-0 p-3">
+                <div class="modal-header border-0 rounded-0 w-100">
+                    <h5 class="modal-title" id="loginModalLabel">
+                        Inloggen
+                    </h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form>
+                    <div class="modal-body text-left">
+                        <div class="form-group w-100">
+                            <label for="inputEmail">E-mailadres</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail">
+                            <small id="emailHelp" class="form-text text-muted">We zullen nooit uw email met iemand anders delen.</small>
+                        </div>
+                        <div class="form-group w-100">
+                            <label for="inputPassword">Wachtwoord</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Wachtwoord">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 rounded-0 justify-content-center">
+                        <button type="submit" class="btn btn-dark w-100 mr-1" data-dismiss="modal">AANMELDEN</button>
+                        <button type="submit" class="btn btn-dark w-100 ml-1" data-target="#registerModal" data-toggle="modal" data-dismiss="modal">REGISTREREN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content border-0 rounded-0 p-3">
+                <div class="modal-header border-0 rounded-0 w-100">
+                    <h5 class="modal-title" id="registerModalLabel">
+                        Registreren
+                    </h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form>
+                    <div class="modal-body text-left">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputName">Voornaam</label>
+                                <input type="text" class="form-control" id="inputName" placeholder="Voornaam">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputSurname">Achternaam</label>
+                                <input type="text" class="form-control" id="inputSurname" placeholder="Achternaam">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inputUsername">Gebruikersnaam</label>
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Gebruikersnaam">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-7">
+                                <label for="inputAddress">Straat</label>
+                                <input type="text" class="form-control" id="inputAddress" placeholder="Straat">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputHouseNumber">Huisnummer</label>
+                                <input type="text" class="form-control" id="inputHouseNumber" placeholder="Huisnummer">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputHouseNumberAddition">Toev.</label>
+                                <input type="text" class="form-control" id="inputHouseNumberAddition" placeholder="Toev.">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="inputCity">Stad</label>
+                                <input type="text" class="form-control" id="inputCity" placeholder="Stad">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputZip">Postcode</label>
+                                <input type="text" class="form-control" id="inputZip" placeholder="Huisnummer">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group w-100">
+                            <label for="inputEmail">E-mailadres</label>
+                            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail">
+                            <small id="emailHelp" class="form-text text-muted">We zullen nooit uw email met iemand anders delen.</small>
+                        </div>
+                        <div class="form-group w-100">
+                            <label for="inputPassword">Wachtwoord</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Wachtwoord">
+                        </div>
+                        <div class="form-group w-100">
+                            <label for="inputPassword">Herhaal Wachtwoord</label>
+                            <input type="password" class="form-control" id="inputPasswordValid" placeholder="Wachtwoord">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 rounded-0 justify-content-center">
+                        <button type="submit" class="btn btn-dark w-100 ml-1" data-dismiss="modal">REGISTREREN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <main role="main">
             @RenderBody()
@@ -107,6 +227,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
