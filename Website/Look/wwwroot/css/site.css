@@ -181,3 +181,19 @@ html {
   color: #343434;
 }
 
+.registrationheading {
+  background-color: #343434 ;
+  padding: 10px ;
+}
+
+.registrationText {
+  color: #ffffff;
+}
+
+.inputform {
+  background-color: #343434;
+}
+
+input[type="registrate"]::placeholder {
+  color: #DDDDDD;
+}
