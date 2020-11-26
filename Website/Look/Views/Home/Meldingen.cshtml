@@ -4,15 +4,21 @@
     <link rel="stylesheet" href="~/css/site.css" />
 <header>
     <div class ="row p-0 m-0">
-        <div class="row-md-4 p-0 m-0">
+            <div class="col-md-2 p-0 m-0"></div>
+                <div class="col-md-2 p-0 m-0">
                 <button class="btn" data-toggle="modal" data-target="#NieuwBericht">bericht maken <i class="fa fa-plus"></i></button>
                 </div>
-                <div class="row-md-4 p-0 m-0">
-                    <input type="text" placeholder="Search.." name="search">
+                <div class="col-md-3 p-0 m-0">
+                    <input type="text" placeholder="Search.." name="search" class="col-md-6 p-0 m-0">
                     <button class="btn"><i class="fa fa-search"></i></button>
-            </div>
-        <div class="col-md-3 p-0 m-0">
-            <Button></Button>
+                </div>
+            <div class="col-md-4 p-0 m-0">
+                <a>Sorteren op:</a>
+              <select name="SorterenOp" id="SorterenOp">
+                <option value="SorteerNieuwsteBerichten">Nieuwste</option>
+                <option value="SorteerMeesteLikes">Meeste likes</option>
+                <option value="SorteerMeesteReacties">Meeste reacties</option>
+            </select>
         </div>
     </div>
 </header>
@@ -64,8 +70,8 @@
     </div>
 
 <!--- Modal voor het inloggen---->
-<div class="modal fade" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Nieuw Bericht</h5>
@@ -74,8 +80,29 @@
         </button>
       </div>
       <div class="modal-body">
-        
-
+          <div class="row p-0 m-0">
+                <div class="col-8 p-0 m-0">
+                    <a>naam bericht:</a> 
+                    <input id="NaamBericht"></input>
+                 </div>
+                <div class ="col-4 p-0 m-0">
+                <a>Dit bericht anoniem plaatsen?</a>
+                <input type="checkbox" id="AnoniemPlaatsen" class="col-5 p-0 m-0"></input>
+            </div> 
+        </div>
+        <div class="row p-0 m-0">
+            <textarea id="bericht" rows="12" cols="75"></textarea>
+        </div>
+        <div class="row p-0 m-0">
+            <div class="col-8 p-0 m-0">
+                <a>Catagorieën:</a>
+                <input>
+            </div>
+            <div class="col-4 p-0 m-0">
+                <a>Foto toevoegen</a> 
+               <button><i class="fa fa-file-photo-o"></i></button>
+            </div>
+        </div>
 
       </div>
       <div class="modal-footer">
