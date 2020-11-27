@@ -13,6 +13,9 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: Poppins;
   font-weight: 600;
+}
+
+h6 {
   letter-spacing: 1.5px;
 }
 
@@ -77,6 +80,11 @@ a:hover {
   width: 38px;
   font-size: 20px;
 }
+
+.ls-0 {
+  letter-spacing: 0px !important;
+}
+
 /*NAVBAR*/
 .navbar {
   border-bottom: 1px 1px 1px;
@@ -105,24 +113,26 @@ a:hover {
 
 .navbar #loginModal a {
   font-size: 1rem;
-  letter-spacing: 
 }
 
 /*INTRODUCTION*/
 #introduction {
-  height: 75vh;
+
 }
 
 /*SLIDESHOW*/
 #slideshow {
-  height: 35vh;
+
 }
 
 /*DETAILS*/
 #details {
-  height: 75vh;
+
 }
 
+#details .feature i {
+  font-size: 60px;
+}
 /*STANDARD*/
 
 /* Provide sufficient contrast against white background */

@@ -27,16 +27,13 @@
                     </ul>
                     <ul class="nav navbar-nav nav-links">
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">link</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">link</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Profiel</a>
                         </li>
                         <li class="nav-item text-center">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Meldingen</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">link</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-right justify-content-center">
@@ -56,14 +53,7 @@
                             </a>
                         </li>
                         <li class="nav-item text-center">
-<<<<<<< Updated upstream
-                            <button type="button" class="btn btn-dark nav-link" asp-controller="Home" asp-action="Inloggen">Inloggen</button>
-                        </li>
-                        <li class="nav-item text-center">
-                            <button type="button" class="btn btn-dark nav-link" onclick="location.href='@Url.Action("Registreren", "Home")'" >Registreren</button>
-=======
-                            <button type="button" class="btn btn-dark nav-link" data-toggle="modal" data-target="#loginModal">inloggen</button>
->>>>>>> Stashed changes
+                            <button type="button" class="btn btn-dark nav-link" data-target="#loginModal" data-toggle="modal">Inloggen</button>
                         </li>
                     </ul>
                 </div>
@@ -73,9 +63,9 @@
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content border-0 rounded-0 p-3">
-                <div class="modal-header border-0 rounded-0 w-100">
-                    <h5 class="modal-title" id="loginModalLabel">
+            <div class="modal-content border-0 p-3">
+                <div class="modal-header border-0 w-100">
+                    <h5 class="modal-title ls-0" id="loginModalLabel">
                         Inloggen
                     </h5>
 
@@ -97,9 +87,13 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer border-0 rounded-0 justify-content-center">
-                        <button type="submit" class="btn btn-dark w-100 mr-1" data-dismiss="modal">AANMELDEN</button>
-                        <button type="submit" class="btn btn-dark w-100 ml-1" data-target="#registerModal" data-toggle="modal" data-dismiss="modal">REGISTREREN</button>
+                    <div class="modal-footer row border-0">
+                        <div class="form-group w-100">
+                            <button type="submit" class="btn btn-dark w-100 d-block" data-dismiss="modal"><h6 class="my-1">INLOGGEN</h6></button>
+                        </div>
+                        <div class="form-group m-0 w-100 text-center">
+                            <a data-toggle="modal" href="#registerModal" data-dismiss="modal">Ik heb nog geen account.</a>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -108,9 +102,9 @@
     <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content border-0 rounded-0 p-3">
-                <div class="modal-header border-0 rounded-0 w-100">
-                    <h5 class="modal-title" id="registerModalLabel">
+            <div class="modal-content border-0 p-3">
+                <div class="modal-header border-0 w-100">
+                    <h5 class="modal-title ls-0" id="registerModalLabel">
                         Registreren
                     </h5>
 
@@ -122,11 +116,11 @@
                 <form>
                     <div class="modal-body text-left">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-sm-6">
                                 <label for="inputName">Voornaam</label>
                                 <input type="text" class="form-control" id="inputName" placeholder="Voornaam">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-sm-6">
                                 <label for="inputSurname">Achternaam</label>
                                 <input type="text" class="form-control" id="inputSurname" placeholder="Achternaam">
                             </div>
@@ -138,28 +132,28 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-7">
+                            <div class="form-group col-sm-7">
                                 <label for="inputAddress">Straat</label>
                                 <input type="text" class="form-control" id="inputAddress" placeholder="Straat">
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-sm-3">
                                 <label for="inputHouseNumber">Huisnummer</label>
-                                <input type="text" class="form-control" id="inputHouseNumber" placeholder="Huisnummer">
+                                <input type="text" class="form-control" id="inputHouseNumber" placeholder="Huisnr">
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-sm-2">
                                 <label for="inputHouseNumberAddition">Toev.</label>
-                                <input type="text" class="form-control" id="inputHouseNumberAddition" placeholder="Toev.">
+                                <input type="text" class="form-control" id="inputHouseNumberAddition" placeholder="Toev">
                             </div>
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-8">
+                            <div class="form-group col-sm-8">
                                 <label for="inputCity">Stad</label>
                                 <input type="text" class="form-control" id="inputCity" placeholder="Stad">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-sm-4">
                                 <label for="inputZip">Postcode</label>
-                                <input type="text" class="form-control" id="inputZip" placeholder="Huisnummer">
+                                <input type="text" class="form-control" id="inputZip" placeholder="Postcode">
                             </div>
                         </div>
 
@@ -167,7 +161,7 @@
                         <div class="form-group w-100">
                             <label for="inputEmail">E-mailadres</label>
                             <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail">
-                            <small id="emailHelp" class="form-text text-muted">We zullen nooit uw email met iemand anders delen.</small>
+                            <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
                         </div>
                         <div class="form-group w-100">
                             <label for="inputPassword">Wachtwoord</label>
@@ -179,8 +173,13 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer border-0 rounded-0 justify-content-center">
-                        <button type="submit" class="btn btn-dark w-100 ml-1" data-dismiss="modal">REGISTREREN</button>
+                    <div class="modal-footer row border-0">
+                        <div class="form-group w-100">
+                            <button type="submit" class="btn btn-dark w-100 d-block" data-dismiss="modal"><h6 class="my-1">AANMELDEN</h6></button>
+                        </div>
+                        <div class="form-group m-0 w-100 text-center">
+                            <a data-toggle="modal" href="#loginModal" data-dismiss="modal">Ik heb al een account.</a>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -188,7 +187,7 @@
     </div>
 
     <div class="container-fluid">
-        <main role="main">
+        <main role="main" class="py-5">
             @RenderBody()
         </main>
     </div>
@@ -196,31 +195,50 @@
     <footer class="footer text-white bg-dark">
         <div class="container">
             <div class="row p-0 m-0">
-                <div class="col-md-3 p-0 m-0">
-                    <div class="row p-0 m-0 text-wrap">
-                        <h6>OVER ONS</h6>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="col-md-3 p-0 m-0 pr-3">
+                    <div class="row w-100 p-0 m-0 text-wrap">
+                        <div class="col-12 p-0 m-0">
+                            <h6>OVER ONS</h6>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
                     </div>
-                    <div class="row p-0 m-0 text-wrap">
-                        <h6>ABONNEER</h6>
-                        <form class="form-inline form-subscribe">
-                            <div class="form-group">
-                                <label for="inputEmail" class="sr-only">Email</label>
-                                <input type="email" class="form-control" id="inputEmail" placeholder="email">
-                            </div>
-                            <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
-                        </form>
+                    <div class="row w-100 p-0 m-0 text-wrap">
+                        <div class="col-12 p-0 m-0 pb-3">
+                            <h6>ABONNEER</h6>
+                            <form class="form-inline form-subscribe">
+                                <div class="form-group w-100 p-0 m-0">
+                                    <label for="inputEmail" class="sr-only">Email</label>
+                                    <input type="email" class="form-control w-100" id="inputEmail" placeholder="email">
+                                </div>
+                                <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 p-0 m-0">
+                <div class="col-md-4 p-0 m-0 pr-3">
                     <h6>LAATSTE TWEETS</h6>
                 </div>
                 <div class="col-md-5 p-0 m-0">
                     <h6>INSTAGRAM</h6>
                 </div>
             </div>
-            <div class="row p-0 m-0 text-secondary text-center">
-                <p>&copy; 2020 - Look</p>
+            <div class="row w-100 p-0 m-0 text-secondary text-center">
+                <div class="col-12">
+                    <p class="m-0">&copy; Copyright 2020, Look</p>
+                </div>
+            </div>
+            <div class="row w-100 p-0 m-0 text-secondary text-center justify-content-center">
+                <div class="col-md-2">
+                    <a href="#">Privacy Policy</a>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="#">Cookie Policy</a>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="#">Contact</a>
+                </div>
             </div>
         </div>
     </footer>
