@@ -2,11 +2,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> 
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <hr/>
 <header>
     <div class ="row p-0 m-0">
             <div class="col-md-2 p-0 m-0"></div>
                 <div class="col-md-2 p-0 m-0">
-                <button class="btn" data-toggle="modal" data-target="#NieuwBericht">bericht maken <i class="fa fa-plus"></i></button>
+                <button class="btn" data-toggle="modal" data-target="#NieuwBericht">Bericht maken <i class="fa fa-plus"></i></button>
                 </div>
                 <div class="col-md-3 p-0 m-0">
                     <input type="text" placeholder="Search.." name="search" class="col-md-6 p-0 m-0">
@@ -29,9 +30,10 @@
                     <article>
                         <h2>Jas gevonden</h2>
                         <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
-                        <div class="row p-0 m-0">
-                        <p class="col-md-10 p-0 m-0">Catagorie: #jas #broek</p>
-                        <a class="col-md-2 p-0 m-0" href="url">Lees meer...</a>
+                        <div class="row p-2 m-0">
+                        <p class="col-md-6 p-0 m-0">Catagorie: #jas #broek</p>
+                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
+                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
                         </div>
                     </article> 
                 </div>
@@ -45,8 +47,9 @@
                         <h2>Lorem ipsum</h2>
                         <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
                         <div class="row p-0 m-0">
-                        <p class="col-md-10 p-0 m-0">Catagorie: #Lorem #ipum</p>
-                        <a class="col-md-2 p-0 m-0" href="url">Lees meer...</a>
+                        <p class="col-md-6 p-0 m-0">Catagorie: #Lorem #ipum</p>
+                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
+                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-target="#leesMeer">Lees meer...</button>
                         </div>
                     </article> 
                 </div>
@@ -60,9 +63,9 @@
                         <h2>Lorem ipsum</h2>
                         <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
                         <div class="row p-0 m-0">
-                        <p class="col-md-10 p-0 m-0">Catagorie: #Lorem #ipum</p>
-                        <a class="col-md-2 p-0 m-0" href="url">Lees meer...</a>
-                        </div>
+                        <p class="col-md-6 p-0 m-0">Catagorie: #Lorem #ipum</p>
+                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
+                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-target="#leesMeer">Lees meer...</button>
                     </article> 
                 </div>
             </div>
@@ -82,7 +85,7 @@
       <div class="modal-body">
           <div class="row p-0 m-0">
                 <div class="col-8 p-0 m-0">
-                    <a>naam bericht:</a> 
+                    <a>Naam bericht:</a> 
                     <input id="NaamBericht"></input>
                  </div>
                 <div class ="col-4 p-0 m-0">
@@ -91,9 +94,9 @@
             </div> 
         </div>
         <div class="row p-0 m-0">
-            <textarea id="bericht" rows="12" cols="75"></textarea>
+            <textarea id="bericht" rows="12" cols="75" placeholder="Typ hier uw bericht in"></textarea>
         </div>
-        <div class="row p-0 m-0">
+        <div class="row p-0 m-2">
             <div class="col-8 p-0 m-0">
                 <a>Catagorieën:</a>
                 <input>
@@ -111,4 +114,52 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="leesMeer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-md-7">
+                    <h5>Titel bericht</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5>Geplaatst door: Lorem Ipsum</h5>
+                </div>
+                <div class="col-md-1">
+                    <a><i class="far fa-thumbs-up"></i></a><p>5</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row p-0 m-0">
+                    <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
+                </div>
+                <hr/>
+                <div class="col-md-2"></div>
+                <div class="container border col-md-8">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-10">
+                            <p>Lorem Ipsum</p>
+                        </div>
+                        <div class="col-md-2">
+                            <a><i class="far fa-thumbs-up"></i></a><p>5</p>
+                        </div>
+                    </div>
+                    <div class="row p-0 m-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus.</p>
+                    </div>
+                </div>
+                <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
+            </div>
+            
+                <div class="row p-2 m-1">
+                    <div class="col-md-10">
+                        <textarea id="reactie" rows="1" cols="75" placeholder="Typ hier uw reactie in..."></textarea>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary">Plaats reactie</button>
+                    </div>
+                </div>
+        </div>
+    </div>
 </div>
