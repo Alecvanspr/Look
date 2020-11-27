@@ -31,10 +31,10 @@ namespace Look.Controllers
         {
             return View();
         }
-
-        public IActionResult Registreren()
+        
+        public IActionResult Profiel()
         {
-            return View();
+            return View();  
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
