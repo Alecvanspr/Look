@@ -2,6 +2,22 @@
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> 
 <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
 <link rel="stylesheet" href="~/css/site.css" />
+<!--Dit_is_om_te_testen_of_het_werkt_en_moet_later_vervangen_worden_door_een_Database-->
+@{ 
+        List<Melding> meldings = new List<Melding>();
+        var melding1 = new Melding()  {meldingID="1",Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"}};
+        var melding2 = new Melding()  {meldingID="2",Titel="Lorem Ipsum 2", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"}};
+        var melding3 = new Melding()  {meldingID="3",Titel="Lorem Ipsum 3", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Joeri",AchterNaam="de hoog"}};
+        var melding4 = new Melding()  {meldingID="4",Titel="Lorem Ipsum 4", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=5,Views=8,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}};
+        var melding5 = new Melding()  {meldingID="5",Titel="Lorem Ipsum 5", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=123,Views=553,Categorieen=new List<string>{"lorem","Ipsum"}};
+        meldings.Add(melding1);
+        meldings.Add(melding2);
+        meldings.Add(melding3);
+        meldings.Add(melding4);
+        meldings.Add(melding5);
+        
+}
+
 <header>
     <div class ="row p-0 m-0">
             <div class="col-md-2 p-0 m-0"></div>
@@ -22,54 +38,29 @@
         </div>
     </div>
 </header>
-    <div class="row p-3 m-0">
+@foreach (var melding in meldings)
+{
+        <div class="row p-3 m-0">
         <div class="col-md-2 p-0 m-0"></div>
         <div class="col-md-7 p-0 m-0">
             <div class="melding rounded">
                     <article class="p-3">
-                        <h2>Jas gevonden</h2>
-                        <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
+                        <h2>@melding.Titel</h2>
+                        <P>@melding.Inhoud.Substring(0,300)</P><a>...</a>
                         <div class="row p-0 m-0">
-                        <p class="col-md-6 p-0 m-0">Categorie: #jas #broek</p>
-                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
-                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
+                        <p class="col-md-6 p-0 m-0">Categorie: @foreach (var categorie in melding.Categorieen)
+                        {
+                            <a>#@categorie</a>
+                        }</p>
+                        <p class="col-md-4 p-0 m-0">Geplaatst door: @if(melding.auteur==null){<a>Annoniem</a>}else{<a>@melding.auteur.VoorNaam @melding.auteur.AchterNaam</a>}</p>
+                        <button ModalMelding=@melding class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
                         </div>
                     </article> 
                 </div>
             </div>
         </div>
-            <div class="row p-3 m-0">
-            <div class="col-md-2 p-0 m-0"></div>
-            <div class="col-md-7 p-0 m-0">
-                <div class="melding rounded">
-                    <article class="p-3">
-                        <h2>Lorem ipsum</h2>
-                        <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
-                        <div class="row p-0 m-0">
-                        <p class="col-md-6 p-0 m-0">Categorie: #Lorem #ipum</p>
-                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
-                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
-                        </div>
-                    </article> 
-                </div>
-            </div>
-        </div>
-        <div class="row p-3 m-0">
-            <div class="col-md-2 p-0 m-0"></div>
-            <div class="col-md-7 p-0 m-0">
-                <div class="melding rounded">
-                    <article class="p-3">
-                        <h2>Lorem ipsum</h2>
-                        <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>
-                        <div class="row p-0 m-0">
-                        <p class="col-md-6 p-0 m-0">Categorie: #Lorem #ipum</p>
-                        <p class="col-md-4 p-0 m-0">Geplaatst door:  Lorem Ipsum</p>
-                        <button class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
-                    </article> 
-                </div>
-            </div>
-        </div>
-    </div>
+}
+</div>
 
 <!--- Modal voor het inloggen---->
 <div class="modal fade bd-example-modal-lg" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -121,18 +112,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="col-md-7">
-                    <h5>Titel bericht</h5>
+                    <h5>@ModalMelding.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door: Lorem Ipsum</h5>
+                    <h5>Geplaatst door: @ModalMelding.auteur.AchterNaam</h5>
                 </div>
                 <div class="col-md-1">
-                    <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">5</p>
+                    <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@ModalMelding.Likes</p>
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row p-3 m-0">
-                    <P>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.</P>            
+                    <P>@ModalMelding.Inhoud</P>            
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
@@ -163,3 +154,4 @@
         </div>
     </div>
 </div>
+}
