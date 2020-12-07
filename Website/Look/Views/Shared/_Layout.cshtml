@@ -74,7 +74,7 @@
                     </button>
                 </div>
 
-                <form>
+                <form method="POST">
                     <div class="modal-body text-left">
                         <div class="form-group w-100">
                             <label for="inputEmail">E-mailadres</label>
@@ -113,7 +113,7 @@
                     </button>
                 </div>
 
-                <form>
+                <form method="POST">
                     <div class="modal-body text-left">
                         <div class="form-row">
                             <div class="form-group col-sm-6">
@@ -250,6 +250,11 @@
         function onSubmit(token) {
             document.getElementById("demo-form").submit();
         }
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

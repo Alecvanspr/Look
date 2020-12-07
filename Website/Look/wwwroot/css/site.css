@@ -190,24 +190,17 @@ html {
   white-space: nowrap;
   padding: 30px;
 }
+
+#changeAvatarLabel {
+  color: #0366d6;
+}
+
+#changeAvatarLabel:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .melding {
   background-color: #DDDDDD;
   color: #343434;
-}
-
-.registrationheading {
-  background-color: #343434 ;
-  padding: 10px ;
-}
-
-.registrationText {
-  color: #ffffff;
-}
-
-.inputform {
-  background-color: #343434;
-}
-
-input[type="registrate"]::placeholder {
-  color: #DDDDDD;
 }
