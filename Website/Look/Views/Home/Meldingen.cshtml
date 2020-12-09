@@ -76,7 +76,7 @@
                                 <div class="col-md-12 m-0 p-0">
                                     <p class="text-wrap">
                                         @melding.Inhoud.Substring(0,300)...
-                                        <a data-toggle="modal" href="#melding-@melding.meldingID">
+                                        <a data-toggle="modal" href="#melding-@melding.MeldingId">
                                             lees meer
                                         </a>
                                     </p>
@@ -102,13 +102,13 @@
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p class="float-md-right">
                                             Geplaatst door:
-                                            @if(melding.auteur==null)
+                                            @if(melding.Auteur==null)
                                             {
                                                 <a>Anoniem</a>
                                             }else
                                             {
                                                 <a href="#">
-                                                    @melding.auteur.VoorNaam @melding.auteur.AchterNaam
+                                                    @melding.Auteur.VoorNaam @melding.Auteur.AchterNaam
                                                 </a>
                                             }
                                         </p>
@@ -166,7 +166,7 @@
 </div>
 
 <!--- Modal voor de reacties---->
-<div class="modal fade bd-example-modal-lg" id="melding-@melding.meldingID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="melding-@melding.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -174,13 +174,13 @@
                     <h5>@melding.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door:@if(melding.auteur==null)
+                    <h5>Geplaatst door:@if(melding.Auteur==null)
                                             {
                                                 <p>Anoniem</p>
                                             }else
                                             {
                                                 
-                                                    @melding.auteur.VoorNaam   @melding.auteur.AchterNaam
+                                                    @melding.Auteur.VoorNaam   @melding.Auteur.AchterNaam
                                             } </h5>
                 </div>
                 <div class="col-md-1">
