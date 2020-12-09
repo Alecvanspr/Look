@@ -14,6 +14,7 @@ namespace Look.Models
         public string Inhoud {get; set;}
         public int Likes { get; set; }
         public int Views { get; set; }
+        public bool IsActief { get; set;}
         public Gebruiker auteur {get;set;}
         public List<Reactie> Reacties { get; set; }
         public List<string> Categorieen { get; set; }

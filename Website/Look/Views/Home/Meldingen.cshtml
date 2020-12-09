@@ -1,15 +1,14 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> 
-<link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
-<link rel="stylesheet" href="~/css/site.css" />
-<!--Dit_is_om_te_testen_of_het_werkt_en_moet_later_vervangen_worden_door_een_Database-->
+@{
+    ViewData["Title"] = "Buurtmeldingen";
+}
+
 @{ 
         List<Melding> meldings = new List<Melding>();
-        var melding1 = new Melding()  {meldingID="1",Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"}};
-        var melding2 = new Melding()  {meldingID="2",Titel="Lorem Ipsum 2", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"}};
-        var melding3 = new Melding()  {meldingID="3",Titel="Lorem Ipsum 3", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Joeri",AchterNaam="de hoog"}};
-        var melding4 = new Melding()  {meldingID="4",Titel="Lorem Ipsum 4", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=5,Views=8,Categorieen=new List<string>{"lorem","Ipsum"},auteur=new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}};
-        var melding5 = new Melding()  {meldingID="5",Titel="Lorem Ipsum 5", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=123,Views=553,Categorieen=new List<string>{"lorem","Ipsum"}};
+        var melding1 = new Melding()  {meldingID="1", AangemaaktOp=new DateTime(2020, 12, 8),Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"}};
+        var melding2 = new Melding()  {meldingID="2", AangemaaktOp=new DateTime(2020, 12, 5),Titel="Lorem Ipsum 2", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"}};
+        var melding3 = new Melding()  {meldingID="3", AangemaaktOp=new DateTime(2020, 12, 2),Titel="Lorem Ipsum 3", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Joeri",AchterNaam="de hoog"}};
+        var melding4 = new Melding()  {meldingID="4", AangemaaktOp=new DateTime(2020, 11, 25),Titel="Lorem Ipsum 4", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=5,Views=8,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=false,auteur=new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}};
+        var melding5 = new Melding()  {meldingID="5", AangemaaktOp=new DateTime(2020, 12, 20),Titel="Lorem Ipsum 5", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=123,Views=553,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=false};
         meldings.Add(melding1);
         meldings.Add(melding2);
         meldings.Add(melding3);
@@ -19,95 +18,167 @@
 }
 
 <header>
-    <div class ="row p-0 m-0">
-            <div class="col-md-2 p-0 m-0"></div>
-                <div class="col-md-2 p-0 m-0">
-                <button class="btn" data-toggle="modal" data-target="#NieuwBericht">Bericht maken <i class="fa fa-plus"></i></button>
-                </div>
-                <div class="col-md-3 p-0 m-0">
-                    <input type="text" placeholder="Search.." name="search" class="col-md-6 p-0 m-0">
-                    <button class="btn"><i class="fa fa-search"></i></button>
-                </div>
-            <div class="col-md-4 p-0 m-0">
-                <a>Sorteren op:</a>
-              <select name="SorterenOp" id="SorterenOp">
-                <option value="SorteerNieuwsteBerichten">Nieuwste</option>
-                <option value="SorteerMeesteLikes">Meeste likes</option>
-                <option value="SorteerMeesteReacties">Meeste reacties</option>
-            </select>
+    <div id="meldingen-header" class="container bg-white py-2">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">Buurtmeldingen</h1>
+                <p class="text-secondary">
+                    Bekijk hier de meldingen in je buurt.
+                </p>
+            </div>
         </div>
     </div>
 </header>
-@foreach (var melding in meldings)
-{
-        <div class="row p-3 m-0">
-        <div class="col-md-2 p-0 m-0"></div>
-        <div class="col-md-7 p-0 m-0">
-            <div class="melding rounded">
-                    <article class="p-3">
-                        <h2>@melding.Titel</h2>
-                        <P>@melding.Inhoud.Substring(0,300)</P><a>...</a>
-                        <div class="row p-0 m-0">
-                        <p class="col-md-6 p-0 m-0">Categorie: @foreach (var categorie in melding.Categorieen)
-                        {
-                            <a>#@categorie</a>
-                        }</p>
-                        <p class="col-md-4 p-0 m-0">Geplaatst door: @if(melding.auteur==null){<a>Annoniem</a>}else{<a>@melding.auteur.VoorNaam @melding.auteur.AchterNaam</a>}</p>
-                        <button ModalMelding=@melding class="col-md-2 p-0 m-0 btn btn-primary" data-toggle="modal" data-target="#leesMeer">Lees meer...</button>
-                        </div>
-                    </article> 
+
+<div id="meldingen-controls" class="container bg-white py-3">
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-4 p-2 m-0">
+                <button class="btn btn-dark w-100" data-toggle="modal" data-target="#NieuwBericht">Nieuw bericht  <i class="fa fa-plus"></i></button>
+            </div>
+
+            <div class="col-md-4 p-2 m-0">
+                <div class="form-inline form-search w-100 m-0 justify-content-center">
+                    <input class="form-control w-100 m-0" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-dark m-0" type="submit"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+
+            <div class="col-md-4 p-2 m-0">
+                <div class="form-inline m-0">
+                    <select id="inputSorteer" class="form-control w-100">
+                        <option selected>Sorteren op...</option>
+                        <option value="SorteerNieuwsteBerichten">Nieuwste</option>
+                        <option value="SorteerMeesteLikes">Meeste likes</option>
+                        <option value="SorteerMeesteReacties">Meeste reacties</option>
+                    </select>
                 </div>
             </div>
         </div>
-}
+    </div>
 </div>
 
-<!--- Modal voor het inloggen---->
-<div class="modal fade bd-example-modal-lg" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nieuw Bericht</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="row p-0 m-0">
-                <div class="col-8 p-0 m-0">
-                    <a>Naam bericht:</a> 
-                    <input id="NaamBericht"></input>
-                 </div>
-                <div class ="col-4 p-0 m-0">
-                <a>Dit bericht anoniem plaatsen?</a>
-                <input type="checkbox" id="AnoniemPlaatsen" class="col-5 p-0 m-0"></input>
-            </div> 
-        </div>
-        <div class="row p-0 m-0">
-            <textarea id="bericht" rows="12" cols="75" placeholder="Typ hier uw bericht in"></textarea>
-        </div>
-        <div class="row p-0 m-2">
-            <div class="col-8 p-0 m-0">
-                <a>Catagorieën:</a>
-                <input>
-            </div>
-            <div class="col-4 p-0 m-0">
-                <a>Foto toevoegen</a> 
-               <button><i class="fa fa-file-photo-o"></i></button>
-            </div>
-        </div>
+<div id="meldingen-content" class="container bg-white py-3">
+    @foreach (var melding in meldings)
+    {
+            <div class="row m-0 bg-white py-4 text-dark justify-content-center align-content-center align-items-center">
+                <div class="col-md-12 w-100 p-0 m-0">
+                    <div class="melding p-4 rounded box-shadow-full">
+                        <article>
+                            <div class="melding-header py-1 w-100 row m-0 p-0">
+                                <div class="col-md-6 w-100 m-0 p-0">
+                                    <h2 class="text-wrap">
+                                        @melding.Titel
+                                    </h2>
+                                </div>
+                                <div class="col-md-6 w-100 m-0 p-0">
+                                    <h4 class="text-secondary float-md-right">
+                                        Geplaatst op:
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Plaats bericht</button>
-      </div>
+                                        @melding.AangemaaktOp
+                                    </h4>
+                                </div>
+                                @if(melding.IsActief==true)
+                                    {
+                                        <div style="height: 2px;" class="container-fluid bg-success"></div>
+                                    }else
+                                    {
+                                        <div style="height: 2px;" class="container-fluid bg-danger"></div>
+                                    }
+                            </div>
+
+                            <div class="melding-content py-2 row m-0 p-0">
+                                <div class="col-md-12 m-0 p-0">
+                                    <p class="text-wrap">
+                                        @melding.Inhoud.Substring(0,300)...
+                                        <a data-toggle="modal" href="#melding-@melding.meldingID">
+                                            lees meer
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="melding-footer py-1 m-0 p-0">
+                                <hr>
+                                <div class="row w-100 py-1 m-0 p-0 text-secondary">
+                                    <div class="col-md-6 w-100 m-0 p-0 text-secondary">
+                                        <p>
+                                            Categorie:
+                                            @foreach (var categorie in melding.Categorieen)
+                                            {
+                                                <a href="#" class="py-2 px-3 d-inline rounded-0 border categorie text-secondary">#@categorie</a>
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 w-100 m-0 p-0 text-secondary">
+                                        <p class="float-md-right">
+                                            Geplaatst door:
+                                            @if(melding.auteur==null)
+                                            {
+                                                <a>Anoniem</a>
+                                            }else
+                                            {
+                                                <a href="#">
+                                                    @melding.auteur.VoorNaam @melding.auteur.AchterNaam
+                                                </a>
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+                    </div>
+                </div>
+            </div>  
+    }
+</div>
+
+@foreach (var melding in meldings) {
+<!--- Modal voor het inloggen---->
+<div class="modal fade bd-example-modal-lg melding-modal" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nieuw Bericht</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row p-0 m-0">
+                        <div class="col-8 p-0 m-0">
+                            <a>Naam bericht:</a> 
+                            <input id="NaamBericht"></input>
+                        </div>
+                        <div class ="col-4 p-0 m-0">
+                        <a>Dit bericht anoniem plaatsen?</a>
+                        <input type="checkbox" id="AnoniemPlaatsen" class="col-5 p-0 m-0"></input>
+                    </div> 
+                </div>
+                <div class="row p-0 m-0">
+                    <textarea id="bericht" rows="12" cols="75" placeholder="Typ hier uw bericht in"></textarea>
+                </div>
+                <div class="row p-0 m-2">
+                    <div class="col-8 p-0 m-0">
+                        <a>Catagorieën:</a>
+                        <input>
+                    </div>
+                    <div class="col-4 p-0 m-0">
+                        <a>Foto toevoegen</a> 
+                    <button><i class="fa fa-file-photo-o"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Plaats bericht</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!--- Modal voor de reacties---->
-<div class="modal fade bd-example-modal-lg" id="leesMeer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="melding-@melding.meldingID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -142,15 +213,14 @@
                 </div>
                 <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
             </div>
-            
-                <div class="row p-2 m-1">
+            <div class="row p-2 m-1">
                     <div class="col-md-10">
                         <textarea id="reactie" rows="1" cols="75" placeholder="Typ hier uw reactie in..."></textarea>
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-primary">Plaats reactie</button>
                     </div>
-                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    @{
+    List<Gebruiker> gebruikers = new List<Gebruiker>();
+    
+        var test = new Gebruiker {
+            GebruikersNummer = 1,
+            VoorNaam = "Test",
+            AchterNaam = "TestAchter",
+            EmailAdres = "test@look.nl",
+            WachtWoord = "123",
+            IsGeverifieerd = true,
+            IsAnoniem = false
+        };
+
+        gebruikers.Add(test);
+    }
+
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-sm text-dark bg-white box-shadow">
             <div class="container-fluid">
@@ -74,22 +90,21 @@
                     </button>
                 </div>
 
-                <form method="POST">
+                <form class="needs-validation" method="POST" novalidate>
                     <div class="modal-body text-left">
                         <div class="form-group w-100">
                             <label for="inputEmail">E-mailadres</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail">
-                            <small id="emailHelp" class="form-text text-muted">We zullen nooit uw email met iemand anders delen.</small>
+                            <input name="email" type="email" class="form-control form-validation" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
                         </div>
                         <div class="form-group w-100">
                             <label for="inputPassword">Wachtwoord</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Wachtwoord">
+                            <input name="password" type="password" class="form-control form-validation" id="inputPassword" placeholder="Wachtwoord" required>
                         </div>
                     </div>
 
                     <div class="modal-footer row border-0">
                         <div class="form-group w-100">
-                            <button type="submit" class="btn btn-dark w-100 d-block" data-dismiss="modal"><h6 class="my-1">INLOGGEN</h6></button>
+                            <button onclick="checkUser()" type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
                         </div>
                         <div class="form-group m-0 w-100 text-center">
                             <a data-toggle="modal" href="#registerModal" data-dismiss="modal">Ik heb nog geen account.</a>
@@ -99,6 +114,7 @@
             </div>
         </div>
     </div>
+
     <!-- Register Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -113,69 +129,69 @@
                     </button>
                 </div>
 
-                <form method="POST">
+                <form class="needs-validation" method="POST" oninput='up2.setCustomValidity(repeatPassword.value != password.value ? "Passwords do not match." : "")' novalidate>
                     <div class="modal-body text-left">
                         <div class="form-row">
                             <div class="form-group col-sm-6">
                                 <label for="inputName">Voornaam</label>
-                                <input type="text" class="form-control" id="inputName" placeholder="Voornaam">
+                                <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="Voornaam" required>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="inputSurname">Achternaam</label>
-                                <input type="text" class="form-control" id="inputSurname" placeholder="Achternaam">
+                                <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Achternaam" required>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="inputUsername">Gebruikersnaam</label>
-                            <input type="text" class="form-control" id="inputUsername" placeholder="Gebruikersnaam">
+                            <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="Gebruikersnaam" required>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-sm-7">
                                 <label for="inputAddress">Straat</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="Straat">
+                                <input name="street-address" type="text" class="form-control form-validation" id="inputAddress" placeholder="Straat" required>
                             </div>
                             <div class="form-group col-sm-3">
                                 <label for="inputHouseNumber">Huisnummer</label>
-                                <input type="text" class="form-control" id="inputHouseNumber" placeholder="Huisnr">
+                                <input name="house-number" type="number" class="form-control form-validation" id="inputHouseNumber" placeholder="Huisnr" required>
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="inputHouseNumberAddition">Toev.</label>
-                                <input type="text" class="form-control" id="inputHouseNumberAddition" placeholder="Toev">
+                                <input name="addition" type="text" class="form-control form-validation" id="inputHouseNumberAddition" placeholder="Toev">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-sm-8">
-                                <label for="inputCity">Stad</label>
-                                <input type="text" class="form-control" id="inputCity" placeholder="Stad">
+                                <label for="inputCity">Woonplaats</label>
+                                <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Stad" required>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="inputZip">Postcode</label>
-                                <input type="text" class="form-control" id="inputZip" placeholder="Postcode">
+                                <input name="postal-code" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="Postcode" required>
                             </div>
                         </div>
 
 
                         <div class="form-group w-100">
                             <label for="inputEmail">E-mailadres</label>
-                            <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail">
-                            <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
+                            <input type="email" class="form-control form-validation" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
+                            <small name="email" id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
                         </div>
                         <div class="form-group w-100">
                             <label for="inputPassword">Wachtwoord</label>
-                            <input type="password" class="form-control" id="inputPassword" placeholder="Wachtwoord">
+                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputPassword" placeholder="Wachtwoord" required>
                         </div>
                         <div class="form-group w-100">
                             <label for="inputPassword">Herhaal Wachtwoord</label>
-                            <input type="password" class="form-control" id="inputPasswordValid" placeholder="Wachtwoord">
+                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputPasswordValid" placeholder="Wachtwoord" required>
                         </div>
                     </div>
 
                     <div class="modal-footer row border-0">
                         <div class="form-group w-100">
-                            <button type="submit" class="btn btn-dark w-100 d-block" data-dismiss="modal"><h6 class="my-1">AANMELDEN</h6></button>
+                            <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button>
                         </div>
                         <div class="form-group m-0 w-100 text-center">
                             <a data-toggle="modal" href="#loginModal" data-dismiss="modal">Ik heb al een account.</a>
@@ -255,6 +271,71 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
+    </script>
+    <script id="BootstrapFormValidator">
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+                
+            }, false);
+        })();
+    </script>
+    <script id="RealTimeInputChecker">
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var inputs = document.getElementsByClassName('form-validation');
+                
+                var validation = Array.prototype.filter.call(inputs, function(input) {
+
+                    input.addEventListener('blur', function(event) {
+                        input.classList.remove('is-invalid');
+                        input.classList.remove('is-valid');
+
+                        if (input.checkValidity() === false) {
+                            input.classList.add('is-invalid')
+                        }else {
+                            input.classList.add('is-valid')
+                        }
+                    }, false);
+                });
+                
+            }, false);
+        })();
+    </script>
+    <script id="PasswordValidator">
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var passwords = document.getElementsByClassName('password-validate');
+                
+                var validation = Array.prototype.filter.call(passwords, function(password) {
+
+                    input.addEventListener('blur', function(event) {
+                        password.classList.remove('is-invalid');
+                        password.classList.remove('is-valid');
+
+                        if ($("#inputPasswordValid").val() != $("#inputPassword").val()) {
+                            password.classList.add('is-invalid')
+                        }else {
+                            password.classList.add('is-valid')
+                        }
+                    }, false);
+                });
+                
+            }, false);
+        })();
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
