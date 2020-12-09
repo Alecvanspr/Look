@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql;
 
 namespace Look
 {
@@ -27,17 +24,6 @@ namespace Look
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
-            //Hier komt de connectie met de DB te staan, zie Teams voor conn strings
-            services.AddDbContextPool<LookContext>(
-                dbContextOptions => dbContextOptions
-                .UseMySql(
-                    "Server=94.209.210.86; User Id=Groepje1E; Password=b48e3c8796024b86b825276414a0ca4b; Database = data6ea578e716254ef8ab18f464c5bdcffc",
-                    ServerVersion.FromString("8.0.22-mysql"),
-                    mySqlOptions => mySqlOptions
-                        .CharSetBehavior(CharSetBehavior.NeverAppend)
-                )
-            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
