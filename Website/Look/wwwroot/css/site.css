@@ -19,6 +19,24 @@ h6 {
   letter-spacing: 1.5px;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 20px;
+}
+
+.select-box {
+  position: relative;
+}
+
+.select-box .selector {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translate(-50%, -50%);
+  font-size: 20px !important;
+}
 .btn-dark {
   background: #343434 !important;
   color: #ffffff !important;
@@ -120,6 +138,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .box-shadow-full {
   box-shadow: 0 0 1.75rem rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 0 1.75rem rgba(0, 0, 0, .2);
 }
 
 /*NAVBAR*/
@@ -191,6 +210,7 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  -moz-box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
