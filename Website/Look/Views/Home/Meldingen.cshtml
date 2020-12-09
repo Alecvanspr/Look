@@ -4,7 +4,7 @@
 
 @{ 
         List<Melding> meldings = new List<Melding>();
-        var melding1 = new Melding()  {meldingID="1", AangemaaktOp=new DateTime(2020, 12, 8),Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"}};
+        var melding1 = new Melding()  {meldingID="1", AangemaaktOp=new DateTime(2020, 12, 8),Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorieen=new List<string>{"lorem","ipsum", "dolor", "sit", "amet"},IsActief=true,auteur=new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"}};
         var melding2 = new Melding()  {meldingID="2", AangemaaktOp=new DateTime(2020, 12, 5),Titel="Lorem Ipsum 2", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"}};
         var melding3 = new Melding()  {meldingID="3", AangemaaktOp=new DateTime(2020, 12, 2),Titel="Lorem Ipsum 3", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=true,auteur=new Gebruiker{VoorNaam="Joeri",AchterNaam="de hoog"}};
         var melding4 = new Melding()  {meldingID="4", AangemaaktOp=new DateTime(2020, 11, 25),Titel="Lorem Ipsum 4", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=5,Views=8,Categorieen=new List<string>{"lorem","Ipsum"},IsActief=false,auteur=new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}};
@@ -60,22 +60,22 @@
 <div id="meldingen-content" class="container bg-white py-3">
     @foreach (var melding in meldings)
     {
-            <div class="row m-0 bg-white py-4 text-dark justify-content-center align-content-center align-items-center">
+            <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
                 <div class="col-md-12 w-100 p-0 m-0">
-                    <div class="melding p-4 rounded box-shadow-full">
+                    <div class="melding bg-white p-4 rounded box-shadow-full">
                         <article>
-                            <div class="melding-header py-1 w-100 row m-0 p-0">
+                            <div class="melding-header py-1 w-100 row m-0 p-0 align-content-end align-items-end">
                                 <div class="col-md-6 w-100 m-0 p-0">
                                     <h2 class="text-wrap">
                                         @melding.Titel
                                     </h2>
                                 </div>
-                                <div class="col-md-6 w-100 m-0 p-0">
-                                    <h4 class="text-secondary float-md-right">
-                                        Geplaatst op:
+                                <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
+                                    <h6 class="text-secondary ls-0 float-md-right">
+                                        <i class="far fa-clock"></i> 
 
                                         @melding.AangemaaktOp
-                                    </h4>
+                                    </h6>
                                 </div>
                                 @if(melding.IsActief==true)
                                     {
@@ -102,10 +102,14 @@
                                 <div class="row w-100 py-1 m-0 p-0 text-secondary">
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p>
-                                            Categorie:
+                                            <div class="categories-title d-inline">
+                                                <p>Categorie:</p>
+                                            </div>
                                             @foreach (var categorie in melding.Categorieen)
-                                            {
-                                                <a href="#" class="py-2 px-3 d-inline rounded-0 border categorie text-secondary">#@categorie</a>
+                                            {   
+                                                <div class="categories-content d-inline">
+                                                    <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@categorie</a>
+                                                </div>
                                             }
                                         </p>
                                     </div>
