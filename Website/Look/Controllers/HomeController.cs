@@ -31,12 +31,12 @@ namespace Look.Controllers
         {
             return View();
         }
-        public IActionResult Meldingen(string sorteerVolgorde)
+        public IActionResult Meldingen(string s)
         {
             Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
             Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
-            Gebruiker Joeri = new Gebruiker{VoorNaam="Joeri",AchterNaam="de hoog"};
+            Gebruiker Joeri = new Gebruiker{VoorNaam="Joeri",AchterNaam="de Hoog"};
             List<Melding> meldings = new List<Melding>();
             List<Reactie> reacties1 = new List<Reactie>();
                 Reactie reactie1 = new Reactie {Bericht="LOL",GeplaatstDoor=Alec,GeplaatstOp=new DateTime(2020, 12, 9)};
@@ -53,8 +53,20 @@ namespace Look.Controllers
             meldings.Add(melding3);
             meldings.Add(melding4);
             meldings.Add(melding5);
-            Melding ModalMelding = melding1;
-            return View(meldings);
+
+            List<Melding> query = meldings;
+
+            if(s!=null){
+                if(s.Equals("likes")){
+                    query = meldings.OrderByDescending(M=>M.Likes).ToList();
+                }else if(s.Equals("views")){
+                    query = meldings.OrderByDescending(M=>M.Views).ToList();
+                }else if(s.Equals("titels")){
+                    query = meldings.OrderByDescending(M=>M.Titel).ToList();
+                }
+            } 
+            
+            return View(query);
         }
         
 
