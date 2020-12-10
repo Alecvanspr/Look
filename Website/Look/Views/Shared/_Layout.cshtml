@@ -8,74 +8,56 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    @{
-    List<Gebruiker> gebruikers = new List<Gebruiker>();
-    
-        var test = new Gebruiker {
-            GebruikersNummer = 1,
-            VoorNaam = "Test",
-            AchterNaam = "TestAchter",
-            EmailAdres = "test@look.nl",
-            WachtWoord = "123",
-            IsGeverifieerd = true,
-            IsAnoniem = false
-        };
+    <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
+        <!--NAVBAR BRAND-->
+        <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
+            <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
+        </p>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
+            <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
+        </button>
 
-        gebruikers.Add(test);
-    }
+        <div class="navbar-collapse collapse w-100" id="navbarCollapse">
+            <!--NAVIGATION LINKS-->
+            <ul class="navbar-nav nav-links w-100 justify-content-center">
+                <li class="nav-item text-center">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Profiel</a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Meldingen</a>
+                </li>
+            </ul>
 
-    <header>
-        <nav class="navbar navbar-expand-md navbar-toggleable-sm text-dark bg-white box-shadow">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
-                </button>
+            <!--SOCIAL LINKS / BUTTONS-->
+            <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
+                <li class="nav-item text-center">
+                    <a class="nav-link p-2" href="https://instagram.com/#">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="nav-link p-2" href="https://twitter.com/#">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="nav-link p-2" href="https://facebook.com/#">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </li>
+                <li class="nav-item text-center">
+                    <a class="button-href" asp-area="" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-                <div class="navbar-collapse collapse justify-content-between">
-                    <ul class="nav">
-
-                    </ul>
-                    <ul class="nav navbar-nav nav-links">
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Profiel</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Meldingen</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-right justify-content-center">
-                        <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <button type="button" class="btn btn-dark nav-link" data-target="#loginModal" data-toggle="modal">Inloggen</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -90,7 +72,7 @@
                     </button>
                 </div>
 
-                <form class="needs-validation" method="POST" novalidate>
+                <form class="needs-validation" asp-route="Login" method="POST" novalidate>
                     <div class="modal-body text-left">
                         <div class="form-group w-100">
                             <label for="inputEmail">E-mailadres</label>
@@ -104,7 +86,8 @@
 
                     <div class="modal-footer row border-0">
                         <div class="form-group w-100">
-                            <button onclick="checkUser()" type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
+                            <button asp-route="Login" type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
+                            <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
                         </div>
                         <div class="form-group m-0 w-100 text-center">
                             <a data-toggle="modal" href="#registerModal" data-dismiss="modal">Ik heb nog geen account.</a>
@@ -129,7 +112,7 @@
                     </button>
                 </div>
 
-                <form class="needs-validation" method="POST" oninput='up2.setCustomValidity(repeatPassword.value != password.value ? "Passwords do not match." : "")' novalidate>
+                <form class="needs-validation" asp-route="Register" method="POST" novalidate>
                     <div class="modal-body text-left">
                         <div class="form-row">
                             <div class="form-group col-sm-6">
@@ -175,17 +158,17 @@
 
 
                         <div class="form-group w-100">
-                            <label for="inputEmail">E-mailadres</label>
-                            <input type="email" class="form-control form-validation" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
-                            <small name="email" id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
+                            <label for="inputRegisterEmail">E-mailadres</label>
+                            <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
+                            <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
                         </div>
                         <div class="form-group w-100">
-                            <label for="inputPassword">Wachtwoord</label>
-                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputPassword" placeholder="Wachtwoord" required>
+                            <label for="inputRegisterPassword">Wachtwoord</label>
+                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputRegisterPassword" placeholder="Wachtwoord" required>
                         </div>
                         <div class="form-group w-100">
-                            <label for="inputPassword">Herhaal Wachtwoord</label>
-                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputPasswordValid" placeholder="Wachtwoord" required>
+                            <label for="inputRegisterPasswordValid">Herhaal Wachtwoord</label>
+                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputRegisterPasswordValid" placeholder="Wachtwoord" required>
                         </div>
                     </div>
 
@@ -223,8 +206,8 @@
                             <h6>ABONNEER</h6>
                             <form class="form-inline form-subscribe">
                                 <div class="form-group w-100 p-0 m-0">
-                                    <label for="inputEmail" class="sr-only">Email</label>
-                                    <input type="email" class="form-control w-100" id="inputEmail" placeholder="email">
+                                    <label for="inputSubscribeEmail" class="sr-only">Email</label>
+                                    <input type="email" class="form-control w-100" id="inputSubscribeEmail" placeholder="email">
                                 </div>
                                 <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
                             </form>
@@ -261,7 +244,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         function onSubmit(token) {
             document.getElementById("demo-form").submit();
@@ -314,7 +296,7 @@
             }, false);
         })();
     </script>
-    <script id="PasswordValidator">
+    @* <script id="PasswordValidator">
         (function() {
             'use strict';
             window.addEventListener('load', function() {
@@ -322,7 +304,7 @@
                 
                 var validation = Array.prototype.filter.call(passwords, function(password) {
 
-                    input.addEventListener('blur', function(event) {
+                    password.addEventListener('blur', function(event) {
                         password.classList.remove('is-invalid');
                         password.classList.remove('is-valid');
 
@@ -336,7 +318,7 @@
                 
             }, false);
         })();
-    </script>
+    </script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Look.Models;
 
+
 namespace Look.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        private static List<Gebruiker> gebruikers = new List<Gebruiker>();
+    
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -53,9 +57,42 @@ namespace Look.Controllers
             return View(meldings);
         }
         
+
+
         public IActionResult Profiel()
         {
             return View();  
+        }
+
+        public IActionResult Login()
+        {
+            
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Register(string fname, string lname, string username, string streetaddress, string housenumber, string addition, string city, string postalcode,string email, string password)
+        {
+            int AantalGebruikers = gebruikers.Count();
+            int GebruikersNummer = AantalGebruikers + 1;
+            bool DoesExist = gebruikers.Any(gebruiker => gebruiker.EmailAdres == email);
+
+            if(DoesExist)
+            {
+                Console.WriteLine("User Already Exists");
+            }else
+            {
+                Gebruiker NieuweGebruiker = new Gebruiker() {GebruikersNummer = GebruikersNummer, VoorNaam = fname, AchterNaam = lname, GebruikersNaam = username, Adres = streetaddress + " " + housenumber + " " + addition + ", " + postalcode + ", " + city, EmailAdres = email, WachtWoord = password,IsAnoniem = false, IsGeverifieerd = false};
+                gebruikers.Add(NieuweGebruiker);
+                Console.WriteLine("Succesfully Created A New User In List<Gebruiker> gebruikers!");
+            }
+
+            return RedirectToAction("Index");;
+        }
+
+        public IActionResult Register()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
