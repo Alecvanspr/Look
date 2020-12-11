@@ -1,49 +1,83 @@
-<body>
-    <form class="col-12 p-3" method="POST">
-        <div class="form-group m-0 p-1">
-            <div class="col-12 p-1">
-                <label for="emailAdres">Emailadres:</label>
-                <input type="email" id="emailAdres" class="form-control" placeholder="Voorbeeld@emailadres.nl">
+@{
+    ViewData["Title"] = "Mijn Profiel";
+}
+
+<header>
+    <div id="profile-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">Mijn profiel</h1>
+                <p class="text-secondary">
+                    Wijzig hier je profielgegevens en/of chat- en meldingsvoorkeuren.
+                </p>
             </div>
         </div>
         <div class="form-row justify-content-between m-0 p-1">
-            <div class="col-12 col-md-5 m-0 p-1">
-                <label for="voorNaam">Voornaam:</label>
-                <input type="text" id="voorNaam" class="form-control" placeholder="Voornaam">
-            </div>
-            <div class="col-12 col-md-5 m-0 p-1">
-                <label for="achterNaam">Achternaam:</label>
-                <input type="text" id="achterNaam" class="form-control" placeholder="Achternaam">   
-            </div>
-        </div>
-        <div class="form-row justify-content-between m-0 p-1">
-            <div class="col-12 col-md-5 m-0 p-1">
-                <label for="wachtWoord">Wachtwoord wijzigen:</label>
-                <input type="text" id="wachtWoord" class="form-control" placeholder="Wachtwoord">
-            </div>
-            <div class="col-12 col-md-5 m-0 p-1">
-                <label for="wachtWoordBevestiging">Nieuw wachtwoord bevestigen:</label>
-                <input type="text" id="wachtWoordBevestiging" class="form-control" placeholder="Wachtwoord">   
-            </div>
-        </div>
-        <div class="form-group m-0 p-1">
-            <div class="col-12 p-1 form-check">
-                <input type="checkbox" id="isAnoniem">
-                <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
-            </div>
-        </div>
+    </div>
+</header>
 
-        <div class="form-group m-0 p-1">
-            <div class="col-12 col-md-4 p-1 justify-content-between">
-                <button class="btn btn-dark col-5" type="submit">Wijzigingen opslaan</button>
-                <button class="btn btn-dark col-5" type="submit">Account verwijderen</button>
-            </div> 
-        </div>
-    </form>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> 
-    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-</body>
+<div id="profile-form" class="container bg-white py-3 justify-content-center">
+    <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center"></div>
+        <form class="w-100" method="POST">
+            <div id="formError" class="container-fluid d-none"></div>
+            <div class="form-row text-center justify-content-center align-content-center align-items-center">
+                <div class="form-group col-md-2 col-6">
+                    <div class="profile-avatar">
+                        <img id="userAvatar" alt="De huidige profielfoto van de gebruiker" src="~/images/avatar-dummy.svg" class="rounded-circle mx-auto d-block py-2"/>
+                    </div>
+                    <label data-toggle="tooltip" data-placement="top" title="Selecteer een foto van maximaal 1500 kB" id="changeAvatarLabel" for="changeAvatar">Wijzig profielfoto</label>
+                    <input id="changeAvatar" class="file-upload" type="file" accept="image/*" onchange="document.getElementById('userAvatar').src = window.URL.createObjectURL(this.files[0])" hidden>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="emailAdres">E-mailadres</label>
+                    <input name="emailAdres" type="email" class="form-control" id="emailAdres" placeholder="voorbeeld@example.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="voorNaam">Voornaam</label>
+                    <input name="voorNaam" type="text" class="form-control" id="voorNaam" placeholder="Voornaam">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="achterNaam">Achternaam</label>
+                    <input name="achterNaam" type="text" class="form-control" id="achterNaam" placeholder="Achternaam">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="wachtWoord">Huidig wachtwoord</label>
+                    <input name="wachtWoord" type="password" class="form-control" id="wachtWoord" placeholder="Wachtwoord">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nieuwWachtWoord">Nieuw wachtwoord</label>
+                    <input name="nieuwWachtWoord" type="password" class="form-control" id="nieuwWachtWoord" placeholder="Wachtwoord">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="herhaalWachtwoord">Herhaal nieuw wachtwoord</label>
+                    <input name="herhaalWachtwoord" type="password" class="form-control" id="herhaalWachtwoord" placeholder="Wachtwoord">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="form-check">
+                        <input name="isAnoniem" value="True" class="form-check-input" type="checkbox" id="isAnoniem">
+                        <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row col-md-6 p-0">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
