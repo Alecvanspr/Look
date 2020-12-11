@@ -11,6 +11,9 @@ namespace Look
         public DbSet<Melding> Meldingen {get; set;}
         public DbSet<Reactie> Reacties {get; set;}
 
+        protected override void OnConfiguring(DbContextOptionsBuilder b) =>
+        b.UseSqlite("Data Source=look.db");
+
         protected override void OnModelCreating(ModelBuilder ModelBuilder)
         {
             ModelBuilder.Entity<Gebruiker>()

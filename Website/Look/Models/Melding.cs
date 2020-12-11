@@ -9,7 +9,7 @@ namespace Look.Models
     public class Melding
     {
         [Key]
-        public string MeldingId {get; set;}
+        public int MeldingId {get; set;}
         public bool IsPrive { get; set; }
         public DateTime AangemaaktOp { get; set; }
         public string Titel { get; set; }
@@ -19,6 +19,6 @@ namespace Look.Models
         public bool IsActief { get; set;}
         public Gebruiker Auteur {get;set;}
         public List<Reactie> Reacties { get; set; }
-        public List<string> Categorieen { get; set; }
+        public string Categorie { get; set; }
     }
 }
