@@ -14,5 +14,6 @@ namespace Look.Models
         public Gebruiker GeplaatstDoor {get; set;}
         public DateTime GeplaatstOp {get; set;}
         public string Bericht {get; set;}
+        public int likes{get;set;}
     }
 }
