@@ -3,14 +3,16 @@ using System;
 using Look;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Look.Migrations
 {
     [DbContext(typeof(LookContext))]
-    partial class LookContextModelSnapshot : ModelSnapshot
+    [Migration("20201213173936_UpdateGebruiker")]
+    partial class UpdateGebruiker
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

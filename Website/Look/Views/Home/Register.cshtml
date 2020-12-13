@@ -8,7 +8,7 @@
             <div class="col-md-12 m-0 p-0 text-wrap">
                 <h1 class="text-break">Aanmelden</h1>
                 <p class="text-secondary">
-                    Maak hier een nieuw account aan. Heeft u al een account? <a asp-area="" asp-controller="Home" asp-action="Index">Log dan in</a>.
+                    Maak hier een nieuw account aan. Heb je al een account? <a asp-area="" asp-controller="Home" asp-action="Login">Log dan in</a>.
                 </p>
             </div>
         </div>
@@ -17,90 +17,91 @@
 
 <div id="register-content" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
-        <div class="col-md-3 p-5">
+        <div class=" col-8 col-md-6 col-lg-4 p-0 py-5 p-0">
             <img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/>
         </div>
     </div>
 
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
-        <form class="needs-validation" name="registreren" asp-controller="Home" asp-action="Register" method="POST" novalidate>
-            <div class="form-row">
-                <div class="form-group col-sm-6">
-                    <label class="sr-only" for="inputName">Voornaam</label>
-                    <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="Voornaam" required>
-                </div>
-
-                <div class="form-group col-sm-6">
-                    <label class="sr-only" for="inputSurname">Achternaam</label>
-                    <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Achternaam" required>
-                </div>
-            </div>
-                        
-            <div class="form-group">    
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">&commat;</div>
+        <div class="col-md-8 p-0 m-0">
+            <form class="needs-validation w-100" name="registreren" asp-controller="Home" asp-action="Register" method="POST" novalidate>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label for="inputName">Voornaam</label>
+                        <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="Voornaam" required>
                     </div>
-                    <label class="sr-only" for="inputUsername">Gebruikersnaam</label>
-                    <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="Gebruikersnaam" required>
+
+                    <div class="form-group col-sm-6">
+                        <label for="inputSurname">Achternaam</label>
+                        <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Achternaam" required>
+                    </div>
                 </div>
-                
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-sm-7">
-                    <label class="sr-only" for="inputAddress">Straat</label>
-                    <input name="streetaddress" type="text" class="form-control form-validation" id="inputAddress" placeholder="Straat" required>
+                            
+                <div class="form-group">    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">&commat;</div>
+                        </div>
+                        <label class="sr-only" for="inputUsername">Gebruikersnaam</label>
+                        <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="Gebruikersnaam" required>
+                    </div>
+                    
                 </div>
-                <div class="form-group col-sm-3">
-                    <label class="sr-only" for="inputHouseNumber">Huisnummer</label>
-                    <input name="housenumber" type="number" class="form-control form-validation" id="inputHouseNumber" placeholder="Huisnr" required>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-8">
+                        <label for="inputAddress">Straat</label>
+                        <input name="streetaddress" type="text" class="form-control form-validation" id="inputAddress" pattern="[a-zA-Z]+" placeholder="Straat" required>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="inputHouseNumber">Huisnummer</label>
+                        <input name="housenumber" type="number" class="form-control form-validation" id="inputHouseNumber" pattern="[0-9]+" placeholder="Huisnr" required>
+                    </div>
                 </div>
-                <div class="form-group col-sm-2">
-                    <label class="sr-only" for="inputHouseNumberAddition">Toev.</label>
-                    <input name="addition" type="text" class="form-control form-validation" id="inputHouseNumberAddition" placeholder="Toev">
+
+                <div class="form-row">
+                    <div class="form-group col-sm-8">
+                        <label for="inputCity">Woonplaats</label>
+                        <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Stad" required>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="inputZip">Postcode</label>
+                        <input name="postalcode" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="Postcode" required>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <div class="form-group col-sm-8">
-                    <label class="sr-only" for="inputCity">Woonplaats</label>
-                    <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Stad" required>
+                <div class="form-group w-100">
+                    <label for="inputRegisterEmail">E-mailadres</label>
+                    <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
+                    <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
+                    <div class="invalid-feedback">
+                        @ViewBag.registerError
+                    </div>
                 </div>
-                <div class="form-group col-sm-4">
-                    <label class="sr-only" for="inputZip">Postcode</label>
-                    <input name="postalcode" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="Postcode" required>
+
+                <div class="form-group w-100">
+                    <label for="inputRegisterPassword">Wachtwoord</label>
+                    <input name="password" type="password" class="form-control form-validation password-validate" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="inputRegisterPassword" placeholder="Wachtwoord" required>
                 </div>
-            </div>
 
-            <div class="form-group w-100">
-                <label class="sr-only" for="inputRegisterEmail">E-mailadres</label>
-                <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
-                <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
-            </div>
+                <div class="form-group w-100">
+                    <label for="inputRegisterPasswordValid">Herhaal Wachtwoord</label>
+                    <input name="passwordvalid" type="password" class="form-control form-validation password-validate" id="inputRegisterPasswordValid" placeholder="Wachtwoord" required>
+                </div>
 
-            <div class="form-group w-100">
-                <label for="inputRegisterPassword">Wachtwoord</label>
-                <input name="password" type="password" class="form-control form-validation password-validate" id="inputRegisterPassword" placeholder="Wachtwoord" required>
-            </div>
+                @* <div class="form-group w-100">
+                    <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
+                    <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
+                </div> *@
 
-            <div class="form-group w-100">
-                <label for="inputRegisterPasswordValid">Herhaal Wachtwoord</label>
-                <input name="passwordvalid" type="password" class="form-control form-validation password-validate" id="inputRegisterPasswordValid" placeholder="Wachtwoord" required>
-            </div>
-
-            <div class="form-group w-100">
-                <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
-                <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
-            </div>
-
-            <div class="form-group w-100">
-                <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button>
-                <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
-            </div>
-            <div class="form-group m-0 w-100 text-center">
-                <a data-toggle="modal" href="#loginModal" data-dismiss="modal">Ik heb al een account.</a>
-            </div>
-        </form>
+                <div class="form-group w-100">
+                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button>
+                    <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
+                </div>
+                <div class="form-group m-0 w-100 text-center">
+                    <a asp-area="" asp-controller="Home" asp-action="Login">Ik heb al een account.</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
