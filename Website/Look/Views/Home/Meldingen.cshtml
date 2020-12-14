@@ -24,8 +24,10 @@
 
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline form-search w-100 m-0 justify-content-center">
-                <input class="form-control w-100 m-0" type="search" placeholder="Search" aria-label="Search">
+        <form asp-action="Meldingen" method="get">
+                <input class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z">
                 <button class="btn btn-dark m-0" type="submit"><i class="fa fa-search"></i></button>
+        </form>
             </div>
         </div>
 
@@ -84,7 +86,11 @@
                             <div class="melding-content py-2 row m-0 p-0">
                                 <div class="col-md-12 m-0 p-0">
                                     <p class="text-wrap">
-                                        @melding.Inhoud.Substring(0,300)...
+                                        @if(melding.Inhoud.Length>300){
+                                        <p>@melding.Inhoud.Substring(0,300)...</p>
+                                        }else{
+                                        <p>@melding.Inhoud ...</p>
+                                        }
                                         <a data-toggle="modal" href="#melding-@melding.MeldingId">
                                             lees meer
                                         </a>
