@@ -38,7 +38,6 @@ namespace Look.Controllers
             //     return RedirectToAction("Login");
             // }
             
-            UserHostAddress = Request.UserHostAddress;
             return View();
         }
 
@@ -140,12 +139,12 @@ namespace Look.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            int LoginPogingen = 0;
 
             if (ModelState.IsValid)
             {
                 var f_password = GetMD5(password);
                 var data = db.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
+
 
                 if(data.Count() > 0)
                 {
@@ -154,6 +153,8 @@ namespace Look.Controllers
                     // Session["IdGebruiker"] = data.FirstOrDefault().GebruikersNummer;
 
                     Console.WriteLine("SUCCCES: Succesvolle inlogpoging");
+                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen = 0;
+                    db.SaveChanges();
                     return RedirectToAction("Index");
                 }
                 else
@@ -161,8 +162,22 @@ namespace Look.Controllers
                     ViewBag.loginError = true;
                     ViewBag.loginErrorText = "U heeft een onjuist e-mailadres of wachtwoord ingevoerd.";
                     Console.WriteLine("ERROR: Wrong email or password");
-                    LoginPogingen += 1;
-                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + LoginPogingen);
+
+                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen += 1;
+                    db.SaveChanges();
+                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen);
+
+                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 3)
+                    {
+                        ViewBag.LoginPogingDrie = true;
+                    }
+
+                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 5)
+                    {
+                        ViewBag.LoginPogingDrie = false;
+                        ViewBag.LoginPogingVijf = true;
+                    }
+
 
                     return RedirectToAction("Login");
                 }
@@ -233,6 +248,11 @@ namespace Look.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult EmailVerificatie()
+        {
+            return View();
         }
 
         public static string GetMD5(string str)

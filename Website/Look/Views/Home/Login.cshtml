@@ -24,7 +24,7 @@
 
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-8 p-0 m-0">
-            @if (ViewBag.loginError == true) {
+            @if (ViewBag.loginError) {
                 <div class="alert alert-danger" role="alert">
                     @ViewBag.loginErrorText
                 </div>
@@ -40,17 +40,24 @@
                     <input name="password" type="password" class="form-control form-validation password-validate" id="inputPassword" placeholder="Wachtwoord" required>
                 </div>
 
-                @* <div class="form-group w-100">
-                    <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
-                    <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
-                </div> *@
+                @if(ViewBag.LoginPogingVijf)
+                {
+                    <div class="form-group w-100">
+                        <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
+                        <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
+                    </div>
+                }
 
                 <div class="form-group w-100">
                     <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
                     <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
                 </div>
                 <div class="form-group m-0 w-100 text-center">
-                    <a asp-area="" asp-controller="Home" asp-action="Register">Ik heb nog geen account.</a>
+                    @if(ViewBag.LoginPogingDrie)
+                    {
+                        <a asp-area="" asp-controller="Home" asp-action="WachtwoordVergeten">Wachtwoord vergeten?</a>
+                    }
+                    <a asp-area="" asp-controller="Home" asp-action="Login">Ik heb al een account.</a>
                 </div>
             </form>
         </div>
