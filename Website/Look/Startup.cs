@@ -48,8 +48,6 @@ namespace Look
             services.AddDistributedMemoryCache();
 
             services.AddSession();
-
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
