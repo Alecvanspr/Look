@@ -32,6 +32,7 @@ namespace Look.Controllers
         public IActionResult Index()
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             // if (Session["IdGebruiker"] != null)
             // {
             //     return View();
@@ -43,6 +44,9 @@ namespace Look.Controllers
             
             UserHostAddress = Request.UserHostAddress;
             return View();
+=======
+            return View("Index");
+>>>>>>> Stashed changes
 =======
             return View("Index");
 >>>>>>> Stashed changes
@@ -182,6 +186,7 @@ namespace Look.Controllers
             Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn Profiel gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
 
             return View("Profiel", IngelogdeGebruiker);
+<<<<<<< Updated upstream
         }
 
         
@@ -204,6 +209,30 @@ namespace Look.Controllers
             return View();
         }
 
+=======
+        }
+
+        
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
+        public IActionResult Login()
+        {
+            
+            return View();
+        }
+
+        
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+>>>>>>> Stashed changes
         public IActionResult EmailVerificatie()
         {
             return View();
@@ -215,8 +244,12 @@ namespace Look.Controllers
         public IActionResult Login(string email, string password)
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             int LoginPogingen = 0;
 
+=======
+            //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
+>>>>>>> Stashed changes
 =======
             //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
 >>>>>>> Stashed changes
@@ -226,6 +259,7 @@ namespace Look.Controllers
                 var f_password = GetMD5(password);
                 var data = db.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
                 if(data.Count() > 0)
                 {
@@ -238,6 +272,11 @@ namespace Look.Controllers
                 //Als er meerdere Gebruikers zijn geteld in de database is de gebruiker succesvol ingelogd
                 if(data.Count() > 0)
                 {
+=======
+                //Als er meerdere Gebruikers zijn geteld in de database is de gebruiker succesvol ingelogd
+                if(data.Count() > 0)
+                {
+>>>>>>> Stashed changes
                     //Maak een session value aan voor de gebruiker die op het moment inlogt
                     HttpContext.Session.SetInt32("IdGebruiker", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).GebruikersNummer);
                     HttpContext.Session.SetString("Email", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).EmailAdres);
@@ -251,6 +290,9 @@ namespace Look.Controllers
                     ViewBag.LoginPogingDrie = false;
                     Console.WriteLine("SUCCCES: Authenticated, login successfull");
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     return RedirectToAction("Index");
                 }
@@ -260,12 +302,15 @@ namespace Look.Controllers
                     ViewBag.loginError = true;
                     ViewBag.loginErrorText = "U heeft een onjuist e-mailadres of wachtwoord ingevoerd.";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                     Console.WriteLine("ERROR: Wrong email or password");
                     LoginPogingen += 1;
                     Console.WriteLine("INFO: Dit is loginpoging nummer: " + LoginPogingen);
 
                     return RedirectToAction("Login");
 =======
+=======
+>>>>>>> Stashed changes
                     Console.WriteLine("ERROR: Authentication failed, wrong email or password");
 
                     //Verhoog het getal 'LoginPogingen' met 1 elke keer dat er een fout voorkomt per e-mailadres en sla dit op in de database
@@ -282,6 +327,9 @@ namespace Look.Controllers
                     {
                         ViewBag.LoginPogingDrie = false;
                     }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                 }
             }
@@ -344,6 +392,10 @@ namespace Look.Controllers
         }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+        //Methode om wachtwoorden te encrypten
+>>>>>>> Stashed changes
 =======
         //Methode om wachtwoorden te encrypten
 >>>>>>> Stashed changes
