@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
 using System.Text;
 using Look.Models;
@@ -29,24 +31,17 @@ namespace Look.Controllers
 
         public IActionResult Index()
         {
-            // if (Session["IdGebruiker"] != null)
-            // {
-            //     return View();
-            // }
-            // else
-            // {
-            //     return RedirectToAction("Login");
-            // }
-            
             return View();
-        }
-
+        }        
         public IActionResult Privacy()
         {
             return View();
         }
         public IActionResult Meldingen(string s)
         {
+            //Check of er een gebruiker is ingelogd.
+            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+
             Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
             Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
@@ -88,106 +83,97 @@ namespace Look.Controllers
                 }else if(s.Equals("reacties")){
                     //query = meldings.OrderByDescending(M=>M.Reacties.Count()).ToList();
                 }
-            } 
-            
-            return View(query);
+            }
+
+            //Toon de views mits de gebruiker is ingelogd.
+            if(CurrentSession != null)
+            {
+                return View(query);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
-        
 
 
         public IActionResult Profiel()
         {
-            return View();  
-        }
-        //Neppe ingelogde gebruiker
-        static Gebruiker IngelogdeGebruiker = new Gebruiker()
-        {
-                GebruikersNummer = 1,
-                VoorNaam = "Ingelogde",
-                AchterNaam = "Gozer",
-                GebruikersNaam = "Buurman11034",
-                EmailAdres = "i.gozer@gmail.com",
-                WachtWoord = "gozer123",
-                IsAnoniem = false
-        };
-
-        [HttpPost]
-        public IActionResult Edit(string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
-            if(wachtWoord == IngelogdeGebruiker.WachtWoord) 
+            //Check of er een gebruiker is ingelogd.
+            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            
+            //Toon de views mits de gebruiker is ingelogd.
+            if(CurrentSession != null)
             {
-                if(nieuwWachtwoord == herhaalWachtwoord) 
-                {
-                    IngelogdeGebruiker.WachtWoord = nieuwWachtwoord;
+                //Haal op welke gebruiker er is ingelogd.
+                var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+                Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+                Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft het Profiel scherm geopend.", IngelogdeGebruiker.GebruikersNummer);
 
-                    Console.WriteLine(IngelogdeGebruiker.WachtWoord);
-                } 
-                else 
-                {
-                    Console.WriteLine(nieuwWachtwoord);
-                    Console.WriteLine(herhaalWachtwoord);
-                }
-            } 
-            else 
-            {
-                Console.WriteLine("Klopt niet");
+                return View("Profiel", IngelogdeGebruiker);
             }
-
-            Console.WriteLine(isAnoniem);
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
-        {
+        public IActionResult Profiel(string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
+            
+            //Haal het GebruikersNummer op van de ingelogde gebruiker
+            var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
 
+            //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
             if (ModelState.IsValid)
             {
-                var f_password = GetMD5(password);
-                var data = db.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
+                //Haal op welke gebruiker er is ingelogd.
+                Gebruiker _gebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
 
+                //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
+                var f_password = GetMD5(wachtWoord);
+                var data = db.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
 
+                //Als er meerdere Gebruikers zijn geteld in de database komt het wachtwoord overeen met die uit de database
                 if(data.Count() > 0)
                 {
-                    // Session["Naam"] = data.FirstOrDefault().VoorNaam + " " + data.FirstOrDefault().AchterNaam;
-                    // Session["Email"] = data.FirstOrDefault().EmailAdres;
-                    // Session["IdGebruiker"] = data.FirstOrDefault().GebruikersNummer;
-
-                    Console.WriteLine("SUCCCES: Succesvolle inlogpoging");
-                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen = 0;
+                    //Wijzig de gegevens en update deze in de database
+                    _gebruiker.VoorNaam = voorNaam;
+                    _gebruiker.AchterNaam = achterNaam;
+                    _gebruiker.EmailAdres = emailAdres;
+                    _gebruiker.WachtWoord = GetMD5(wachtWoord);
+                    _gebruiker.IsAnoniem = isAnoniem;
+                    db.Update(_gebruiker);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    Console.WriteLine("SUCCES: Succesfully altered data");
+
+                    //Toon de succes message in de HTML
+                    ViewBag.editSuccess = true;
+                    ViewBag.editError = false;
+                    ViewBag.editSuccessText = "Je gegevens zijn succesvol gewijzigd.";
                 }
                 else
                 {
-                    ViewBag.loginError = true;
-                    ViewBag.loginErrorText = "U heeft een onjuist e-mailadres of wachtwoord ingevoerd.";
-                    Console.WriteLine("ERROR: Wrong email or password");
-
-                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen += 1;
-                    db.SaveChanges();
-                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen);
-
-                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 3)
-                    {
-                        ViewBag.LoginPogingDrie = true;
-                    }
-
-                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 5)
-                    {
-                        ViewBag.LoginPogingDrie = false;
-                        ViewBag.LoginPogingVijf = true;
-                    }
-
-
-                    return RedirectToAction("Login");
+                    //Toon de error message in de HTML
+                    ViewBag.editError = true;
+                    ViewBag.editSuccess = false;
+                    ViewBag.editErrorText = "Het opgegeven huidige wachtwoord is incorrect.";
+                    Console.WriteLine("ERROR: Couldn't alter data, password incorrect");
                 }
             }
-            return View();
+
+            //Haal de gewijzigde gebruiker op
+            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn Profiel gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
+
+            return View("Profiel", IngelogdeGebruiker);
         }
+
+        
 
         public ActionResult Logout()
         {
-            // Session.Clear();
+            HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
 
@@ -197,9 +183,96 @@ namespace Look.Controllers
             return View();
         }
 
+        
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
+        public IActionResult Login()
+        {
+            
+            return View();
+        }
+
+        
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult EmailVerificatie()
+        {
+            return View();
+        }
+
+
+        //Methode die de Login form uitvoert zodra er op de submit knop is gedrukt
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
+            if (ModelState.IsValid)
+            {
+                //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
+                var f_password = GetMD5(password);
+                var data = db.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
+
+                //Als er meerdere Gebruikers zijn geteld in de database is de gebruiker succesvol ingelogd
+                if(data.Count() > 0)
+                {
+                    //Maak een session value aan voor de gebruiker die op het moment inlogt
+                    HttpContext.Session.SetInt32("IdGebruiker", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).GebruikersNummer);
+                    HttpContext.Session.SetString("Email", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).EmailAdres);
+                    HttpContext.Session.SetString("Naam", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).VoorNaam + " " + data.FirstOrDefault(s => s.EmailAdres.Equals(email)).AchterNaam);
+                    HttpContext.Session.SetString("VoorNaam", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).VoorNaam);
+                    HttpContext.Session.SetString("AchterNaam", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).AchterNaam);
+
+                    //Reset 'LoginPogingen' naar 0 als de gebruiker succesvol heeft ingelogd en verberg de "Wachtwoord vergeten" <a> tag
+                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen = 0;
+                    db.SaveChanges();
+                    ViewBag.LoginPogingDrie = false;
+                    Console.WriteLine("SUCCCES: Authenticated, login successfull");
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    //Geef een error als de gebruiker niet in heeft kunnen loggen
+                    ViewBag.loginError = true;
+                    ViewBag.loginErrorText = "U heeft een onjuist e-mailadres of wachtwoord ingevoerd.";
+                    Console.WriteLine("ERROR: Authentication failed, wrong email or password");
+
+                    //Verhoog het getal 'LoginPogingen' met 1 elke keer dat er een fout voorkomt per e-mailadres en sla dit op in de database
+                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen += 1;
+                    db.SaveChanges();
+                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen);
+
+                    //Toon de <a> tag "Wachtwoord vergeten" op het moment dat 'LoginPogingen' groter of gelijk is aan 3
+                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 3)
+                    {
+                        ViewBag.LoginPogingDrie = true;
+                    }
+                    else
+                    {
+                        ViewBag.LoginPogingDrie = false;
+                    }
+                }
+            }
+            return View();
+        }
+
+        //Methode die de Register form uitvoert zodra er op de submit knop is gedrukt
         [HttpPost]
         public IActionResult Register(string fname, string lname, string username, string streetaddress, string housenumber, string city, string postalcode,string email, string password, string passwordvalid)
         {
+            //Maak een object aan met de meegegeven parameters
             Gebruiker _gebruiker = new Gebruiker
             { 
                 VoorNaam = fname, 
@@ -216,21 +289,25 @@ namespace Look.Controllers
                 IsAnoniem = false 
             };
 
+            //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
             if(ModelState.IsValid)
             {
+                //Check of er al een gebruiker bestaat met het opgegeven e-mailadres
                 var check = db.Gebruikers.FirstOrDefault(s => s.EmailAdres == _gebruiker.EmailAdres);
 
                 if(check == null)
                 {
+                    //Encrypt het meegegeven wachtwoord en vervang die voor het wachtwoord dat meegegeven is vanuit de form
                     _gebruiker.WachtWoord = GetMD5(_gebruiker.WachtWoord);
-                    // db.Configuration.ValidateOnSaveEnabled = false;
                     db.Gebruikers.Add(_gebruiker);
                     db.SaveChanges();
-                    Console.WriteLine("Succesvol een gebruiker geregistreerd");
+                    Console.WriteLine("SUCCES: Successfull registration of user");
+
                     return RedirectToAction("Index");;
                 }
                 else 
                 {
+                    //Geef een error zodra het opgegeven e-mailadres al in gebruik is
                     ViewBag.registerError = "Het opgegeven e-mailadres is al gelinkt aan een acount.";
                     Console.WriteLine("ERROR: Email already exists");
                     return View();
@@ -239,11 +316,7 @@ namespace Look.Controllers
             return View();
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
-
+        //Methode die de errors handelt
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -255,6 +328,7 @@ namespace Look.Controllers
             return View();
         }
 
+        //Methode om wachtwoorden te encrypten
         public static string GetMD5(string str)
         {
             MD5 md5 = new MD5CryptoServiceProvider();
