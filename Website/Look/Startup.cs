@@ -38,6 +38,18 @@ namespace Look
             //             .CharSetBehavior(CharSetBehavior.NeverAppend)
             //     )
             // );
+
+            services.AddControllersWithViews();
+
+            services.AddRazorPages();
+
+            services.AddDistributedMemoryCache();
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession();
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +71,10 @@ namespace Look
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCookiePolicy();     
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

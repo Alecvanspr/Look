@@ -24,12 +24,20 @@
 
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-8 p-0 m-0">
+<<<<<<< Updated upstream
             @if (ViewBag.loginError == true) {
                 <div class="alert alert-danger" role="alert">
                     @ViewBag.loginErrorText
                 </div>
             }
+=======
+>>>>>>> Stashed changes
             <form class="needs-validation w-100" name="registreren" asp-controller="Home" asp-action="Login" method="POST" novalidate>
+                @if (ViewBag.loginError == true) {
+                    <div class="alert alert-danger" >             
+                        @ViewBag.loginErrorText
+                    </div>
+                }
                 <div class="form-group w-100">
                     <label for="inputRegisterEmail">E-mailadres</label>
                     <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
@@ -37,20 +45,36 @@
 
                 <div class="form-group w-100">
                     <label for="inputPassword">Wachtwoord</label>
-                    <input name="password" type="password" class="form-control form-validation password-validate" id="inputPassword" placeholder="Wachtwoord" required>
+                    <input name="password" type="password" class="form-control form-validation" id="inputPassword" placeholder="Wachtwoord" required>
                 </div>
 
+<<<<<<< Updated upstream
                 @* <div class="form-group w-100">
                     <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
                     <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
                 </div> *@
 
+=======
+>>>>>>> Stashed changes
                 <div class="form-group w-100">
                     <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
                     <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
                 </div>
+<<<<<<< Updated upstream
                 <div class="form-group m-0 w-100 text-center">
                     <a asp-area="" asp-controller="Home" asp-action="Register">Ik heb nog geen account.</a>
+=======
+                
+                    @if(ViewBag.LoginPogingDrie == true)
+                    {
+                        <div class="form-group m-0 p-0 w-100 text-center py-1">
+                            <a asp-area="" asp-controller="Home" asp-action="WachtwoordVergeten">Wachtwoord vergeten?</a>
+                        </div>
+                    }
+
+                <div class="form-group m-0 w-100 text-center">
+                    <a asp-area="" asp-controller="Home" asp-action="Login">Ik heb al een account.</a>
+>>>>>>> Stashed changes
                 </div>
             </form>
         </div>

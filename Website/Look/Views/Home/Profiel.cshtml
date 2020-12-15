@@ -1,6 +1,7 @@
 @{
     ViewData["Title"] = "Mijn Profiel";
 }
+@model Gebruiker
 
 <header>
     <div id="profile-header" class="container bg-white py-3">
@@ -16,67 +17,86 @@
 </header>
 
 <div id="profile-form" class="container bg-white py-3 justify-content-center">
-    <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center"></div>
-        <form class="w-100" action="/Home/Edit" method="POST">
-            <div id="formError" class="container-fluid d-none"></div>
-            <div class="form-row text-center justify-content-center align-content-center align-items-center">
-                <div class="form-group col-md-2 col-6">
-                    <div class="profile-avatar">
-                        <img id="userAvatar" alt="De huidige profielfoto van de gebruiker" src="~/images/avatar-dummy.svg" class="rounded-circle mx-auto d-block py-2"/>
+    <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+        <div class="col-md-10 m-0 p-0">
+            <form class="w-100 needs-validation" asp-controller="Home" asp-action="Profiel" method="POST" oninput='herhaalWachtwoord.setCustomValidity(herhaalWachtwoord.value != nieuwWachtWoord.value ? "Passwords do not match." : "")' novalidate>
+                @if (ViewBag.editError == true) {
+                    <div class="alert alert-danger" >             
+                        @ViewBag.editErrorText
                     </div>
-                    <label data-toggle="tooltip" data-placement="top" title="Selecteer een foto van maximaal 1500 kB" id="changeAvatarLabel" for="changeAvatar">Wijzig profielfoto</label>
-                    <input id="changeAvatar" class="file-upload" type="file" accept="image/*" onchange="document.getElementById('userAvatar').src = window.URL.createObjectURL(this.files[0])" hidden>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="emailAdres">E-mailadres</label>
-                    <input name="emailAdres" type="email" class="form-control" id="emailAdres" placeholder="voorbeeld@example.com">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="voorNaam">Voornaam</label>
-                    <input name="voorNaam" type="text" class="form-control" id="voorNaam" placeholder="Voornaam">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="achterNaam">Achternaam</label>
-                    <input name="achterNaam" type="text" class="form-control" id="achterNaam" placeholder="Achternaam">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="wachtWoord">Huidig wachtwoord</label>
-                    <input name="wachtWoord" type="password" class="form-control" id="wachtWoord" placeholder="Wachtwoord">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="nieuwWachtWoord">Nieuw wachtwoord</label>
-                    <input name="nieuwWachtWoord" type="password" class="form-control" id="nieuwWachtWoord" placeholder="Wachtwoord">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="herhaalWachtwoord">Herhaal nieuw wachtwoord</label>
-                    <input name="herhaalWachtwoord" type="password" class="form-control" id="herhaalWachtwoord" placeholder="Wachtwoord">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <div class="form-check">
-                        <input name="isAnoniem" value="True" class="form-check-input" type="checkbox" id="isAnoniem">
-                        <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
+                }
+                @if (ViewBag.editSuccess == true) {
+                    <div class="alert alert-success" >             
+                        @ViewBag.editSuccessText
+                    </div>
+                }
+                <div id="formError" class="container-fluid d-none"></div>
+                @* <div class="form-row text-center justify-content-center align-content-center align-items-center">
+                    <div class="form-group col-md-2 col-6">
+                        <div class="profile-avatar">
+                            <img id="userAvatar" alt="De huidige profielfoto van de gebruiker" src="~/images/avatar-dummy.svg" class="rounded-circle mx-auto d-block py-2"/>
+                        </div>
+                        <label data-toggle="tooltip" data-placement="top" title="Selecteer een foto van maximaal 1500 kB" id="changeAvatarLabel" for="changeAvatar">Wijzig profielfoto</label>
+                        <input id="changeAvatar" class="file-upload" type="file" accept="image/*" onchange="document.getElementById('userAvatar').src = window.URL.createObjectURL(this.files[0])" hidden>
+                    </div>
+                </div> *@
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="emailAdres">E-mailadres</label>
+                        <input value="@Model.EmailAdres" name="emailAdres" type="email" class="form-control form-validation" id="emailAdres" placeholder="E-mail" required>
                     </div>
                 </div>
-            </div>
-            <div class="form-row col-md-6 p-0">
-                <div class="form-group col-md-6">
-                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="voorNaam">Voornaam</label>
+                        <input value="@Model.VoorNaam" name="voorNaam" type="text" class="form-control form-validation" id="voorNaam" placeholder="Voornaam" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="achterNaam">Achternaam</label>
+                        <input value="@Model.AchterNaam" name="achterNaam" type="text" class="form-control form-validation" id="achterNaam" placeholder="Achternaam" required>
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="wachtWoord">Huidig wachtwoord</label>
+                        <input name="wachtWoord" type="password" class="form-control form-validation" id="wachtWoord" placeholder="Wachtwoord" required>
+                    </div>
                 </div>
-            </div>
-        </form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputNieuwWachtwoord">Nieuw wachtwoord</label>
+                        <input name="nieuwWachtWoord" type="password" class="form-control form-validation" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="inputNieuwWachtwoord" placeholder="Wachtwoord" required>
+                        <div class="invalid-feedback">
+                            Wachtwoord moet bestaan uit minimaal 8 tekens, een kleine letter, een grote letter en een nummer en/of een speciaal teken.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputHerhaalWachtwoord">Herhaal nieuw wachtwoord</label>
+                        <input name="herhaalWachtwoord" type="password" class="form-control form-validation" id="inputHerhaalWachtwoord" placeholder="Wachtwoord" required>
+                        <div class="invalid-feedback">
+                            Wachtwoorden komen niet overeen.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div class="form-check">
+                            <input name="isAnoniem" value="True" class="form-check-input" type="checkbox" id="isAnoniem">
+                            <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row col-md-6 p-0">
+                    <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <button type="button" class="btn btn-dark w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
