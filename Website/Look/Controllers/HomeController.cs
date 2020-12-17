@@ -41,6 +41,7 @@ namespace Look.Controllers
         {
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            var DeveloperSession = "Developer";
 
             Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
@@ -86,7 +87,7 @@ namespace Look.Controllers
             }
 
             //Toon de views mits de gebruiker is ingelogd.
-            if(CurrentSession != null)
+            if(CurrentSession != null || DeveloperSession != null)
             {
                 return View(query);
             }
@@ -101,9 +102,10 @@ namespace Look.Controllers
         {
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
-            
+            var DeveloperSession = "Developer";
+
             //Toon de views mits de gebruiker is ingelogd.
-            if(CurrentSession != null)
+            if(CurrentSession != null || DeveloperSession != null)
             {
                 //Haal op welke gebruiker er is ingelogd.
                 var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
@@ -118,8 +120,47 @@ namespace Look.Controllers
             }
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EmailVerificatie()
+        {
+            return View();
+        }
+
+        public IActionResult RemoveAccount(){
+
+            //Haal op welke gebruiker er is ingelogd.
+            var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+
+            //Verwijder de gebruiker uit de database
+            db.Gebruikers.Remove(IngelogdeGebruiker);
+            db.SaveChanges();
+            Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} is succesvol verwijderd.", IngelogdeGebruiker.GebruikersNummer);
+
+            //Verwijder de sessie van de ingelogde gebruiker
+            HttpContext.Session.Clear();
+            return View("Index");
+        }
+
+
         [HttpPost]
-        public IActionResult Profiel(string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
+        public IActionResult Profiel(string gebruikersNaam, string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
             
             //Haal het GebruikersNummer op van de ingelogde gebruiker
             var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
@@ -134,23 +175,52 @@ namespace Look.Controllers
                 var f_password = GetMD5(wachtWoord);
                 var data = db.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
 
+                //Check of er al een gebruiker bestaat met het opgegeven e-mailadres
+                var EmailCheck = db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(emailAdres.ToLower()));
+
+                //Check of er al een gebruiker bestaat met de opgegeven gebruikersnaam
+                var UserNameCheck = db.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(gebruikersNaam.ToLower()));
+
                 //Als er meerdere Gebruikers zijn geteld in de database komt het wachtwoord overeen met die uit de database
                 if(data.Count() > 0)
                 {
-                    //Wijzig de gegevens en update deze in de database
-                    _gebruiker.VoorNaam = voorNaam;
-                    _gebruiker.AchterNaam = achterNaam;
-                    _gebruiker.EmailAdres = emailAdres;
-                    _gebruiker.WachtWoord = GetMD5(wachtWoord);
-                    _gebruiker.IsAnoniem = isAnoniem;
-                    db.Update(_gebruiker);
-                    db.SaveChanges();
-                    Console.WriteLine("SUCCES: Succesfully altered data");
+                    if(EmailCheck == null)
+                    {
+                        if(UserNameCheck == null)
+                        {
+                            //Wijzig de gegevens en update deze in de database
+                            _gebruiker.VoorNaam = voorNaam;
+                            _gebruiker.AchterNaam = achterNaam;
+                            _gebruiker.GebruikersNaam = gebruikersNaam.ToLower();
+                            _gebruiker.EmailAdres = emailAdres.ToLower();
+                            _gebruiker.WachtWoord = GetMD5(wachtWoord);
+                            _gebruiker.IsAnoniem = isAnoniem;
+                            db.Update(_gebruiker);
+                            db.SaveChanges();
+                            Console.WriteLine("SUCCES: Succesfully altered data");
 
-                    //Toon de succes message in de HTML
-                    ViewBag.editSuccess = true;
-                    ViewBag.editError = false;
-                    ViewBag.editSuccessText = "Je gegevens zijn succesvol gewijzigd.";
+                            //Toon de succes message in de HTML
+                            ViewBag.editSuccess = true;
+                            ViewBag.editError = false;
+                            ViewBag.editSuccessText = "Je gegevens zijn succesvol gewijzigd.";
+                        }
+                        else
+                        {
+                            //Toon de error message in de HTML
+                            ViewBag.editError = true;
+                            ViewBag.editSuccess = false;
+                            ViewBag.editErrorText = "De opgegeven gebruikersnaam is al in gebruik.";
+                            Console.WriteLine("ERROR: Couldn't alter data, username in use");
+                        }
+                    }
+                    else
+                    {
+                        //Toon de error message in de HTML
+                        ViewBag.editError = true;
+                        ViewBag.editSuccess = false;
+                        ViewBag.editErrorText = "Het opgegeven e-mailadres is al in gebruik.";
+                        Console.WriteLine("ERROR: Couldn't alter data, email in use");
+                    }
                 }
                 else
                 {
@@ -168,50 +238,6 @@ namespace Look.Controllers
 
             return View("Profiel", IngelogdeGebruiker);
         }
-
-        
-
-        public ActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
-
-        public IActionResult Login()
-        {
-            
-            return View();
-        }
-
-        
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        public ActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
-
-        public IActionResult Login()
-        {
-            
-            return View();
-        }
-
-        
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        public IActionResult EmailVerificatie()
-        {
-            return View();
-        }
-
 
         //Methode die de Login form uitvoert zodra er op de submit knop is gedrukt
         [HttpPost]
@@ -277,12 +303,12 @@ namespace Look.Controllers
             { 
                 VoorNaam = fname, 
                 AchterNaam = lname, 
-                GebruikersNaam = username, 
+                GebruikersNaam = username.ToLower(), 
                 Straat = streetaddress, 
                 HuisNummer = housenumber, 
                 Woonplaats = city, 
                 PostCode = postalcode, 
-                EmailAdres = email, 
+                EmailAdres = email.ToLower(), 
                 WachtWoord = password, 
                 VerifieerWachtWoord = passwordvalid, 
                 IsGeverifieerd = false, 
@@ -293,22 +319,38 @@ namespace Look.Controllers
             if(ModelState.IsValid)
             {
                 //Check of er al een gebruiker bestaat met het opgegeven e-mailadres
-                var check = db.Gebruikers.FirstOrDefault(s => s.EmailAdres == _gebruiker.EmailAdres);
+                var EmailCheck = db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(_gebruiker.EmailAdres));
 
-                if(check == null)
+                //Check of er al een gebruiker bestaat met de opgegeven gebruikersnaam
+                var UserNameCheck = db.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(_gebruiker.GebruikersNaam));
+
+                if(EmailCheck == null)
                 {
-                    //Encrypt het meegegeven wachtwoord en vervang die voor het wachtwoord dat meegegeven is vanuit de form
-                    _gebruiker.WachtWoord = GetMD5(_gebruiker.WachtWoord);
-                    db.Gebruikers.Add(_gebruiker);
-                    db.SaveChanges();
-                    Console.WriteLine("SUCCES: Successfull registration of user");
+                    if(UserNameCheck == null)
+                    {
+                        //Encrypt het meegegeven wachtwoord en vervang die voor het wachtwoord dat meegegeven is vanuit de form
+                        _gebruiker.WachtWoord = GetMD5(_gebruiker.WachtWoord);
+                        db.Gebruikers.Add(_gebruiker);
+                        db.SaveChanges();
+                        ViewBag.registerError = false;
+                        Console.WriteLine("SUCCES: Successfull registration of user");
 
-                    return RedirectToAction("Index");;
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.registerError = true;
+                        ViewBag.registerErrorText = "De opgegeven gebruikersnaam is al in gebruik.";
+                        Console.WriteLine("ERROR: Username already exists");
+                        return View();
+                    }
+                    
                 }
                 else 
                 {
                     //Geef een error zodra het opgegeven e-mailadres al in gebruik is
-                    ViewBag.registerError = "Het opgegeven e-mailadres is al gelinkt aan een acount.";
+                    ViewBag.registerError = true;
+                    ViewBag.registerErrorText = "Het opgegeven e-mailadres is al in gebruik.";
                     Console.WriteLine("ERROR: Email already exists");
                     return View();
                 }
@@ -321,11 +363,6 @@ namespace Look.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult EmailVerificatie()
-        {
-            return View();
         }
 
         //Methode om wachtwoorden te encrypten

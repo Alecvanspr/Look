@@ -1,0 +1,101 @@
+@model IEnumerable<Look.Models.Gebruiker>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VoorNaam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AchterNaam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GebruikersNaam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Straat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HuisNummer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Woonplaats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailAdres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WachtWoord)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsGeverifieerd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAnoniem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoginPogingen)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoorNaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AchterNaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GebruikersNaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Straat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HuisNummer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Woonplaats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAdres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WachtWoord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsGeverifieerd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAnoniem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoginPogingen)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.GebruikersNummer">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GebruikersNummer">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GebruikersNummer">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

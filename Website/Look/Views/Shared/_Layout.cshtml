@@ -11,302 +11,204 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    @using Microsoft.AspNetCore.Http
-    @inject IHttpContextAccessor httpContextAccessor   
-    <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
-        <!--NAVBAR BRAND-->
-        <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
-            <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
-        </p>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
-            <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
-        </button>
+    <div class="d-flex toggled" id="wrapper">
+        <div id="page-content-wrapper">
+            @using Microsoft.AspNetCore.Http
+            @inject IHttpContextAccessor httpContextAccessor   
+            <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
+                <!--NAVBAR BRAND-->
+                <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
+                    <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
+                </p>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
+                </button>
 
-        <div class="navbar-collapse collapse w-100" id="navbarCollapse">
-            <!--NAVIGATION LINKS-->
-            <ul class="navbar-nav nav-links w-100 justify-content-center">
-                <li class="nav-item text-center">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Profiel</a>
-                </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Meldingen</a>
-                </li>
-            </ul>
+                <div class="navbar-collapse collapse w-100" id="navbarCollapse">
+                    <!--NAVIGATION LINKS-->
+                    <ul class="navbar-nav nav-links w-100 justify-content-center">
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Buurten</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Contact</a>
+                        </li>
+                    </ul>
 
-            <!--SOCIAL LINKS / BUTTONS-->
-            <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
-                <li class="nav-item text-center">
-                    <a class="nav-link p-2" href="https://instagram.com/#">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link p-2" href="https://twitter.com/#">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </li>
-                <li class="nav-item text-center">
-                    <a class="nav-link p-2" href="https://facebook.com/#">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                </li>
-                @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null) 
-                {
-                    <li class="nav-item text-center">
-                        <a class="button-href" asp-area="" asp-controller="Home" asp-action="Profiel"><button type="button" class="btn btn-dark nav-link ml-2">Welkom, @httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</button></a>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item text-center">
-                        <a class="button-href" asp-area="" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content border-0 p-3">
-                <div class="modal-header border-0 w-100">
-                    <h5 class="modal-title" id="loginModalLabel">
-                        Inloggen
-                    </h5>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <!--SOCIAL LINKS / BUTTONS-->
+                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
+                        <li class="nav-item text-center">
+                            <a class="nav-link p-2" href="https://instagram.com/#">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link p-2" href="https://twitter.com/#">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link p-2" href="https://facebook.com/#">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null) 
+                        {
+                            <li class="nav-item text-center">
+                                <a class="button-href" asp-area="" asp-controller="Home" asp-action="Profiel"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2"><i class="nav-profile mr-2 text-white fas fa-user"></i>@httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</button></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item text-center">
+                                <a class="button-href" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                            </li>
+                        }
+                    </ul>
                 </div>
+            </nav>
 
-                <form class="needs-validation" asp-route="Login" method="POST" novalidate>
-                    <div class="modal-body text-left">
-                        <div class="form-group w-100">
-                            <label for="inputEmail">E-mailadres</label>
-                            <input name="email" type="email" class="form-control form-validation" id="inputEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
-                        </div>
-                        <div class="form-group w-100">
-                            <label for="inputPassword">Wachtwoord</label>
-                            <input name="password" type="password" class="form-control form-validation" id="inputPassword" placeholder="Wachtwoord" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer row border-0">
-                        <div class="form-group w-100">
-                            <button asp-route="Login" type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button>
-                            <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
-                        </div>
-                        <div class="form-group m-0 w-100 text-center">
-                            <a data-toggle="modal" href="#registerModal" data-dismiss="modal">Ik heb nog geen account.</a>
-                        </div>
-                    </div>
-                </form>
+            <div class="container-fluid">
+                <main role="main" class="py-5">
+                    @RenderBody()
+                </main>
             </div>
-        </div>
-    </div>
 
-    <!-- Register Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content border-0 p-3">
-                <div class="modal-header border-0 w-100">
-                    <h5 class="modal-title" id="registerModalLabel">
-                        Registreren
-                    </h5>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <form class="needs-validation" asp-route="Register" method="POST" novalidate>
-                    <div class="modal-body text-left">
-                        <div class="form-row">
-                            <div class="form-group col-sm-6">
-                                <label for="inputName">Voornaam</label>
-                                <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="Voornaam" required>
-                            </div>
-                            <div class="form-group col-sm-6">
-                                <label for="inputSurname">Achternaam</label>
-                                <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Achternaam" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="inputUsername">Gebruikersnaam</label>
-                            <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="Gebruikersnaam" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-sm-7">
-                                <label for="inputAddress">Straat</label>
-                                <input name="street-address" type="text" class="form-control form-validation" id="inputAddress" placeholder="Straat" required>
-                            </div>
-                            <div class="form-group col-sm-3">
-                                <label for="inputHouseNumber">Huisnummer</label>
-                                <input name="house-number" type="number" class="form-control form-validation" id="inputHouseNumber" placeholder="Huisnr" required>
-                            </div>
-                            <div class="form-group col-sm-2">
-                                <label for="inputHouseNumberAddition">Toev.</label>
-                                <input name="addition" type="text" class="form-control form-validation" id="inputHouseNumberAddition" placeholder="Toev">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-sm-8">
-                                <label for="inputCity">Woonplaats</label>
-                                <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Stad" required>
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label for="inputZip">Postcode</label>
-                                <input name="postal-code" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="Postcode" required>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group w-100">
-                            <label for="inputRegisterEmail">E-mailadres</label>
-                            <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
-                            <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
-                        </div>
-                        <div class="form-group w-100">
-                            <label for="inputRegisterPassword">Wachtwoord</label>
-                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputRegisterPassword" placeholder="Wachtwoord" required>
-                        </div>
-                        <div class="form-group w-100">
-                            <label for="inputRegisterPasswordValid">Herhaal Wachtwoord</label>
-                            <input name="password" type="password" class="form-control form-validation password-validate" id="inputRegisterPasswordValid" placeholder="Wachtwoord" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer row border-0">
-                        <div class="form-group w-100">
-                            <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button>
-                        </div>
-                        <div class="form-group m-0 w-100 text-center">
-                            <a data-toggle="modal" href="#loginModal" data-dismiss="modal">Ik heb al een account.</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <main role="main" class="py-5">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="footer text-white bg-dark">
-        <div class="container">
-            <div class="row p-0 m-0">
-                <div class="col-md-3 p-0 m-0 pr-3">
-                    <div class="row w-100 p-0 m-0 text-wrap">
-                        <div class="col-12 p-0 m-0">
-                            <h6>OVER ONS</h6>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </div>
-                    <div class="row w-100 p-0 m-0 text-wrap">
-                        <div class="col-12 p-0 m-0 pb-3">
-                            <h6>ABONNEER</h6>
-                            <form class="form-inline form-subscribe">
-                                <div class="form-group w-100 p-0 m-0">
-                                    <label for="inputSubscribeEmail" class="sr-only">Email</label>
-                                    <input type="email" class="form-control w-100" id="inputSubscribeEmail" placeholder="email">
+            <footer class="footer text-white bg-dark">
+                <div class="container">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-3 p-0 m-0 pr-3">
+                            <div class="row w-100 p-0 m-0 text-wrap">
+                                <div class="col-12 p-0 m-0">
+                                    <h6>OVER ONS</h6>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                 </div>
-                                <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
-                            </form>
+                            </div>
+                            <div class="row w-100 p-0 m-0 text-wrap">
+                                <div class="col-12 p-0 m-0 pb-3">
+                                    <h6>ABONNEER</h6>
+                                    <form class="form-inline form-subscribe">
+                                        <div class="form-group w-100 p-0 m-0">
+                                            <label for="inputSubscribeEmail" class="sr-only">Email</label>
+                                            <input type="email" class="form-control w-100" id="inputSubscribeEmail" placeholder="email">
+                                        </div>
+                                        <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 p-0 m-0 pr-3">
+                            <h6>LAATSTE TWEETS</h6>
+                        </div>
+                        <div class="col-md-5 p-0 m-0">
+                            <h6>INSTAGRAM</h6>
+                        </div>
+                    </div>
+                    <div class="row w-100 p-0 m-0 text-secondary text-center">
+                        <div class="col-12">
+                            <p class="m-0">&copy; Copyright 2020, Look</p>
+                        </div>
+                    </div>
+                    <div class="row w-100 p-0 m-0 text-secondary text-center justify-content-center">
+                        <div class="col-md-2">
+                            <a href="#">Privacy Policy</a>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="#">Cookie Policy</a>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="#">Contact</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 p-0 m-0 pr-3">
-                    <h6>LAATSTE TWEETS</h6>
-                </div>
-                <div class="col-md-5 p-0 m-0">
-                    <h6>INSTAGRAM</h6>
-                </div>
-            </div>
-            <div class="row w-100 p-0 m-0 text-secondary text-center">
-                <div class="col-12">
-                    <p class="m-0">&copy; Copyright 2020, Look</p>
-                </div>
-            </div>
-            <div class="row w-100 p-0 m-0 text-secondary text-center justify-content-center">
-                <div class="col-md-2">
-                    <a href="#">Privacy Policy</a>
-                </div>
+            </footer>
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script>
+                function onSubmit(token) {
+                    document.getElementById("demo-form").submit();
+                }
+            </script>
+            <script>
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>
+            <script id="BootstrapFormValidator">
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                        var forms = document.getElementsByClassName('needs-validation');
+                        
+                        var validation = Array.prototype.filter.call(forms, function(form) {
+                            form.addEventListener('submit', function(event) {
+                                if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                }
+                                form.classList.add('was-validated');
+                            }, false);
+                        });
+                        
+                    }, false);
+                })();
+            </script>
+            <script id="RealTimeInputChecker">
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                        var inputs = document.getElementsByClassName('form-validation');
+                        
+                        var validation = Array.prototype.filter.call(inputs, function(input) {
 
-                <div class="col-md-2">
-                    <a href="#">Cookie Policy</a>
-                </div>
+                            input.addEventListener('blur', function(event) {
+                                input.classList.remove('is-invalid');
+                                input.classList.remove('is-valid');
 
-                <div class="col-md-2">
-                    <a href="#">Contact</a>
-                </div>
-            </div>
+                                if (input.checkValidity() === false) {
+                                    input.classList.add('is-invalid')
+                                }else {
+                                    input.classList.add('is-valid')
+                                }
+                            }, false);
+                        });
+                        
+                    }, false);
+                })();
+            </script>
+            <script>
+                $("#menu-toggle").click(function(e) {
+                    e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+                });
+            </script>
+            @await RenderSectionAsync("Scripts", required: false)
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-        }
-    </script>
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
-    <script id="BootstrapFormValidator">
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-                
-            }, false);
-        })();
-    </script>
-    <script id="RealTimeInputChecker">
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var inputs = document.getElementsByClassName('form-validation');
-                
-                var validation = Array.prototype.filter.call(inputs, function(input) {
+    
+        @* @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null)
+        { *@
+            <!-- Sidebar -->
+            <div class="bg-dark text-white toggled" id="sidebar-wrapper">
+                <div class="sidebar-heading">
+                    <h5>Welkom, @httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a asp-controller="Home" asp-action="Profiel" class="list-group-item list-group-item-action list-group-item-dark">Profiel</a>
+                    <a asp-controller="Home" asp-action="Meldingen" class="list-group-item list-group-item-action list-group-item-dark">Meldingen</a>
+                    <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Chat</a>
+                </div>
+            </div>
+        @* }
+        else
+        {
 
-                    input.addEventListener('blur', function(event) {
-                        input.classList.remove('is-invalid');
-                        input.classList.remove('is-valid');
-
-                        if (input.checkValidity() === false) {
-                            input.classList.add('is-invalid')
-                        }else {
-                            input.classList.add('is-valid')
-                        }
-                    }, false);
-                });
-                
-            }, false);
-        })();
-    </script>
-    @await RenderSectionAsync("Scripts", required: false)
+        } *@
+    </div>
 </body>
 </html>
