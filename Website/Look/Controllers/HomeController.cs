@@ -230,7 +230,7 @@ namespace Look.Controllers
 
 
         [HttpPost]
-        public IActionResult Profiel(string gebruikersNaam, string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
+        public IActionResult NaamEnEmailadres(string gebruikersNaam, string emailAdres, string voorNaam, string achterNaam, string wachtWoord, string nieuwWachtwoord, string herhaalWachtwoord, bool isAnoniem) {
             
             //Haal het GebruikersNummer op van de ingelogde gebruiker
             var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
@@ -305,6 +305,43 @@ namespace Look.Controllers
             //Haal de gewijzigde gebruiker op
             Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
             Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn Profiel gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
+
+            return View("Profiel", IngelogdeGebruiker);
+        }
+
+        [HttpPost]
+        public IActionResult Wachtwoord(string wachtWoord, string nieuwWachtWoord, string herhaalWachtwoord)
+        {
+            //Haal het GebruikersNummer op van de ingelogde gebruiker
+            var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+
+            //Haal op welke gebruiker er is ingelogd.
+            Gebruiker _gebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+
+            //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
+            var f_password = GetMD5(wachtWoord);
+            var data = db.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
+
+            if(data.Count > 0) {
+                _gebruiker.WachtWoord = GetMD5(nieuwWachtWoord);
+                db.Update(_gebruiker);
+                db.SaveChanges();
+
+                ViewBag.editSuccess = true;
+                ViewBag.editError = false;
+                ViewBag.editSuccessText = "Het wachtwoord is succesvol gewijzigd.";
+            }
+            else
+            {
+                //Toon de error message in de HTML
+                ViewBag.editError = true;
+                ViewBag.editSuccess = false;
+                ViewBag.editErrorText = "Het opgegeven huidige wachtwoord is incorrect.";
+                Console.WriteLine("ERROR: Couldn't alter data, password incorrect");
+            }
+
+            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn wachtwoord gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
 
             return View("Profiel", IngelogdeGebruiker);
         }

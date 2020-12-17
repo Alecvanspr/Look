@@ -17,9 +17,27 @@
 </header>
 
 <div id="profile-form" class="container bg-white py-3 justify-content-center">
+    <!-- Navigatie voor de verschillende formulieren -->
     <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-10 m-0 p-0">
-            <form class="w-100 needs-validation" asp-controller="Home" asp-action="Profiel" method="POST" oninput='herhaalWachtwoord.setCustomValidity(herhaalWachtwoord.value != nieuwWachtWoord.value ? "Passwords do not match." : "")' novalidate>
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="naam-en-email" data-toggle="pill" role="tab" aria-controls="naam-en-email-panel" href="#naam-en-email-panel" aria-selected="true">Naam en emailadres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="wachtwoord" data-toggle="pill" role="tab" aria-controls="wachtwoord-panel" href="#wachtwoord-panel" aria-selected="false">Wachtwoord</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="verwijder-account" data-toggle="pill" role="tab" aria-controls="verwijder-account-panel" href="#verwijder-account-panel" aria-selected="false">Account verwijderen</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Formulieren -->
+    <div class="tab-content row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+        <div id="naam-en-email-panel" role="tabpanel" aria-labelledby="naam-en-email" class="tab-pane fade show active col-md-10 m-0 p-0">
+            <form class="w-100 needs-validation" asp-controller="Home" asp-action="NaamEnEmailadres" method="POST" oninput='herhaalWachtwoord.setCustomValidity(herhaalWachtwoord.value != nieuwWachtWoord.value ? "Passwords do not match." : "")' novalidate>
                 @if (ViewBag.editError == true) {
                     <div class="alert alert-danger" >             
                         @ViewBag.editErrorText
@@ -78,7 +96,43 @@
                         </a>
                     </div>
                 </div>
-                @* <div class="form-row">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div class="form-check">
+                            <input name="isAnoniem" value="True" class="form-check-input" type="checkbox" id="isAnoniem">
+                            <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row col-md-6 p-0">
+                    <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-success w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="wachtwoord-panel" role="tabpanel" aria-labelledby="wachtwoord" class="tab-pane fade col-md-10 m-0 p-0">
+            <form class="w-100 needs-validation" asp-controller="Home" asp-action="Wachtwoord" method="POST" oninput='herhaalWachtwoord.setCustomValidity(herhaalWachtwoord.value != nieuwWachtWoord.value ? "Passwords do not match." : "")' novalidate>
+                @if (ViewBag.editError == true) {
+                    <div class="alert alert-danger" >             
+                        @ViewBag.editErrorText
+                    </div>
+                }
+                @if (ViewBag.editSuccess == true) {
+                    <div class="alert alert-success" >             
+                        @ViewBag.editSuccessText
+                    </div>
+                }
+                <div id="formError" class="container-fluid d-none"></div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="wachtWoord">Huidig wachtwoord</label>
+                        <input name="wachtWoord" type="password" class="form-control form-validation" id="wachtWoord" placeholder="Wachtwoord" required>
+                    </div>
+                </div>
+                <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputNieuwWachtwoord">Nieuw wachtwoord</label>
                         <input name="nieuwWachtWoord" type="password" class="form-control form-validation" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="inputNieuwWachtwoord" placeholder="Wachtwoord" required>
@@ -93,25 +147,20 @@
                             Wachtwoorden komen niet overeen.
                         </div>
                     </div>
-                </div> *@
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div class="form-check">
-                            <input name="isAnoniem" value="True" class="form-check-input" type="checkbox" id="isAnoniem">
-                            <label class="form-check-label" for="isAnoniem">Ik wil anoniem blijven</label>
+                    <div class="form-row col-md-3 p-0">
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-success w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
                         </div>
                     </div>
                 </div>
-                
-                <div class="form-row col-md-6 p-0">
-                    <div class="form-group col-md-6">
-                        <button type="submit" class="btn btn-success w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <a class="button-href" asp-controller="Home" asp-action="RemoveAccount"><button type="button" class="btn btn-danger w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button></a>
-                    </div>
-                </div>
             </form>
+        </div>
+
+        <div id="verwijder-account-panel" role="tabpanel" aria-labelledby="verwijder-account" class="tab-pane fade col-md-10 m-0 p-0">
+            <p><strong>Klik op de onderstaande knop om uw account permanent te verwijderen:</strong></p>
+            <div class="form-group col-md-4">
+                <a class="button-href" asp-controller="Home" asp-action="RemoveAccount"><button type="button" class="btn btn-danger w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button></a>
+            </div>
         </div>
     </div>
 </div>
