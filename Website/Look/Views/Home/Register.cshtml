@@ -25,15 +25,20 @@
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-8 p-0 m-0">
             <form class="needs-validation w-100" name="registreren" asp-controller="Home" asp-action="Register" method="POST" oninput='passwordvalid.setCustomValidity(passwordvalid.value != password.value ? "Passwords do not match." : "")' novalidate>
+                @if (ViewBag.registerError == true) {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.registerErrorText
+                    </div>
+                }
                 <div class="form-row">
                     <div class="form-group col-sm-6">
                         <label for="inputName">Voornaam</label>
-                        <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="Voornaam" required>
+                        <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="John" required>
                     </div>
 
                     <div class="form-group col-sm-6">
                         <label for="inputSurname">Achternaam</label>
-                        <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Achternaam" required>
+                        <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Doe" required>
                     </div>
                 </div>
                             
@@ -43,36 +48,35 @@
                             <div class="input-group-text">&commat;</div>
                         </div>
                         <label class="sr-only" for="inputUsername">Gebruikersnaam</label>
-                        <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="Gebruikersnaam" required>
+                        <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="john.doe" required>
                     </div>
-                    
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-sm-8">
                         <label for="inputAddress">Straat</label>
-                        <input name="streetaddress" type="text" class="form-control form-validation" id="inputAddress" pattern="[a-zA-Z]+" placeholder="Straat" required>
+                        <input name="streetaddress" type="text" class="form-control form-validation" id="inputAddress" pattern="[a-zA-Z]+" placeholder="Dorpstraat" required>
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="inputHouseNumber">Huisnummer</label>
-                        <input name="housenumber" type="number" class="form-control form-validation" id="inputHouseNumber" pattern="[0-9]+" placeholder="Huisnr" required>
+                        <input name="housenumber" type="number" class="form-control form-validation" id="inputHouseNumber" pattern="[0-9]+" placeholder="1" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-sm-8">
                         <label for="inputCity">Woonplaats</label>
-                        <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Stad" required>
+                        <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Amsterdam" required>
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="inputZip">Postcode</label>
-                        <input name="postalcode" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="Postcode" required>
+                        <input name="postalcode" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="1234AB" required>
                     </div>
                 </div>
 
                 <div class="form-group w-100">
                     <label for="inputRegisterEmail">E-mailadres</label>
-                    <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="E-mail" required>
+                    <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="voorbeeld@example.com" required>
                     <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
                     <div class="invalid-feedback">
                         @ViewBag.registerError

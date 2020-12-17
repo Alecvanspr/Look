@@ -43,17 +43,26 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <label for="emailAdres">E-mailadres</label>
-                        <input value="@Model.EmailAdres" name="emailAdres" type="email" class="form-control form-validation" id="emailAdres" placeholder="E-mail" required>
+                        <input value="@Model.EmailAdres" name="emailAdres" type="email" class="form-control form-validation" id="emailAdres" placeholder="voorbeeld@example.com" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="voorNaam">Voornaam</label>
-                        <input value="@Model.VoorNaam" name="voorNaam" type="text" class="form-control form-validation" id="voorNaam" placeholder="Voornaam" required>
+                        <input value="@Model.VoorNaam" name="voorNaam" type="text" class="form-control form-validation" id="voorNaam" placeholder="John" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="achterNaam">Achternaam</label>
-                        <input value="@Model.AchterNaam" name="achterNaam" type="text" class="form-control form-validation" id="achterNaam" placeholder="Achternaam" required>
+                        <input value="@Model.AchterNaam" name="achterNaam" type="text" class="form-control form-validation" id="achterNaam" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="form-group">    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">&commat;</div>
+                        </div>
+                        <label class="sr-only" for="inputUsername">Gebruikersnaam</label>
+                        <input name="gebruikersNaam" type="text" class="form-control form-validation" id="inputUsername" placeholder="john.doe" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -63,6 +72,13 @@
                     </div>
                 </div>
                 <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <a asp-controller="Home" asp-action="ResetPassword">
+                            Wachtwoord wijzigen
+                        </a>
+                    </div>
+                </div>
+                @* <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputNieuwWachtwoord">Nieuw wachtwoord</label>
                         <input name="nieuwWachtWoord" type="password" class="form-control form-validation" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="inputNieuwWachtwoord" placeholder="Wachtwoord" required>
@@ -77,7 +93,7 @@
                             Wachtwoorden komen niet overeen.
                         </div>
                     </div>
-                </div>
+                </div> *@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <div class="form-check">
@@ -89,10 +105,10 @@
                 
                 <div class="form-row col-md-6 p-0">
                     <div class="form-group col-md-6">
-                        <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
+                        <button type="submit" class="btn btn-success w-100 d-block"><h6 class="my-1">Wijzigingen opslaan</h6></button>
                     </div>
                     <div class="form-group col-md-6">
-                        <button type="button" class="btn btn-dark w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button>
+                        <a class="button-href" asp-controller="Home" asp-action="RemoveAccount"><button type="button" class="btn btn-danger w-100 d-block"><h6 class="my-1">Account verwijderen</h6></button></a>
                     </div>
                 </div>
             </form>
