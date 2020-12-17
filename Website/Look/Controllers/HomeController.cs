@@ -12,6 +12,13 @@ using System.Security.Cryptography;
 using System.Text;
 using Look.Models;
 using Look;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Look.Controllers
@@ -22,6 +29,7 @@ namespace Look.Controllers
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
         private LookContext db = new LookContext();
         public string UserHostAddress {get; set;}
+        static int LaatstemeldingID;
     
 
         public HomeController(ILogger<HomeController> logger)
@@ -37,16 +45,64 @@ namespace Look.Controllers
         {
             return View();
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Titel,Inhoud,Categorie")] Melding melding)
+        {
+            if (ModelState.IsValid)
+            {
+                melding.MeldingId = LaatstemeldingID;
+                melding.AangemaaktOp = DateTime.Now;
+                melding.Likes = 0;
+                melding.Views=0;
+                db.Add(melding);
+                await db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(melding);
+        }
+        public async Task<IActionResult> Delete(string? titel)
+        {
+            if (titel == null)
+            {
+                return NotFound();
+            }
+
+            var melding = await db.Meldingen
+                .FirstOrDefaultAsync(m => m.Titel == titel);
+            if (melding == null)
+            {
+                return NotFound();
+            }
+
+            return View(melding);
+        }
+
+        // POST: Student/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long Titel)
+        {
+            var melding = await db.Meldingen.FindAsync((long) 637438213816845882  );
+            db.Meldingen.Remove(melding);
+            await db.SaveChangesAsync();
+            return RedirectToAction(nameof(Meldingen));
+        }
+
         //s is sorteren, z is zoeken
-                public async Task<IActionResult> Meldingen(string s,string z)
+            public async Task<IActionResult> Meldingen(string s,string z)
         {
             var meldingen = db.Meldingen;
             List<Melding> meldings = meldingen.ToList();
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
-            
-
+            LaatstemeldingID = meldings.Count();
+            /*
             Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
             Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
@@ -73,6 +129,7 @@ namespace Look.Controllers
             meldings.Add(melding3);
             meldings.Add(melding4);
             meldings.Add(melding5); 
+            */
             List<Melding> query =  null;
             
             if(z!=null){
