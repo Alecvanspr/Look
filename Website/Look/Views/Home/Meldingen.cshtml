@@ -1,8 +1,8 @@
 @{
     ViewData["Title"] = "Buurtmeldingen";
 }
+@model Look.Models.Melding
 
-@model List<Melding>
 <header>
     <div id="meldingen-header" class="container bg-white py-3">
         <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
@@ -55,8 +55,7 @@
 </script>
 
 <div id="meldingen-content" class="container bg-white py-3">
-    @foreach (var melding in Model)
-    {
+
             <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
                 <div class="col-md-12 w-100 p-0 m-0">
                     <div class="melding bg-white p-4 rounded box-shadow-full">
@@ -64,17 +63,17 @@
                             <div class="melding-header py-1 w-100 row m-0 p-0 align-content-end align-items-end">
                                 <div class="col-md-6 w-100 m-0 p-0">
                                     <h2 class="text-wrap">
-                                        @melding.Titel
+                                        @Model.Titel
                                     </h2>
                                 </div>
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
                                         <i class="far fa-clock"></i> 
 
-                                        @melding.AangemaaktOp
+                                        @Model.AangemaaktOp
                                     </h6>
                                 </div>
-                                @if(melding.IsActief==true)
+                                @if(Model.IsActief==true)
                                     {
                                         <div style="height: 2px;" class="container-fluid bg-success"></div>
                                     }else
@@ -86,12 +85,12 @@
                             <div class="melding-content py-2 row m-0 p-0">
                                 <div class="col-md-12 m-0 p-0">
                                     <p class="text-wrap">
-                                        @if(melding.Inhoud.Length>300){
-                                        <p>@melding.Inhoud.Substring(0,300)...</p>
+                                        @if(Model.Inhoud.Length>300){
+                                        <p>@Model.Inhoud.Substring(0,300)...</p>
                                         }else{
-                                        <p>@melding.Inhoud ...</p>
+                                        <p>@Model.Inhoud ...</p>
                                         }
-                                        <a data-toggle="modal" href="#melding-@melding.MeldingId">
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingId">
                                             lees meer
                                         </a>
                                     </p>
@@ -106,7 +105,7 @@
                                             <div class="categories-title d-inline">
                                                 <p>Categorie:</p>
                                             </div>
-                                            @foreach (var categorie in melding.Categorie)
+                                            @foreach (var categorie in Model.Categorie)
                                             {   
                                                 <div class="categories-content d-inline">
                                                     <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@categorie</a>
@@ -117,13 +116,13 @@
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p class="float-md-right">
                                             Geplaatst door:
-                                            @if(melding.Auteur==null)
+                                            @if(Model.Auteur==null)
                                             {
                                                 <a>Anoniem</a>
                                             }else
                                             {
                                                 <a href="#">
-                                                    @melding.Auteur.VoorNaam @melding.Auteur.AchterNaam
+                                                    @Model.Auteur.VoorNaam @Model.Auteur.AchterNaam
                                                 </a>
                                             }
                                         </p>
@@ -134,10 +133,10 @@
                     </div>
                 </div>
             </div>  
-    }
+
 </div>
-@foreach (var melding in Model) {
-<!--- Modal voor het inloggen---->
+
+<!--- Modal voor een nieuw bericht---->
 <div class="modal fade bd-example-modal-lg melding-modal" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -149,22 +148,21 @@
             </div>
             <div class="modal-body">
                 <div class="row p-0 m-0">
-                        <div class="col-8 p-0 m-0">
-                            <a>Naam bericht:</a> 
-                            <input id="NaamBericht"></input>
-                        </div>
-                        <div class ="col-4 p-0 m-0">
-                        <a>Dit bericht anoniem plaatsen?</a>
-                        <input type="checkbox" id="AnoniemPlaatsen" class="col-5 p-0 m-0"></input>
-                    </div> 
-                </div>
-                <div class="row p-0 m-0">
-                    <textarea id="bericht" rows="12" cols="75" placeholder="Typ hier uw bericht in"></textarea>
+                    <div class="form-group">
+                    <input asp-for="Titel" class="form-control" /> 
+                <span asp-validation-for="Titel" class="text-danger"></span>
+
+                <div class="form-group">
+                    <input asp-for="Inhoud" class="form-control" />
+                    <span asp-validation-for="Inhoud" class="text-danger"></span>
                 </div>
                 <div class="row p-0 m-2">
                     <div class="col-8 p-0 m-0">
-                        <a>Catagorieën:</a>
-                        <input>
+                    <div class="form-group">
+                        <label asp-for="Categorie" class="control-label"></label>
+                        <input asp-for="Categorie" class="form-control" />
+                        <span asp-validation-for="Categorie" class="text-danger"></span>
+                    </div>
                     </div>
                     <div class="col-4 p-0 m-0">
                         <a>Foto toevoegen</a> 
@@ -174,45 +172,45 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Plaats bericht</button>
+                <input type="submit" value="Plaats bericht" class="btn btn-primary"/>
             </div>
         </div>
     </div>
 </div>
 
 <!--- Modal voor de reacties---->
-<div class="modal fade bd-example-modal-lg" id="melding-@melding.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="melding-@Model.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="col-md-7">
-                    <h5>@melding.Titel</h5>
+                    <h5>@Model.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door:@if(melding.Auteur==null)
+                    <h5>Geplaatst door:@if(Model.Auteur==null)
                                             {
                                                 <p>Anoniem</p>
                                             }else
                                             {
                                                 
-                                                    @melding.Auteur.VoorNaam   @melding.Auteur.AchterNaam
+                                                    @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
                                             } </h5>
                 </div>
                 <div class="col-md-1">
-                    <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@melding.Likes</p>
+                    <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@Model.Likes</p>
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row p-3 m-0">
-                    <P>@melding.Inhoud</P>            
+                    <P>@Model.Inhoud</P>            
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
                 <!--reactie-->
-                @if(melding.Reacties==null){
+                @if(Model.Reacties==null){
                                 <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
                             }else{
-                            @foreach (var reacties in melding.Reacties)
+                            @foreach (var reacties in Model.Reacties)
                             {
                 <div class="container border col-md-8 p-2">
                     <div class="row p-0 m-0">
@@ -241,4 +239,3 @@
         </div>
     </div>
 </div>
-}

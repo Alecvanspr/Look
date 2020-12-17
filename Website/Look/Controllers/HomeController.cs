@@ -37,17 +37,21 @@ namespace Look.Controllers
         {
             return View();
         }
-        public IActionResult Meldingen(string s)
+        //s is sorteren, z is zoeken
+                public async Task<IActionResult> Meldingen(string s,string z)
         {
+            var meldingen = db.Meldingen;
+            List<Melding> meldings = meldingen.ToList();
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
+            
 
             Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
             Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
             Gebruiker Joeri = new Gebruiker{VoorNaam="Joeri",AchterNaam="de Hoog"};
-            List<Melding> meldings = new List<Melding>();
+            //List<Melding> meldings = new List<Melding>();
             List<Reactie> reacties1 = new List<Reactie>();
             List<Reactie> reacties2 = new List<Reactie>();
             List<Reactie> reacties3 = new List<Reactie>();
@@ -68,9 +72,14 @@ namespace Look.Controllers
             meldings.Add(melding2);
             meldings.Add(melding3);
             meldings.Add(melding4);
-            meldings.Add(melding5);
-
-            List<Melding> query = meldings;
+            meldings.Add(melding5); 
+            List<Melding> query =  null;
+            
+            if(z!=null){
+                query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
+            }else{
+                query = meldings;
+            }
 
             if(s!=null){
                 if(s.Equals("likes")){
@@ -89,7 +98,11 @@ namespace Look.Controllers
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
             {
-                return View(query);
+                if(query.Count()!=0){
+                    return View(query.First());
+                }else{
+                    return View(meldings.First());
+                }
             }
             else
             {
