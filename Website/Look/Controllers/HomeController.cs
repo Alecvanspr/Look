@@ -38,8 +38,10 @@ namespace Look.Controllers
             return View();
         }
         //s is sorteren, z is zoeken
-        public IActionResult Meldingen(string s,string z)
+                public async Task<IActionResult> Meldingen(string s,string z)
         {
+            var meldingen = db.Meldingen;
+            List<Melding> meldings = meldingen.ToList();
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
@@ -49,7 +51,7 @@ namespace Look.Controllers
             Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
             Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
             Gebruiker Joeri = new Gebruiker{VoorNaam="Joeri",AchterNaam="de Hoog"};
-            List<Melding> meldings = new List<Melding>();
+            //List<Melding> meldings = new List<Melding>();
             List<Reactie> reacties1 = new List<Reactie>();
             List<Reactie> reacties2 = new List<Reactie>();
             List<Reactie> reacties3 = new List<Reactie>();
