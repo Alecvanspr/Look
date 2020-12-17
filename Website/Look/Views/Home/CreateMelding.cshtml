@@ -1,16 +1,16 @@
 @model Look.Models.Melding
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nieuw bericht";
 }
 
-<h1>Create</h1>
+<h1>Nieuwe Melding</h1>
 
 <h4>Melding</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateMelding">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
@@ -28,14 +28,14 @@
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="CreateMelding" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Meldingen">Terug naar berichten</a>
 </div>
 
 @section Scripts {

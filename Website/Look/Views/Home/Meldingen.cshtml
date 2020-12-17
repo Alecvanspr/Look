@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Buurtmeldingen";
 }
-@model Look.Models.Melding
+@model List<Melding>
 
 <header>
     <div id="meldingen-header" class="container bg-white py-3">
@@ -19,7 +19,7 @@
 <div id="meldingen-controls" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-4 p-2 m-0">
-            <button class="btn btn-dark w-100" data-toggle="modal" data-target="#NieuwBericht">Nieuw bericht  <i class="fa fa-plus"></i></button>
+            <a asp-area="" asp-controller="Home" asp-action="CreateMelding"><button class="btn btn-dark w-100" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
         </div>
 
         <div class="col-md-4 p-2 m-0">
@@ -55,7 +55,8 @@
 </script>
 
 <div id="meldingen-content" class="container bg-white py-3">
-
+    @foreach (var Model in Model)
+    {
             <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
                 <div class="col-md-12 w-100 p-0 m-0">
                     <div class="melding bg-white p-4 rounded box-shadow-full">
@@ -134,51 +135,11 @@
                     </div>
                 </div>
             </div>  
-
+    }
 </div>
 
 <!--- Modal voor een nieuw bericht---->
-<div class="modal fade bd-example-modal-lg melding-modal" id="NieuwBericht" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nieuw Bericht</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row p-0 m-0">
-                    <div class="form-group">
-                    <input asp-for="Titel" class="form-control" /> 
-                <span asp-validation-for="Titel" class="text-danger"></span>
-
-                <div class="form-group">
-                    <input type="TextArea" asp-for="Inhoud" class="form-control" />
-                    <span asp-validation-for="Inhoud" class="text-danger"></span>
-                </div>
-                <div class="row p-0 m-2">
-                    <div class="col-8 p-0 m-0">
-                    <div class="form-group">
-                        <label asp-for="Categorie" class="control-label"></label>
-                        <input asp-for="Categorie" class="form-control" />
-                        <span asp-validation-for="Categorie" class="text-danger"></span>
-                    </div>
-                    </div>
-                    <div class="col-4 p-0 m-0">
-                        <a>Foto toevoegen</a> 
-                    <button><i class="fa fa-file-photo-o"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" value="Plaats bericht" class="btn btn-primary"/>
-            </div>
-        </div>
-    </div>
-</div>
-
+@foreach (var Model in Model){
 <!--- Modal voor de reacties---->
 <div class="modal fade bd-example-modal-lg" id="melding-@Model.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -240,3 +201,4 @@
         </div>
     </div>
 </div>
+}

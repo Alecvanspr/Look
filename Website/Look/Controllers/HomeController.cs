@@ -12,11 +12,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Look.Models;
 using Look;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,13 +40,13 @@ namespace Look.Controllers
         {
             return View();
         }
-        public IActionResult Create()
+        public IActionResult CreateMelding()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Titel,Inhoud,Categorie")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie")] Melding melding)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +56,7 @@ namespace Look.Controllers
                 melding.Views=0;
                 db.Add(melding);
                 await db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Meldingen));
             }
             return View(melding);
         }
@@ -156,9 +151,9 @@ namespace Look.Controllers
             if(CurrentSession != null || DeveloperSession != null)
             {
                 if(query.Count()!=0){
-                    return View(query.First());
+                    return View(query);
                 }else{
-                    return View(meldings.First());
+                    return View(meldings);
                 }
             }
             else
