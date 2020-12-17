@@ -65,7 +65,6 @@
                                 <div class="col-md-6 w-100 m-0 p-0">
                                     <h2 class="text-wrap">
                                         @Model.Titel
-                                        @Model.MeldingId
                                     </h2>
                                 </div>
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
@@ -169,33 +168,33 @@
                 <hr/>
                 <div class="col-md-2"></div>
                 <!--reactie-->
-                @if(Model.Reacties==null){
-                                <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
-                            }else{
+                    @if(Model.Reacties==null){
+                        <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
+                    }else{
                             @foreach (var reacties in Model.Reacties)
                             {
-                <div class="container border col-md-8 p-2">
-                    <div class="row p-0 m-0">
-                        <div class="col-md-11">
-                        </div>
-                        <div class="col-md-1">
-                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.likes</p>
-                        </div>
-                    </div>
-                    <div class="row p-0 m-0">
-                        <p>@reacties.Bericht</p>
-                    </div>
+                                <div class="container border col-md-8 p-2">
+                                    <div class="row p-0 m-0">
+                                        <div class="col-md-11">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.Likes</p>
+                                        </div>
+                                    </div>
+                                    <div class="row p-0 m-0">
+                                        <p>@reacties.Bericht</p>
+                                    </div>
+                                </div>
+                        <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
+                        }
+                    }                
                 </div>
-                <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
-                   }
-                }                
-            </div>
             <div class="row p-2 m-1">
                     <div class="col-md-10">
                         <textarea id="reactie" rows="1" cols="75" placeholder="Typ hier uw reactie in..."></textarea>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-primary">Plaats reactie</button>
+                        <a><button type="button" class="btn btn-primary">Plaats reactie</button></a>
                     </div>
             </div>
         </div>

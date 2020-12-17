@@ -24,11 +24,12 @@ namespace Look.Controllers
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
         private LookContext db = new LookContext();
         public string UserHostAddress {get; set;}
-        static int LaatstemeldingID;
+        static long LaatstemeldingID;
     
 
         public HomeController(ILogger<HomeController> logger)
         {
+            CheckMeldingenOpDatum();
             _logger = logger;
         }
 
@@ -39,6 +40,22 @@ namespace Look.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+       [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
+        {
+            if (ModelState.IsValid)
+            {
+                reactie.ReactieId= db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
+                reactie.GeplaatstOp = DateTime.Now;
+                reactie.Likes = 0;
+                Console.WriteLine("Yes");
+                db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
+                await db.SaveChangesAsync();
+                return RedirectToAction(nameof(Meldingen));
+            }
+            return View(reactie);
         }
         public IActionResult CreateMelding()
         {
@@ -80,9 +97,9 @@ namespace Look.Controllers
         // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long Titel)
+        public async Task<IActionResult> DeleteConfirmed(long MeldingId)
         {
-            var melding = await db.Meldingen.FindAsync((long) 637438213816845882  );
+            var melding = await db.Meldingen.FindAsync(MeldingId);
             db.Meldingen.Remove(melding);
             await db.SaveChangesAsync();
             return RedirectToAction(nameof(Meldingen));
@@ -97,34 +114,7 @@ namespace Look.Controllers
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
             LaatstemeldingID = meldings.Count();
-            /*
-            Gebruiker Alec = new Gebruiker{VoorNaam="Alec",AchterNaam="van Spronsen"};
-            Gebruiker Dechaun = new Gebruiker{VoorNaam="Dechaun",AchterNaam="Bakker"};
-            Gebruiker Scott = new Gebruiker{VoorNaam="Scott",AchterNaam="van Duin"}; 
-            Gebruiker Joeri = new Gebruiker{VoorNaam="Joeri",AchterNaam="de Hoog"};
-            //List<Melding> meldings = new List<Melding>();
-            List<Reactie> reacties1 = new List<Reactie>();
-            List<Reactie> reacties2 = new List<Reactie>();
-            List<Reactie> reacties3 = new List<Reactie>();
-            List<Reactie> reacties4 = new List<Reactie>();
-                Reactie reactie1 = new Reactie {ReactieId=1, Bericht="LOL",GeplaatstDoor=Alec,GeplaatstOp=new DateTime(2020, 12, 9),likes=3};
-                Reactie reactie2 = new Reactie {ReactieId=2,Bericht="bruh",GeplaatstDoor=Alec,GeplaatstOp=new DateTime(2020, 12, 9),likes=1};
-                Reactie reactie3 = new Reactie {ReactieId=3,Bericht="Licht geïrriteerde opmerking over Sinterklaas zijn hulpjes",GeplaatstDoor=Joeri,GeplaatstOp=new DateTime(2020,12,11),likes=1232};
-            reacties1.Add(reactie1);
-            reacties3.Add(reactie1);
-            reacties1.Add(reactie2);
-            var melding1 = new Melding()  {MeldingId= 1, AangemaaktOp=new DateTime(2020, 12, 8),Titel="Lorem Ipsum 1", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=225,Views=1200,Categorie="Gevonden voorwerp",IsActief=true,Auteur=Alec,Reacties=reacties1};
-            var melding2 = new Melding()  {MeldingId= 2, AangemaaktOp=new DateTime(2020, 12, 5),Titel="Lorem Ipsum 2", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorie="Gevonden voorwerp",IsActief=true,Auteur=Dechaun};
-            var melding3 = new Melding()  {MeldingId= 3, AangemaaktOp=new DateTime(2020, 12, 2),Titel="Lorem Ipsum 3", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=4,Views=7,Categorie="Gevonden voorwerp",IsActief=true,Auteur=Joeri};
-            var melding4 = new Melding()  {MeldingId= 4, AangemaaktOp=new DateTime(2020, 11, 25),Titel="Lorem Ipsum 4", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=5,Views=8,Categorie="Gevonden voorwerp",IsActief=false,Auteur=Scott};
-            var melding5 = new Melding()  {MeldingId= 5, AangemaaktOp=new DateTime(2020, 12, 20),Titel="Lorem Ipsum 5", Inhoud="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae vehicula elit, quis porttitor eros. Ut tincidunt felis tortor, et lacinia turpis imperdiet et. Integer rhoncus lacus dui, id commodo libero aliquet non. Suspendisse quis felis risus. Nulla eu metus tincidunt, ultricies tortor nec, ultricies turpis. Suspendisse vitae lacinia nulla. Ut imperdiet varius finibus. Proin interdum libero a mi iaculis venenatis. Donec aliquet varius dui, non mollis neque sollicitudin id. Sed lorem quam, porta ac arcu non, pellentesque cursus augue. Ut ac est mauris. Duis tristique ante vitae interdum dictum. Fusce dictum mattis urna eu mattis. Duis vitae rutrum nisl. Mauris ultrices pulvinar neque sed blandit.",Likes=123,Views=553,Categorie="Gevonden voorwerp",IsActief=false};
             
-            meldings.Add(melding1);
-            meldings.Add(melding2);
-            meldings.Add(melding3);
-            meldings.Add(melding4);
-            meldings.Add(melding5); 
-            */
             List<Melding> query =  null;
             
             if(z!=null){
@@ -162,6 +152,16 @@ namespace Look.Controllers
             }
         }
 
+        public async void CheckMeldingenOpDatum(){
+            DateTime VerloopDatum = DateTime.Now;
+            VerloopDatum = VerloopDatum.AddDays(-30);
+            //addMonths
+            foreach (var melding in db.Meldingen.Where(m=>m.AangemaaktOp<VerloopDatum))
+            {
+                db.Meldingen.Remove(melding);
+                await db.SaveChangesAsync();
+            }
+        }
 
         public IActionResult Profiel()
         {
