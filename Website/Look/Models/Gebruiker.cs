@@ -38,6 +38,7 @@ namespace Look.Models
         public string VerifieerWachtWoord { get; set; }
         public bool IsGeverifieerd {get; set;}
         public bool IsAnoniem {get; set;}
+        public int LoginPogingen {get; set;}
 
         public string Naam() 
         {

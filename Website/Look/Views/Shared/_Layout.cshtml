@@ -11,6 +11,8 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor httpContextAccessor   
     <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
         <!--NAVBAR BRAND-->
         <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
@@ -51,9 +53,18 @@
                         <i class="fab fa-facebook-f"></i>
                     </a>
                 </li>
-                <li class="nav-item text-center">
-                    <a class="button-href" asp-area="" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
-                </li>
+                @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null) 
+                {
+                    <li class="nav-item text-center">
+                        <a class="button-href" asp-area="" asp-controller="Home" asp-action="Profiel"><button type="button" class="btn btn-dark nav-link ml-2">Welkom, @httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</button></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item text-center">
+                        <a class="button-href" asp-area="" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                    </li>
+                }
             </ul>
         </div>
     </nav>
@@ -296,29 +307,6 @@
             }, false);
         })();
     </script>
-    @* <script id="PasswordValidator">
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var passwords = document.getElementsByClassName('password-validate');
-                
-                var validation = Array.prototype.filter.call(passwords, function(password) {
-
-                    password.addEventListener('blur', function(event) {
-                        password.classList.remove('is-invalid');
-                        password.classList.remove('is-valid');
-
-                        if ($("#inputPasswordValid").val() != $("#inputPassword").val()) {
-                            password.classList.add('is-invalid')
-                        }else {
-                            password.classList.add('is-valid')
-                        }
-                    }, false);
-                });
-                
-            }, false);
-        })();
-    </script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
