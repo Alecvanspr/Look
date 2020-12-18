@@ -106,11 +106,13 @@
                                             <div class="categories-title d-inline">
                                                 <p>Categorie:</p>
                                             </div>
+                                            @if(Model.Categorie!=null){
                                             @foreach (var categorie in Model.Categorie)
                                             {   
                                                 <div class="categories-content d-inline">
                                                     <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@categorie</a>
                                                 </div>
+                                            }
                                             }
                                         </p>
                                     </div>
@@ -171,6 +173,7 @@
                     @if(Model.Reacties==null){
                         <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
                     }else{
+                        
                             @foreach (var reacties in Model.Reacties)
                             {
                                 <div class="container border col-md-8 p-2">
@@ -187,6 +190,7 @@
                                 </div>
                         <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
                         }
+                    
                     }                
                 </div>
             <div class="row p-2 m-1">

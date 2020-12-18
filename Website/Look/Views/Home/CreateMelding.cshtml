@@ -28,6 +28,11 @@
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="IsPrive" class="control-label"></label>
+                <input type="checkbox" asp-for="IsPrive" class="form-control" value="true"/>
+                <span asp-validation-for="IsPrive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="CreateMelding" class="btn btn-primary" />
             </div>
         </form>

@@ -30,7 +30,35 @@ namespace Look.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             CheckMeldingenOpDatum();
+            VoegNaampiesToe();
             _logger = logger;
+        }
+        //deze method moet achteraf verwijderd worden
+        public void VoegNaampiesToe(){
+            Gebruiker auteur1 = new Gebruiker();
+                    auteur1.GebruikersNummer=1223;
+                    auteur1.VoorNaam ="Annoniem";
+                    auteur1.AchterNaam = "Annoniem";
+                    auteur1.GebruikersNaam = "Annoniem";
+                    auteur1.Straat= "Annoniem";
+                    auteur1.HuisNummer = "Annoniem";
+                    auteur1.Woonplaats = "Annoniem";
+                    auteur1.PostCode = "0000xx";
+                    auteur1.EmailAdres = "Annoniem@annoniem.nl";
+                    auteur1.WachtWoord = "pp420!?X";
+            _gebruikers.Add(auteur1);
+            Gebruiker auteur2 = new Gebruiker();
+                    auteur2.GebruikersNummer=1224;
+                    auteur2.VoorNaam ="Joe";
+                    auteur2.AchterNaam = "Bama";
+                    auteur2.GebruikersNaam = "joeBamaCare";
+                    auteur2.Straat= "joeBamaCare";
+                    auteur2.HuisNummer = "joeBamaCare";
+                    auteur2.Woonplaats = "joeBamaCare";
+                    auteur2.PostCode = "0000xx";
+                    auteur2.EmailAdres = "Annoniem@annoniem.nl";
+                    auteur2.WachtWoord = "pp420!?X";
+            _gebruikers.Add(auteur2);
         }
 
         public IActionResult Index()
@@ -41,7 +69,8 @@ namespace Look.Controllers
         {
             return View();
         }
-       [HttpPost]
+        //onderstaande method is niet gebruikt
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
         {
@@ -63,10 +92,15 @@ namespace Look.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,IsPrive,Categorie")] Melding melding)
         {
             if (ModelState.IsValid)
             {
+                if(melding.IsPrive){
+                    melding.Auteur=_gebruikers[0];
+                }else{
+                    melding.Auteur=_gebruikers[1];
+                }
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;
@@ -77,7 +111,7 @@ namespace Look.Controllers
             }
             return View(melding);
         }
-        public async Task<IActionResult> Delete(string? titel)
+        public async Task<IActionResult> Delete(long? titel)
         {
             if (titel == null)
             {
@@ -85,7 +119,7 @@ namespace Look.Controllers
             }
 
             var melding = await db.Meldingen
-                .FirstOrDefaultAsync(m => m.Titel == titel);
+                .FirstOrDefaultAsync(m => m.MeldingId == titel);
             if (melding == null)
             {
                 return NotFound();
