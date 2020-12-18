@@ -14,6 +14,7 @@ using Look.Models;
 using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 
 
 namespace Look.Controllers
@@ -140,7 +141,7 @@ namespace Look.Controllers
         }
 
         //s is sorteren, z is zoeken
-            public async Task<IActionResult> Meldingen(string s,string z)
+            public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
         {
             var meldingen = db.Meldingen;
             List<Melding> meldings = meldingen.ToList();
@@ -171,13 +172,21 @@ namespace Look.Controllers
                 }
             }
 
+            const int pageSize = 3;
+            var count = this.db.Meldingen.Count();
+            var data = this.db.Meldingen.Skip(page * pageSize).Take(pageSize).ToList();
+            this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
+            this.ViewBag.Page = page;
+
+
+
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
             {
                 if(query.Count()!=0){
-                    return View(query);
+                    return View(data);
                 }else{
-                    return View(meldings);
+                    return View(data);
                 }
             }
             else
