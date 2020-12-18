@@ -14,7 +14,7 @@ using Look.Models;
 using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
+
 
 
 namespace Look.Controllers
@@ -97,11 +97,6 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(melding.IsPrive){
-                    melding.Auteur=_gebruikers[0];
-                }else{
-                    melding.Auteur=_gebruikers[1];
-                }
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;
@@ -140,8 +135,9 @@ namespace Look.Controllers
             return RedirectToAction(nameof(Meldingen));
         }
 
+        public static List<Melding> query=null;
         //s is sorteren, z is zoeken
-            public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
+            public IActionResult Meldingen(string s,string z, int page = 0)
         {
             var meldingen = db.Meldingen;
             List<Melding> meldings = meldingen.ToList();
@@ -150,8 +146,7 @@ namespace Look.Controllers
             var DeveloperSession = "Developer";
             LaatstemeldingID = meldings.Count();
             
-            List<Melding> query =  null;
-            
+            if(page==0){
             if(z!=null){
                 query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
             }else{
@@ -171,10 +166,10 @@ namespace Look.Controllers
                     //query = meldings.OrderByDescending(M=>M.Reacties.Count()).ToList();
                 }
             }
-
+            }
             const int pageSize = 3;
             var count = this.db.Meldingen.Count();
-            var data = this.db.Meldingen.Skip(page * pageSize).Take(pageSize).ToList();
+            var data = query.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
 
@@ -183,11 +178,7 @@ namespace Look.Controllers
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
             {
-                if(query.Count()!=0){
-                    return View(data);
-                }else{
-                    return View(data);
-                }
+                return View(data);
             }
             else
             {
