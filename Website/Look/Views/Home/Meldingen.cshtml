@@ -2,6 +2,7 @@
     ViewData["Title"] = "Buurtmeldingen";
 }
 @model List<Melding>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <header>
     <div id="meldingen-header" class="container bg-white py-3">
@@ -45,6 +46,7 @@
             </div>
         </div>
     </div>
+    <br />
 </div>
 
 <script>
@@ -200,4 +202,19 @@
         </div>
     </div>
 </div>
+}
+
+@if (ViewBag.Page > 0)
+{
+    <a href="@Url.Action("Meldingen", "Home", new { page = ViewBag.Page - 1 })"
+    class="btn btn-default">
+    &laquo; Prev    
+    </a>
+}
+@if (ViewBag.Page < ViewBag.MaxPage)
+{
+    <a href="@Url.Action("Meldingen", "Home", new { page = ViewBag.Page + 1 })"
+    class="btn btn-default">
+    Next &raquo;   
+    </a>
 }
