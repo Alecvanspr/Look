@@ -26,40 +26,13 @@ namespace Look.Controllers
         private LookContext db = new LookContext();
         public string UserHostAddress {get; set;}
         static long LaatstemeldingID;
+        static long laasteReactieID;
     
-
+        
         public HomeController(ILogger<HomeController> logger)
         {
             CheckMeldingenOpDatum();
-            VoegNaampiesToe();
             _logger = logger;
-        }
-        //deze method moet achteraf verwijderd worden
-        public void VoegNaampiesToe(){
-            Gebruiker auteur1 = new Gebruiker();
-                    auteur1.GebruikersNummer=1223;
-                    auteur1.VoorNaam ="Annoniem";
-                    auteur1.AchterNaam = "Annoniem";
-                    auteur1.GebruikersNaam = "Annoniem";
-                    auteur1.Straat= "Annoniem";
-                    auteur1.HuisNummer = "Annoniem";
-                    auteur1.Woonplaats = "Annoniem";
-                    auteur1.PostCode = "0000xx";
-                    auteur1.EmailAdres = "Annoniem@annoniem.nl";
-                    auteur1.WachtWoord = "pp420!?X";
-            _gebruikers.Add(auteur1);
-            Gebruiker auteur2 = new Gebruiker();
-                    auteur2.GebruikersNummer=1224;
-                    auteur2.VoorNaam ="Joe";
-                    auteur2.AchterNaam = "Bama";
-                    auteur2.GebruikersNaam = "joeBamaCare";
-                    auteur2.Straat= "joeBamaCare";
-                    auteur2.HuisNummer = "joeBamaCare";
-                    auteur2.Woonplaats = "joeBamaCare";
-                    auteur2.PostCode = "0000xx";
-                    auteur2.EmailAdres = "Annoniem@annoniem.nl";
-                    auteur2.WachtWoord = "pp420!?X";
-            _gebruikers.Add(auteur2);
         }
 
         public IActionResult Index()
@@ -70,33 +43,52 @@ namespace Look.Controllers
         {
             return View();
         }
-        //onderstaande method is niet gebruikt
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
-        {
-            if (ModelState.IsValid)
-            {
-                reactie.ReactieId= db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
-                reactie.GeplaatstOp = DateTime.Now;
-                reactie.Likes = 0;
-                Console.WriteLine("Yes");
-                db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
-                await db.SaveChangesAsync();
-                return RedirectToAction(nameof(Meldingen));
-            }
-            return View(reactie);
-        }
+
         public IActionResult CreateMelding()
         {
+            //Check of er een gebruiker is ingelogd.
+            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            var DeveloperSession = "Developer";
+
+            //Toon de views mits de gebruiker is ingelogd.
+            if(CurrentSession == null || DeveloperSession == null)
+            {
+                return RedirectToAction("login");
+            }else{
             return View();
+            }
         }
+        public List<Reactie> maakreacties(){
+            List<Reactie> reactietjes = new List<Reactie>();
+            Reactie reactie = new Reactie();
+            reactie.ReactieId =0;
+            reactie.Bericht = "wat is dit voor een onzin";
+            reactie.Likes =1;
+            reactie.GeplaatstOp=new DateTime(2020, 12, 12);
+            reactietjes.Add(reactie);
+            return reactietjes;
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,IsPrive,Categorie")] Melding melding)
         {
             if (ModelState.IsValid)
             {
+                var AuteursCode =this.HttpContext.Session.GetInt32("GebruikersNummer");
+                AuteursCode = 1226;
+                foreach (var g in db.Gebruikers){
+                    int ggebruikersnummer=g.GebruikersNummer;
+                    if(ggebruikersnummer==(AuteursCode)){
+                        melding.Auteur = g;
+                        System.Console.WriteLine(ggebruikersnummer);
+                        System.Console.WriteLine(g.VoorNaam+" "+g.AchterNaam);
+                        System.Console.WriteLine(AuteursCode);
+                    }
+                }
+                melding.Reacties = maakreacties();
+                System.Console.WriteLine(melding.Reacties[0].Bericht);
+                System.Console.WriteLine(melding.Auteur.GebruikersNummer);
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;

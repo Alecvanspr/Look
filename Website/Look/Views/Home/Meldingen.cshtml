@@ -1,7 +1,8 @@
+@model List<Melding>
 @{
     ViewData["Title"] = "Buurtmeldingen";
 }
-@model List<Melding>
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <header>
@@ -121,15 +122,12 @@
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p class="float-md-right">
                                             Geplaatst door:
-                                            @if(Model.Auteur==null)
-                                            {
+                                            @try{
+                                                <a>@Model.Auteur.VoorNaam @Model.Auteur.AchterNaam </a>
+                                            }catch{
                                                 <a>Anoniem</a>
-                                            }else
-                                            {
-                                                <a href="#">
-                                                    @Model.Auteur.VoorNaam @Model.Auteur.AchterNaam
-                                                </a>
                                             }
+
                                         </p>
                                     </div>
                                 </div>
@@ -172,30 +170,9 @@
                 <hr/>
                 <div class="col-md-2"></div>
                 <!--reactie-->
-                    @if(Model.Reacties==null){
-                        <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
-                    }else{
-                        
-                            @foreach (var reacties in Model.Reacties)
-                            {
-                                <div class="container border col-md-8 p-2">
-                                    <div class="row p-0 m-0">
-                                        <div class="col-md-11">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.Likes</p>
-                                        </div>
-                                    </div>
-                                    <div class="row p-0 m-0">
-                                        <p>@reacties.Bericht</p>
-                                    </div>
-                                </div>
-                        <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
-                        }
-                    
-                    }                
+                <partial name = "_reacties" for="@Model.Reacties"/>            
                 </div>
-            <div class="row p-2 m-1">
+                <div class="row p-2 m-1">
                     <div class="col-md-10">
                         <textarea id="reactie" rows="1" cols="75" placeholder="Typ hier uw reactie in..."></textarea>
                     </div>
