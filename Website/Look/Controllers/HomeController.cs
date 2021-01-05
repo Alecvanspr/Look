@@ -14,7 +14,7 @@ using Look.Models;
 using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using PagedList;
 
 namespace Look.Controllers
 {
@@ -25,8 +25,8 @@ namespace Look.Controllers
         private readonly LookContext _context;        
         public string UserHostAddress {get; set;}
         static long LaatstemeldingID;
-        static long laasteReactieID;
     
+
         public HomeController(ILogger<HomeController> logger, LookContext context)
         {
             // CheckMeldingenOpDatum();
@@ -42,15 +42,11 @@ namespace Look.Controllers
         {
             return View();
         }
-
-        public IActionResult CreateMelding()
+       [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
         {
-            //Check of er een gebruiker is ingelogd.
-            var CurrentSession = this.HttpContext.Session.GetString("Naam");
-            var DeveloperSession = "Developer";
-
-            //Toon de views mits de gebruiker is ingelogd.
-            if(CurrentSession == null || DeveloperSession == null)
+            if (ModelState.IsValid)
             {
                 reactie.ReactieId= _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
                 reactie.GeplaatstOp = DateTime.Now;
@@ -59,34 +55,19 @@ namespace Look.Controllers
                 _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Meldingen));
-            }else{
-            return View();
             }
+            return View(reactie);
         }
-        public List<Reactie> maakreacties(){
-            List<Reactie> reactietjes = new List<Reactie>();
-            Reactie reactie = new Reactie();
-            reactie.ReactieId =0;
-            reactie.Bericht = "wat is dit voor een onzin";
-            reactie.Likes =1;
-            reactie.GeplaatstOp=new DateTime(2020, 12, 12);
-            reactietjes.Add(reactie);
-            return reactietjes;
+        public IActionResult CreateMelding()
+        {
+            return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,IsPrive,Categorie")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie")] Melding melding)
         {
             if (ModelState.IsValid)
             {
-                int? AuteursCode =this.HttpContext.Session.GetInt32("GebruikersNummer"); //dit is null
-                AuteursCode = 1226;
-                System.Console.WriteLine("de code is "+AuteursCode);
-                melding.Reacties = maakreacties();
-                System.Console.WriteLine(melding.Reacties[0].Bericht);
-
-                melding.Auteur = db.Gebruikers.FirstOrDefault(g=>g.GebruikersNummer==(AuteursCode));              
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;
@@ -97,12 +78,13 @@ namespace Look.Controllers
             }
             return View(melding);
         }
-        public async Task<IActionResult> Delete(long? titel)
+        public async Task<IActionResult> Delete(string? titel)
         {
             if (titel == null)
             {
                 return NotFound();
             }
+
             var melding = await _context.Meldingen
                 .FirstOrDefaultAsync(m => m.Titel == titel);
             if (melding == null)
@@ -124,9 +106,8 @@ namespace Look.Controllers
             return RedirectToAction(nameof(Meldingen));
         }
 
-        public static List<Melding> query=null;
         //s is sorteren, z is zoeken
-            public IActionResult Meldingen(string s,string z, int page = 0)
+            public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
         {
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
@@ -135,7 +116,8 @@ namespace Look.Controllers
             var DeveloperSession = "Developer";
             LaatstemeldingID = meldings.Count();
             
-            if(page==0){
+            List<Melding> query =  null;
+            
             if(z!=null){
                 query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
             }else{
@@ -155,10 +137,10 @@ namespace Look.Controllers
                     //query = meldings.OrderByDescending(M=>M.Reacties.Count()).ToList();
                 }
             }
-            }
+
             const int pageSize = 3;
             var count = this._context.Meldingen.Count();
-            var data = query.Skip(page * pageSize).Take(pageSize).ToList();
+            var data = this._context.Meldingen.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
 
@@ -167,7 +149,11 @@ namespace Look.Controllers
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
             {
-                return View(data);
+                if(query.Count()!=0){
+                    return View(data);
+                }else{
+                    return View(data);
+                }
             }
             else
             {
