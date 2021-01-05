@@ -32,4 +32,4 @@ jobs:
         app-name: '8ba4e4a15cb8432c93c0c44896201108'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_18d42394f8004d49bf6df8977cf6c751 }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
+        package: ${{env.DOTNET_ROOT}}/myapp Website/Look
