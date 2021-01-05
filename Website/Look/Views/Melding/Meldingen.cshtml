@@ -20,7 +20,7 @@
 <div id="meldingen-controls" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-4 p-2 m-0">
-            <a asp-area="" asp-controller="Home" asp-action="CreateMelding"><button class="btn btn-dark w-100" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
+            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
         </div>
 
         <div class="col-md-4 p-2 m-0">
@@ -203,14 +203,14 @@
 
 @if (ViewBag.Page > 0)
 {
-    <a href="@Url.Action("Meldingen", "Meldingen", new { page = ViewBag.Page - 1 })"
+    <a href="@Url.Action("Meldingen", "melding", new { page = ViewBag.Page - 1 })"
     class="btn btn-default">
     &laquo; Prev    
     </a>
 }
 @if (ViewBag.Page < ViewBag.MaxPage)
 {
-    <a href="@Url.Action("Meldingen", "Meldingen", new { page = ViewBag.Page + 1 })"
+    <a href="@Url.Action("Meldingen", "melding", new { page = ViewBag.Page + 1 })"
     class="btn btn-default">
     Next &raquo;   
     </a>
