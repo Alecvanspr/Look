@@ -119,15 +119,13 @@
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p class="float-md-right">
                                             Geplaatst door:
-                                            @if(Model.Auteur==null)
-                                            {
-                                                <a>Anoniem</a>
-                                            }else
-                                            {
                                                 <a href="#">
+                                                    @try{
                                                     @Model.Auteur.VoorNaam @Model.Auteur.AchterNaam
+                                                    }catch{
+                                                        <a>Annoniem</a>
+                                                    }
                                                 </a>
-                                            }
                                         </p>
                                     </div>
                                 </div>
@@ -151,11 +149,11 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Geplaatst door:@try{
-                                                 @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
-                                                <p>Anoniem</p>
+                                                        @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
+                                                        <p>naam werkt maar is op een of andere manier null</p>
                                             }catch
                                             {
-                                                    <p>Anoniem</p>
+                                                    <p>anoniem</p>
                                             } </h5>
                 </div>
                 <div class="col-md-1">
@@ -205,14 +203,14 @@
 
 @if (ViewBag.Page > 0)
 {
-    <a href="@Url.Action("Meldingen", "Home", new { page = ViewBag.Page - 1 })"
+    <a href="@Url.Action("Meldingen", "Meldingen", new { page = ViewBag.Page - 1 })"
     class="btn btn-default">
     &laquo; Prev    
     </a>
 }
 @if (ViewBag.Page < ViewBag.MaxPage)
 {
-    <a href="@Url.Action("Meldingen", "Home", new { page = ViewBag.Page + 1 })"
+    <a href="@Url.Action("Meldingen", "Meldingen", new { page = ViewBag.Page + 1 })"
     class="btn btn-default">
     Next &raquo;   
     </a>
