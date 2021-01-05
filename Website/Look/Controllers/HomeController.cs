@@ -75,20 +75,13 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
-                var AuteursCode =this.HttpContext.Session.GetInt32("GebruikersNummer");
+                int? AuteursCode =this.HttpContext.Session.GetInt32("GebruikersNummer"); //dit is null
                 AuteursCode = 1226;
-                foreach (var g in db.Gebruikers){
-                    int ggebruikersnummer=g.GebruikersNummer;
-                    if(ggebruikersnummer==(AuteursCode)){
-                        melding.Auteur = g;
-                        System.Console.WriteLine(ggebruikersnummer);
-                        System.Console.WriteLine(g.VoorNaam+" "+g.AchterNaam);
-                        System.Console.WriteLine(AuteursCode);
-                    }
-                }
+                System.Console.WriteLine("de code is "+AuteursCode);
                 melding.Reacties = maakreacties();
                 System.Console.WriteLine(melding.Reacties[0].Bericht);
-                System.Console.WriteLine(melding.Auteur.GebruikersNummer);
+
+                melding.Auteur = db.Gebruikers.FirstOrDefault(g=>g.GebruikersNummer==(AuteursCode));              
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;
