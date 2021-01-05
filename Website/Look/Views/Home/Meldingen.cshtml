@@ -91,7 +91,7 @@
                                         @if(Model.Inhoud.Length>300){
                                         <p>@Model.Inhoud.Substring(0,300)...</p>
                                         }else{
-                                        <p>@Model.Inhoud ...</p>
+                                        <p>@Model.Inhoud</p>
                                         }
                                         <a data-toggle="modal" href="#melding-@Model.MeldingId">
                                             lees meer
@@ -150,13 +150,12 @@
                     <h5>@Model.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door:@if(Model.Auteur==null)
-                                            {
+                    <h5>Geplaatst door:@try{
+                                                 @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
                                                 <p>Anoniem</p>
-                                            }else
+                                            }catch
                                             {
-                                                
-                                                    @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
+                                                    <p>Anoniem</p>
                                             } </h5>
                 </div>
                 <div class="col-md-1">
