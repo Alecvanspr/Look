@@ -42,7 +42,8 @@ namespace Look.Controllers
         {
             return View();
         }
-       [HttpPost]
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
         {
@@ -58,10 +59,12 @@ namespace Look.Controllers
             }
             return View(reactie);
         }
+
         public IActionResult CreateMelding()
         {
             return View();
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie")] Melding melding)
