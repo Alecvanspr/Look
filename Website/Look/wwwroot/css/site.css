@@ -13,10 +13,54 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: Poppins;
   font-weight: 600;
+}
+
+h6 {
   letter-spacing: 1.5px;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 20px;
+}
+
+.select-box {
+  position: relative;
+}
+
+.select-box .selector {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  transform: translate(-50%, -50%);
+  font-size: 20px !important;
+}
+
+.list-group-item-dark {
+  background: #343434 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.list-group-item-dark:hover {
+  background: #ffffff !important;
+  color: #343434 !important;
+  opacity: 1 !important;
+}
+
 .btn-dark {
+  background: #343434 !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-dark {
+  border: 1px solid #343434 !important;
+  color: #343434 !important;
+}
+
+.btn-outline-dark:hover {
   background: #343434 !important;
   color: #ffffff !important;
 }
@@ -34,8 +78,16 @@ h1, h2, h3, h4, h5, h6 {
   background: #343434 !important;
 }
 
+.bg-light {
+  background: #DDDDDD !important;
+}
+
 .bg-secondary {
   background: #777777 !important;
+}
+
+.bg-secondary-7 {
+  background: rgba(119, 119, 119, 0.7) !important;
 }
 
 .text-white {
@@ -63,6 +115,7 @@ a {
 
 a:hover {
   opacity: 0.8;
+  transition: .3s ease;
 }
 
 .form-subscribe {
@@ -75,50 +128,125 @@ a:hover {
   right: 0;
   height: 100%;
   width: 38px;
-  font-size: 20px;
+  font-size: 20px !important;
 }
-/*NAVBAR*/
-.navbar {
-  border-bottom: 1px 1px 1px;
+.form-search {
+  position: relative;
 }
 
-.navbar .navbar-brand {
-  width: 150px;
+.form-search button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.ls-0 {
+  letter-spacing: 0px !important;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+#meldingen-content .categorie:hover {
+  text-decoration: none;
+  background: #777777;
+  color: #ffffff !important;
+  transition: .3s ease;
+}
+
+.box-shadow-full {
+  box-shadow: 0 0 1.75rem rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 0 1.75rem rgba(0, 0, 0, .2);
+}
+
+.button-href {
+  text-decoration: none !important;
+}
+
+/*NAVBAR*/
+
+.navbar .navbar-brand:hover {
+  opacity: 1 !important;
+
+}
+
+.navbar .navbar-img {
+  width: 135px;
   padding: 10px 25px;
 }
 
-.navbar a {
-  font-size: 20px;
-  letter-spacing: 1.5px;
+.navbar .nav-links a {
+  font-size: 18px;
 }
 
 .navbar i {
-  font-size: 25px;
+  font-size: 22px;
+  color: #343434 !important;
 }
 
-.navbar .nav-social {
-  padding: 8px 8px;
+.navbar i.nav-profile {
+  font-size: 20px !important; 
+  color: #ffffff !important;
 }
 
-.navbar .btn {
-  margin: 0 0 0 8px;
+/*SIDEBAR*/
+ #wrapper {
+    overflow-x: hidden;
+ }
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-right: -15rem;
+  -webkit-transition: margin .25s ease;
+  -moz-transition: margin .25s ease;
+  -o-transition: margin .25s ease;
+  transition: margin .25s ease;
 }
 
-/*INTRODUCTION*/
-#introduction {
-  height: 75vh;
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
 }
 
-/*SLIDESHOW*/
-#slideshow {
-  height: 35vh;
+#sidebar-wrapper .list-group {
+  width: 15rem;
 }
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-right: -15rem;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-right: 0;
+  }
+
+  
+}
+
 
 /*DETAILS*/
-#details {
-  height: 75vh;
-}
 
+#details .feature i {
+  font-size: 60px;
+}
 /*STANDARD*/
 
 /* Provide sufficient contrast against white background */
@@ -153,6 +281,7 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  -moz-box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
@@ -175,4 +304,13 @@ html {
   width: 100%;
   white-space: nowrap;
   padding: 30px;
+}
+
+#changeAvatarLabel {
+  color: #0366d6;
+}
+
+#changeAvatarLabel:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Aanmelden";
+}
+
+<header>
+    <div id="register-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">Aanmelden</h1>
+                <p class="text-secondary">
+                    Maak hier een nieuw account aan. Heb je al een account? <a asp-area="" asp-controller="Home" asp-action="Login">Log dan in</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="register-content" class="container bg-white py-3">
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+        <div class=" col-8 col-md-6 col-lg-4 p-0 py-5 p-0">
+            <img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/>
+        </div>
+    </div>
+
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+        <div class="col-md-8 p-0 m-0">
+            <form class="needs-validation w-100" name="registreren" asp-controller="Home" asp-action="Register" method="POST" oninput='passwordvalid.setCustomValidity(passwordvalid.value != password.value ? "Passwords do not match." : "")' novalidate>
+                @if (ViewBag.registerError == true) {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.registerErrorText
+                    </div>
+                }
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label for="inputName">Voornaam</label>
+                        <input name="fname" type="text" class="form-control form-validation" id="inputName" placeholder="John" required>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label for="inputSurname">Achternaam</label>
+                        <input name="lname" type="text" class="form-control form-validation" id="inputSurname" placeholder="Doe" required>
+                    </div>
+                </div>
+                            
+                <div class="form-group">    
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">&commat;</div>
+                        </div>
+                        <label class="sr-only" for="inputUsername">Gebruikersnaam</label>
+                        <input name="username" type="text" class="form-control form-validation" id="inputUsername" placeholder="john.doe" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-8">
+                        <label for="inputAddress">Straat</label>
+                        <input name="streetaddress" type="text" class="form-control form-validation" id="inputAddress" pattern="[a-zA-Z]+" placeholder="Dorpstraat" required>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="inputHouseNumber">Huisnummer</label>
+                        <input name="housenumber" type="number" class="form-control form-validation" id="inputHouseNumber" pattern="[0-9]+" placeholder="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-8">
+                        <label for="inputCity">Woonplaats</label>
+                        <input name="city" type="text" class="form-control form-validation" id="inputCity" placeholder="Amsterdam" required>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="inputZip">Postcode</label>
+                        <input name="postalcode" type="text" class="form-control form-validation" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" id="inputZip" placeholder="1234AB" required>
+                    </div>
+                </div>
+
+                <div class="form-group w-100">
+                    <label for="inputRegisterEmail">E-mailadres</label>
+                    <input name="email" type="email" class="form-control form-validation" id="inputRegisterEmail" aria-describedby="emailHelp" placeholder="voorbeeld@example.com" required>
+                    <small id="emailHelp" class="form-text text-secondary">We zullen nooit uw email met iemand anders delen.</small>
+                    <div class="invalid-feedback">
+                        @ViewBag.registerError
+                    </div>
+                </div>
+
+                <div class="form-group w-100">
+                    <label for="inputRegisterPassword">Wachtwoord</label>
+                    <input name="password" type="password" class="form-control form-validation" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" id="inputRegisterPassword" placeholder="Wachtwoord" required>
+                    <div class="invalid-feedback">
+                        Wachtwoord moet bestaan uit minimaal 8 tekens, een kleine letter, een grote letter en een nummer en/of een speciaal teken.
+                    </div>
+                </div>
+
+                <div class="form-group w-100">
+                    <label for="inputRegisterPasswordValid">Herhaal Wachtwoord</label>
+                    <input name="passwordvalid" type="password" class="form-control form-validation" id="inputRegisterPasswordValid" placeholder="Wachtwoord" required>
+                    <div class="invalid-feedback">
+                        Wachtwoorden komen niet overeen.
+                    </div>
+                </div>
+
+                @* <div class="form-group w-100">
+                    <label class="sr-only" for="inputReCaptcha">reCAPTCHA</label>
+                    <div id="inputReCaptcha" class="w-100 border-0 g-recaptcha" data-sitekey="6Lf50P8ZAAAAAN_hEUTW2BRZ6f-v0X1ShZHbswl9"></div>
+                </div> *@
+
+                <div class="form-group w-100">
+                    <button type="submit" class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button>
+                    <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>">
+                </div>
+                <div class="form-group m-0 w-100 text-center">
+                    <a asp-area="" asp-controller="Home" asp-action="Login">Ik heb al een account.</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -8,102 +8,207 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-md navbar-toggleable-sm text-dark bg-white">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <div class="d-flex toggled" id="wrapper">
+        <div id="page-content-wrapper">
+            @using Microsoft.AspNetCore.Http
+            @inject IHttpContextAccessor httpContextAccessor   
+            <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
+                <!--NAVBAR BRAND-->
+                <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
+                    <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
+                </p>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
                     <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
                 </button>
 
-                <div class="navbar-collapse collapse justify-content-between">
-                    <ul class="nav">
+                <div class="navbar-collapse collapse w-100" id="navbarCollapse">
+                    <!--NAVIGATION LINKS-->
+                    <ul class="navbar-nav nav-links w-100 justify-content-center">
                         <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Buurten</a>
+                        </li>
+                        <li class="nav-item text-center">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Meldingen">Contact</a>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav">
+
+                    <!--SOCIAL LINKS / BUTTONS-->
+                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">link</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">link</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">link</a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">link</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-right justify-content-center">
-                        <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
+                            <a class="nav-link p-2" href="https://instagram.com/#">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
+                            <a class="nav-link p-2" href="https://twitter.com/#">
                                 <i class="fab fa-twitter"></i>
                             </a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-social nav-link text-dark" href="#">
+                            <a class="nav-link p-2" href="https://facebook.com/#">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         </li>
-                        <li class="nav-item text-center">
-                            <button type="button" class="btn btn-dark nav-link">inloggen</button>
-                        </li>
+                        @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null) 
+                        {
+                            <li class="nav-item text-center">
+                                <a class="button-href" asp-area="" asp-controller="Home" asp-action="Profiel"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2"><i class="nav-profile mr-2 text-white fas fa-user"></i>@httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</button></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item text-center">
+                                <a class="button-href" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                            </li>
+                        }
                     </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container-fluid">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+            </nav>
 
-    <footer class="footer text-white bg-dark">
-        <div class="container">
-            <div class="row p-0 m-0">
-                <div class="col-md-3 p-0 m-0">
-                    <div class="row p-0 m-0 text-wrap">
-                        <h6>OVER ONS</h6>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    </div>
-                    <div class="row p-0 m-0 text-wrap">
-                        <h6>ABONNEER</h6>
-                        <form class="form-inline form-subscribe">
-                            <div class="form-group">
-                                <label for="inputEmail" class="sr-only">Email</label>
-                                <input type="email" class="form-control" id="inputEmail" placeholder="email">
+            <div class="container-fluid">
+                <main role="main" class="py-5">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <footer class="footer text-white bg-dark">
+                <div class="container">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-3 p-0 m-0 pr-3">
+                            <div class="row w-100 p-0 m-0 text-wrap">
+                                <div class="col-12 p-0 m-0">
+                                    <h6>OVER ONS</h6>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
-                        </form>
+                            <div class="row w-100 p-0 m-0 text-wrap">
+                                <div class="col-12 p-0 m-0 pb-3">
+                                    <h6>ABONNEER</h6>
+                                    <form class="form-inline form-subscribe">
+                                        <div class="form-group w-100 p-0 m-0">
+                                            <label for="inputSubscribeEmail" class="sr-only">Email</label>
+                                            <input type="email" class="form-control w-100" id="inputSubscribeEmail" placeholder="email">
+                                        </div>
+                                        <button type="submit" class="btn btn-secondary"><i class="fas fa-angle-right"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 p-0 m-0 pr-3">
+                            <h6>LAATSTE TWEETS</h6>
+                        </div>
+                        <div class="col-md-5 p-0 m-0">
+                            <h6>INSTAGRAM</h6>
+                        </div>
+                    </div>
+                    <div class="row w-100 p-0 m-0 text-secondary text-center">
+                        <div class="col-12">
+                            <p class="m-0">&copy; Copyright 2020, Look</p>
+                        </div>
+                    </div>
+                    <div class="row w-100 p-0 m-0 text-secondary text-center justify-content-center">
+                        <div class="col-md-2">
+                            <a href="#">Privacy Policy</a>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="#">Cookie Policy</a>
+                        </div>
+
+                        <div class="col-md-2">
+                            <a href="#">Contact</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 p-0 m-0">
-                    <h6>LAATSTE TWEETS</h6>
-                </div>
-                <div class="col-md-5 p-0 m-0">
-                    <h6>INSTAGRAM</h6>
-                </div>
-            </div>
-            <div class="row p-0 m-0 text-secondary text-center">
-                <p>&copy; 2020 - Look</p>
-            </div>
+            </footer>
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script>
+                function onSubmit(token) {
+                    document.getElementById("demo-form").submit();
+                }
+            </script>
+            <script>
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>
+            <script id="BootstrapFormValidator">
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                        var forms = document.getElementsByClassName('needs-validation');
+                        
+                        var validation = Array.prototype.filter.call(forms, function(form) {
+                            form.addEventListener('submit', function(event) {
+                                if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                }
+                                form.classList.add('was-validated');
+                            }, false);
+                        });
+                        
+                    }, false);
+                })();
+            </script>
+            <script id="RealTimeInputChecker">
+                (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                        var inputs = document.getElementsByClassName('form-validation');
+                        
+                        var validation = Array.prototype.filter.call(inputs, function(input) {
+
+                            input.addEventListener('blur', function(event) {
+                                input.classList.remove('is-invalid');
+                                input.classList.remove('is-valid');
+
+                                if (input.checkValidity() === false) {
+                                    input.classList.add('is-invalid')
+                                }else {
+                                    input.classList.add('is-valid')
+                                }
+                            }, false);
+                        });
+                        
+                    }, false);
+                })();
+            </script>
+            <script>
+                $("#menu-toggle").click(function(e) {
+                    e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+                });
+            </script>
+            @await RenderSectionAsync("Scripts", required: false)
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    
+        @* @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null)
+        { *@
+            <!-- Sidebar -->
+            <div class="bg-dark text-white toggled" id="sidebar-wrapper">
+                <div class="sidebar-heading">
+                    <h5>Welkom, @httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a asp-controller="Home" asp-action="Profiel" class="list-group-item list-group-item-action list-group-item-dark">Profiel</a>
+                    <a asp-controller="Home" asp-action="Meldingen" class="list-group-item list-group-item-action list-group-item-dark">Meldingen</a>
+                    <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Chat</a>
+                </div>
+            </div>
+        @* }
+        else
+        {
+
+        } *@
+    </div>
 </body>
 </html>
