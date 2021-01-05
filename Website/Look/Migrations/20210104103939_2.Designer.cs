@@ -9,44 +9,66 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookContext))]
-    [Migration("20201211120434_TweedeMigratie")]
-    partial class TweedeMigratie
+    [Migration("20210104103939_2")]
+    partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Look.Models.Gebruiker", b =>
                 {
                     b.Property<int>("GebruikersNummer")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("AchterNaam")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Adres")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("EmailAdres")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("GebruikersNaam")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("HuisNummer")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsAnoniem")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsGeverifieerd")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LoginPogingen")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Straat")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("VoorNaam")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("WachtWoord")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Woonplaats")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("GebruikersNummer");
 
@@ -55,36 +77,36 @@ namespace Look.Migrations
 
             modelBuilder.Entity("Look.Models.Melding", b =>
                 {
-                    b.Property<int>("MeldingId")
+                    b.Property<long>("MeldingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("AangemaaktOp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int?>("AuteurGebruikersNummer")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Categorie")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Inhoud")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsActief")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsPrive")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Likes")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Titel")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Views")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("MeldingId");
 
@@ -97,19 +119,22 @@ namespace Look.Migrations
                 {
                     b.Property<int>("ReactieId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Bericht")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("GeplaatstDoorGebruikersNummer")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("GeplaatstOp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("MeldingId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("MeldingId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("ReactieId");
 

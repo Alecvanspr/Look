@@ -16,21 +16,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
 
-
 namespace Look.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
-        private LookContext db = new LookContext();
+        private readonly LookContext _context;        
         public string UserHostAddress {get; set;}
         static long LaatstemeldingID;
     
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, LookContext context)
         {
-            CheckMeldingenOpDatum();
+            // CheckMeldingenOpDatum();
+            _context = context;
             _logger = logger;
         }
 
@@ -48,12 +48,12 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
-                reactie.ReactieId= db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
+                reactie.ReactieId= _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
                 reactie.GeplaatstOp = DateTime.Now;
                 reactie.Likes = 0;
                 Console.WriteLine("Yes");
-                db.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
-                await db.SaveChangesAsync();
+                _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Meldingen));
             }
             return View(reactie);
@@ -72,8 +72,8 @@ namespace Look.Controllers
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Likes = 0;
                 melding.Views=0;
-                db.Add(melding);
-                await db.SaveChangesAsync();
+                _context.Add(melding);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Meldingen));
             }
             return View(melding);
@@ -85,7 +85,7 @@ namespace Look.Controllers
                 return NotFound();
             }
 
-            var melding = await db.Meldingen
+            var melding = await _context.Meldingen
                 .FirstOrDefaultAsync(m => m.Titel == titel);
             if (melding == null)
             {
@@ -100,16 +100,16 @@ namespace Look.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long MeldingId)
         {
-            var melding = await db.Meldingen.FindAsync(MeldingId);
-            db.Meldingen.Remove(melding);
-            await db.SaveChangesAsync();
+            var melding = await _context.Meldingen.FindAsync(MeldingId);
+            _context.Meldingen.Remove(melding);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Meldingen));
         }
 
         //s is sorteren, z is zoeken
             public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
         {
-            var meldingen = db.Meldingen;
+            var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
@@ -139,8 +139,8 @@ namespace Look.Controllers
             }
 
             const int pageSize = 3;
-            var count = this.db.Meldingen.Count();
-            var data = this.db.Meldingen.Skip(page * pageSize).Take(pageSize).ToList();
+            var count = this._context.Meldingen.Count();
+            var data = this._context.Meldingen.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
 
@@ -165,10 +165,10 @@ namespace Look.Controllers
             DateTime VerloopDatum = DateTime.Now;
             VerloopDatum = VerloopDatum.AddDays(-30);
             //addMonths
-            foreach (var melding in db.Meldingen.Where(m=>m.AangemaaktOp<VerloopDatum))
+            foreach (var melding in _context.Meldingen.Where(m=>m.AangemaaktOp<VerloopDatum))
             {
-                db.Meldingen.Remove(melding);
-                await db.SaveChangesAsync();
+                _context.Meldingen.Remove(melding);
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -183,7 +183,7 @@ namespace Look.Controllers
             {
                 //Haal op welke gebruiker er is ingelogd.
                 var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-                Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+                Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
                 Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft het Profiel scherm geopend.", IngelogdeGebruiker.GebruikersNummer);
 
                 return View("Profiel", IngelogdeGebruiker);
@@ -220,11 +220,11 @@ namespace Look.Controllers
 
             //Haal op welke gebruiker er is ingelogd.
             var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
 
             //Verwijder de gebruiker uit de database
-            db.Gebruikers.Remove(IngelogdeGebruiker);
-            db.SaveChanges();
+            _context.Gebruikers.Remove(IngelogdeGebruiker);
+            _context.SaveChanges();
             Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} is succesvol verwijderd.", IngelogdeGebruiker.GebruikersNummer);
 
             //Verwijder de sessie van de ingelogde gebruiker
@@ -243,17 +243,17 @@ namespace Look.Controllers
             if (ModelState.IsValid)
             {
                 //Haal op welke gebruiker er is ingelogd.
-                Gebruiker _gebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+                Gebruiker _gebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
 
                 //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
                 var f_password = GetMD5(wachtWoord);
-                var data = db.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
+                var data = _context.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
 
                 //Check of er al een gebruiker bestaat met het opgegeven e-mailadres
-                var EmailCheck = db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(emailAdres.ToLower()));
+                var EmailCheck = _context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(emailAdres.ToLower()));
 
                 //Check of er al een gebruiker bestaat met de opgegeven gebruikersnaam
-                var UserNameCheck = db.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(gebruikersNaam.ToLower()));
+                var UserNameCheck = _context.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(gebruikersNaam.ToLower()));
 
                 //Als er meerdere Gebruikers zijn geteld in de database komt het wachtwoord overeen met die uit de database
                 if(data.Count() > 0)
@@ -269,8 +269,8 @@ namespace Look.Controllers
                             _gebruiker.EmailAdres = emailAdres.ToLower();
                             _gebruiker.WachtWoord = GetMD5(wachtWoord);
                             _gebruiker.IsAnoniem = isAnoniem;
-                            db.Update(_gebruiker);
-                            db.SaveChanges();
+                            _context.Update(_gebruiker);
+                            _context.SaveChanges();
                             Console.WriteLine("SUCCES: Succesfully altered data");
 
                             //Toon de succes message in de HTML
@@ -307,7 +307,7 @@ namespace Look.Controllers
             }
 
             //Haal de gewijzigde gebruiker op
-            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
             Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn Profiel gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
 
             return View("Profiel", IngelogdeGebruiker);
@@ -320,16 +320,16 @@ namespace Look.Controllers
             var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
 
             //Haal op welke gebruiker er is ingelogd.
-            Gebruiker _gebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Gebruiker _gebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
 
             //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
             var f_password = GetMD5(wachtWoord);
-            var data = db.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
+            var data = _context.Gebruikers.Where(s => s.GebruikersNummer.Equals(CurrentSessionUserId) && s.WachtWoord.Equals(f_password)).ToList();
 
             if(data.Count > 0) {
                 _gebruiker.WachtWoord = GetMD5(nieuwWachtWoord);
-                db.Update(_gebruiker);
-                db.SaveChanges();
+                _context.Update(_gebruiker);
+                _context.SaveChanges();
 
                 ViewBag.editSuccess = true;
                 ViewBag.editError = false;
@@ -344,7 +344,7 @@ namespace Look.Controllers
                 Console.WriteLine("ERROR: Couldn't alter data, password incorrect");
             }
 
-            Gebruiker IngelogdeGebruiker = db.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(s => s.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
             Console.WriteLine("Gebruiker met 'GebruikersNummer' {0} heeft zijn wachtwoord gewijzigd.", IngelogdeGebruiker.GebruikersNummer);
 
             return View("Profiel", IngelogdeGebruiker);
@@ -359,7 +359,7 @@ namespace Look.Controllers
             {
                 //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
                 var f_password = GetMD5(password);
-                var data = db.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
+                var data = _context.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
 
                 //Als er meerdere Gebruikers zijn geteld in de database is de gebruiker succesvol ingelogd
                 if(data.Count() > 0)
@@ -372,8 +372,8 @@ namespace Look.Controllers
                     HttpContext.Session.SetString("AchterNaam", data.FirstOrDefault(s => s.EmailAdres.Equals(email)).AchterNaam);
 
                     //Reset 'LoginPogingen' naar 0 als de gebruiker succesvol heeft ingelogd en verberg de "Wachtwoord vergeten" <a> tag
-                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen = 0;
-                    db.SaveChanges();
+                    _context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen = 0;
+                    _context.SaveChanges();
                     ViewBag.LoginPogingDrie = false;
                     Console.WriteLine("SUCCCES: Authenticated, login successfull");
 
@@ -387,12 +387,12 @@ namespace Look.Controllers
                     Console.WriteLine("ERROR: Authentication failed, wrong email or password");
 
                     //Verhoog het getal 'LoginPogingen' met 1 elke keer dat er een fout voorkomt per e-mailadres en sla dit op in de database
-                    db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen += 1;
-                    db.SaveChanges();
-                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen);
+                    _context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen += 1;
+                    _context.SaveChanges();
+                    Console.WriteLine("INFO: Dit is loginpoging nummer: " + _context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen);
 
                     //Toon de <a> tag "Wachtwoord vergeten" op het moment dat 'LoginPogingen' groter of gelijk is aan 3
-                    if(db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 3)
+                    if(_context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(email)).LoginPogingen >= 3)
                     {
                         ViewBag.LoginPogingDrie = true;
                     }
@@ -430,10 +430,10 @@ namespace Look.Controllers
             if(ModelState.IsValid)
             {
                 //Check of er al een gebruiker bestaat met het opgegeven e-mailadres
-                var EmailCheck = db.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(_gebruiker.EmailAdres));
+                var EmailCheck = _context.Gebruikers.FirstOrDefault(s => s.EmailAdres.Equals(_gebruiker.EmailAdres));
 
                 //Check of er al een gebruiker bestaat met de opgegeven gebruikersnaam
-                var UserNameCheck = db.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(_gebruiker.GebruikersNaam));
+                var UserNameCheck = _context.Gebruikers.FirstOrDefault(s => s.GebruikersNaam.Equals(_gebruiker.GebruikersNaam));
 
                 if(EmailCheck == null)
                 {
@@ -441,8 +441,8 @@ namespace Look.Controllers
                     {
                         //Encrypt het meegegeven wachtwoord en vervang die voor het wachtwoord dat meegegeven is vanuit de form
                         _gebruiker.WachtWoord = GetMD5(_gebruiker.WachtWoord);
-                        db.Gebruikers.Add(_gebruiker);
-                        db.SaveChanges();
+                        _context.Gebruikers.Add(_gebruiker);
+                        _context.SaveChanges();
                         ViewBag.registerError = false;
                         Console.WriteLine("SUCCES: Successfull registration of user");
 

@@ -7,12 +7,12 @@ namespace Look
 {
     public class LookContext : DbContext
     {
+        public LookContext(DbContextOptions<LookContext> o) : base(o) {}
+
         public DbSet<Gebruiker> Gebruikers {get; set;}
         public DbSet<Melding> Meldingen {get; set;}
         public DbSet<Reactie> Reacties {get; set;}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder b) =>
-        b.UseSqlite("Data Source=look.db");
 
         protected override void OnModelCreating(ModelBuilder ModelBuilder)
         {
