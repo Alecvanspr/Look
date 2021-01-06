@@ -95,7 +95,6 @@ namespace Look.Controllers
             {
                 return NotFound();
             }
-
             return View(melding);
         }
 
@@ -115,10 +114,14 @@ namespace Look.Controllers
         //s is sorteren, z is zoeken
             public IActionResult Meldingen(string s,string z, int page = 0)
         {
+            //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";
             ViewData["Zoek"] = z ?? "";
+
+            //dit maakt een lijst aan waarop het gesorteerd wordt
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
+
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
@@ -172,7 +175,5 @@ namespace Look.Controllers
                 await _context.SaveChangesAsync();
             }
         }
-
-
     }
 }
