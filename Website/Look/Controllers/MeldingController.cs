@@ -59,16 +59,18 @@ namespace Look.Controllers
             }
         }
         
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding)
         {
             if (ModelState.IsValid)
             {
                 int autheur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
                 Console.WriteLine("de autheur is"+autheur);
                 melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==autheur).First();//dit werkt 
-                Console.WriteLine("de autheur is"+  melding.Auteur.VoorNaam);
+                Console.WriteLine("de autheur is"+  melding.Auteur); //dat wordt hier getest
                 LaatstemeldingID++;
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
@@ -113,6 +115,8 @@ namespace Look.Controllers
         //s is sorteren, z is zoeken
             public IActionResult Meldingen(string s,string z, int page = 0)
         {
+            ViewData["Sorteer"] = s ?? "datum";
+            ViewData["Zoek"] = z ?? "";
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
             //Check of er een gebruiker is ingelogd.
@@ -129,15 +133,13 @@ namespace Look.Controllers
 
             if(s!=null){
                 if(s.Equals("likes")){
-                    query = meldings.OrderByDescending(M=>M.Likes).ToList();
+                    query = query.OrderByDescending(M=>M.Likes).ToList();
                 }else if(s.Equals("views")){
-                    query = meldings.OrderByDescending(M=>M.Views).ToList();
+                    query = query.OrderByDescending(M=>M.Views).ToList();
                 }else if(s.Equals("titels")){
-                    query = meldings.OrderByDescending(M=>M.Titel).ToList();
+                    query = query.OrderByDescending(M=>M.Titel).ToList();
                 }else if(s.Equals("datum")){
-                    query = meldings.OrderByDescending(M=>M.AangemaaktOp).ToList();
-                }else if(s.Equals("reacties")){
-                    //query = meldings.OrderByDescending(M=>M.Reacties.Count()).ToList();
+                    query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
                 }
             }
             }

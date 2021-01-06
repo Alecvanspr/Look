@@ -18,6 +18,9 @@ using PagedList;
 
 namespace Look.Controllers
 {
+     public class LikeInfo{
+            public int aantal{get;set;}
+        }
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -41,6 +44,13 @@ namespace Look.Controllers
             return View();
         }
 
+       
+       
+        
+        public JsonResult Like()
+        {
+        return Json(new LikeInfo { aantal = 12});
+        }
 
         public IActionResult Profiel()
         {

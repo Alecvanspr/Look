@@ -26,7 +26,8 @@
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline form-search w-100 m-0 justify-content-center">
         <form asp-action="Meldingen" method="get">
-                <input class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z">
+                <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" value="@ViewData["Zoek"]">
+                 <input hidden type="text" placeholder="inputSorteer" aria-label="inputSorteer" name="s" value="@ViewData["Sorteer"]">
                 <button class="btn btn-dark m-0" type="submit"><i class="fa fa-search"></i></button>
         </form>
             </div>
@@ -34,13 +35,13 @@
 
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline m-0 select-box">
-                <select id="inputSorteer" class="form-control w-100" onchange="javascript:handleSelect(this)">
+                <select id="inputSorteer" class="form-control w-100" onchange="javascript:SorterenOpQuery(this)">
                     <option selected>Sorteren op...</option>
-                    <option value="/Home/Meldingen?s=datum">Nieuwste</option>
-                    <option value="/Home/Meldingen?s=likes">Meeste likes</option>
-                    <option value="/Home/Meldingen?s=views">Meeste weergaven</option>
-                    <option value="/Home/Meldingen?s=reacties">Meeste reacties</option>
-                    <option value="/Home/Meldingen?s=titel">Naam</option>
+                    <option value="s=datum">Nieuwste</option>
+                    <option value="s=likes">Meeste likes</option>
+                    <option value="s=views">Meeste weergaven</option>
+                    <option value="s=reacties">Meeste reacties</option>
+                    <option value="s=titel">Naam</option>
                 </select>
                 <i class="fas fa-angle-down selector"></i>
             </div>
@@ -50,9 +51,9 @@
 </div>
 
 <script>
-      function handleSelect(elm)
+      function SorterenOpQuery(elm)
   {
-     window.location = elm.value;
+     window.location = "/Melding/Meldingen?z="+document.getElementById("zoekbalk").value+"&"+elm.value;
   }
 </script>
 
@@ -121,7 +122,7 @@
                                             Geplaatst door:
                                                 <a href="#">
                                                     @try{
-                                                    @Model.Auteur.VoorNaam @Model.Auteur.AchterNaam
+                                                    @Model.Auteur
                                                     }catch{
                                                         <a>Annoniem</a>
                                                     }
@@ -149,20 +150,27 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Geplaatst door:@try{
-                                                        @Model.Auteur.VoorNaam   @Model.Auteur.AchterNaam
+                                                        @Model.Auteur.VoorNaam
                                                         <p>naam werkt maar is op een of andere manier null</p>
                                             }catch
                                             {
                                                     <p>anoniem</p>
                                             } </h5>
                 </div>
+                    <script>
+                    fetch("/Home/Like")
+                    .then(r => r.json())
+                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
+                    </script>
                 <div class="col-md-1">
-                    <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@Model.Likes</p>
+                    <a><i class="far fa-thumbs-up"></i></a><div style="display: inline;" id="AantalLikes"></div>
+
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row p-3 m-0">
-                    <P>@Model.Inhoud</P>            
+                    <P>@Model.Inhoud</P>     
+                    <div id="testOfDeDocumentWerkt"></div>       
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
