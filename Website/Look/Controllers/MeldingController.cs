@@ -147,7 +147,7 @@ namespace Look.Controllers
             }
             }
             const int pageSize = 3;
-            var count = this._context.Meldingen.Count();
+            var count = query.Count();
             var data = query.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
