@@ -50,6 +50,17 @@ namespace Look.Controllers
             }
             return View(reactie);
         }
+        public List<Reactie> MaakFakeReacties(){
+            List<Reactie> reacties = new List<Reactie>();
+            Reactie reactie = new Reactie();
+            reactie.ReactieId = 1;
+            reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==3).First();
+            reactie.GeplaatstOp = DateTime.Now;
+            reactie.Bericht ="Zuig mijn lul";
+            reactie.Likes = 0;
+            reacties.Add(reactie);
+            return reacties;
+        }
 
         public IActionResult CreateMelding()
         {
@@ -143,25 +154,29 @@ namespace Look.Controllers
             var DeveloperSession = "Developer";
             LaatstemeldingID = meldings.Count();
             
+            //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
             if(page==0){
-            if(z!=null){
-                query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
-            }else{
-                query = meldings;
-            }
+                //dit zorgt ervoor dat je kan zoeken
+                if(z!=null){
+                    query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
+                }else{
+                    query = meldings;
+                }
 
-            if(s!=null){
-                if(s.Equals("likes")){
-                    query = query.OrderByDescending(M=>M.Likes).ToList();
-                }else if(s.Equals("views")){
-                    query = query.OrderByDescending(M=>M.Views).ToList();
-                }else if(s.Equals("titels")){
-                    query = query.OrderByDescending(M=>M.Titel).ToList();
-                }else if(s.Equals("datum")){
-                    query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                //dit zorgt ervoor dat je kan sorteren
+                if(s!=null){
+                    if(s.Equals("likes")){
+                        query = query.OrderByDescending(M=>M.Likes).ToList();
+                    }else if(s.Equals("views")){
+                        query = query.OrderByDescending(M=>M.Views).ToList();
+                    }else if(s.Equals("titels")){
+                        query = query.OrderByDescending(M=>M.Titel).ToList();
+                    }else if(s.Equals("datum")){
+                        query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                    }
                 }
             }
-            }
+            //dit geeft het aantal tabs
             const int pageSize = 3;
             var count = query.Count();
             var data = query.Skip(page * pageSize).Take(pageSize).ToList();
