@@ -18,6 +18,9 @@ using PagedList;
 
 namespace Look.Controllers
 {
+    public class LikeInfo{
+            public int aantal{get;set;}
+        }
     public class MeldingController : Controller
     {
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
@@ -55,10 +58,13 @@ namespace Look.Controllers
             return View();
             }catch
             {
-                return RedirectToAction(nameof(Meldingen));
+                return RedirectToAction("Melding");
             }
         }
-        
+        public JsonResult Like()
+        {
+            return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==1).First().Likes});
+        }
         
 
         [HttpPost]
@@ -67,21 +73,24 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
-                int autheur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-                Console.WriteLine("de autheur is"+autheur);
-                melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==autheur).First();//dit werkt 
-                Console.WriteLine("de autheur is"+  melding.Auteur); //dat wordt hier getest
+                int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+                Console.WriteLine("de autheur is"+auteur);
+                melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();//dit werkt 
+                Console.WriteLine("de autheur is"+  melding.Auteur); //maar later staat die op null zonder reden
                 LaatstemeldingID++;
                 melding.MeldingId = LaatstemeldingID;
                 melding.AangemaaktOp = DateTime.Now;
-                melding.Likes = 0;
+                melding.Likes=0;
                 melding.Views=0;
                 _context.Add(melding);
                 await _context.SaveChangesAsync();
+                Console.WriteLine("de autheur is :/"+_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).First().Auteur.VoorNaam);
+                Console.WriteLine("melding staat "+_context.Meldingen.Skip(1).First().Auteur); //dit is ineens niet meer null
                 return RedirectToAction(nameof(Meldingen));
             }
             return View(melding);
         }
+        
         public async Task<IActionResult> Delete(string? titel)
         {
             if (titel == null)
@@ -121,6 +130,11 @@ namespace Look.Controllers
             //dit maakt een lijst aan waarop het gesorteerd wordt
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
+            
+            foreach (var melding in meldings)
+            {
+                Console.WriteLine("melding is "+ _context.Meldingen); //dit is null
+            }
 
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
@@ -147,7 +161,7 @@ namespace Look.Controllers
             }
             }
             const int pageSize = 3;
-            var count = this._context.Meldingen.Count();
+            var count = query.Count();
             var data = query.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;

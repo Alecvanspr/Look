@@ -150,7 +150,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Geplaatst door:@try{
-                                                        @Model.Auteur.VoorNaam
+                                                        @Model.Auteur
                                                         <p>naam werkt maar is op een of andere manier null</p>
                                             }catch
                                             {
@@ -158,19 +158,17 @@
                                             } </h5>
                 </div>
                     <script>
-                    fetch("/Home/Like")
+                    fetch("/Melding/Like")
                     .then(r => r.json())
-                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
+                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal+'het werkt');
                     </script>
                 <div class="col-md-1">
-                    <a><i class="far fa-thumbs-up"></i></a><div style="display: inline;" id="AantalLikes"></div>
-
+                    <a onclick="VoegLikeToe()"><i class="far fa-thumbs-up"></i>@Model.Likes </a><div style="display: inline;" id="AantalLikes"></div>
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row p-3 m-0">
                     <P>@Model.Inhoud</P>     
-                    <div id="testOfDeDocumentWerkt"></div>       
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
