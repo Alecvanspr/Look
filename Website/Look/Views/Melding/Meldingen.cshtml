@@ -206,18 +206,19 @@
     </div>
 </div>
 }
-
-@if (ViewBag.Page > 0)
-{
-    <a href="@Url.Action("Meldingen", "melding", new { page = ViewBag.Page - 1 })"
-    class="btn btn-default">
-    &laquo; Prev    
-    </a>
-}
-@if (ViewBag.Page < ViewBag.MaxPage)
-{
-    <a href="@Url.Action("Meldingen", "melding", new { page = ViewBag.Page + 1 })"
-    class="btn btn-default">
-    Next &raquo;   
-    </a>
-}
+<div style="text-align: center;">
+    @if (ViewBag.Page > 0)
+    {
+        <a href="@Url.Action("Meldingen", new { page = ViewBag.Page - 1 })"
+        class="btn btn-default">
+        <p class="paginering"><i class="fas fa-chevron-left"></i>Vorige Pagina </p>   
+        </a>
+    }
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+        <a href="@Url.Action("Meldingen", new { page = ViewBag.Page + 1 })"
+        class="btn btn-default">
+        <p class="paginering">Volgende Pagina <i class="fas fa-chevron-right"></i></p>
+        </a>
+    }
+</div>
