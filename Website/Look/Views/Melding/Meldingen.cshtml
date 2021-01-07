@@ -122,7 +122,7 @@
                                             Geplaatst door:
                                                 <a href="#">
                                                     @try{
-                                                    @Model.Auteur
+                                                    @Model.Auteur.GebruikersNaam
                                                     }catch{
                                                         <a>Annoniem</a>
                                                     }
@@ -150,8 +150,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Geplaatst door:@try{
-                                                        @Model.Auteur
-                                                        <p>naam werkt maar is op een of andere manier null</p>
+                                                        @Model.Auteur.GebruikersNaam
                                             }catch
                                             {
                                                     <p>anoniem</p>

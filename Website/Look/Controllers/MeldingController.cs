@@ -97,7 +97,7 @@ namespace Look.Controllers
             {
                 return NotFound();
             }
-
+            Console.WriteLine("melding staat delete "+_context.Meldingen.Skip(1).First().Auteur); //dit is ineens niet meer nul
             var melding = await _context.Meldingen
                 .FirstOrDefaultAsync(m => m.Titel == titel);
             if (melding == null)
@@ -121,13 +121,15 @@ namespace Look.Controllers
          public static List<Melding> query=null;
 
         //s is sorteren, z is zoeken
-            public IActionResult Meldingen(string s,string z, int page = 0)
+
+            public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
         {
             //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";
             ViewData["Zoek"] = z ?? "";
 
             //dit maakt een lijst aan waarop het gesorteerd wordt
+            var gebruikers = _context.Gebruikers.Where(g=>g.GebruikersNummer==3).First();//dit werkt 
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
             
