@@ -122,7 +122,7 @@ namespace Look.Controllers
 
         //s is sorteren, z is zoeken
 
-            public async Task<IActionResult> Meldingen(string s,string z, int page = 0)
+            public IActionResult Meldingen(string s,string z, int page = 0)
         {
             //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";
