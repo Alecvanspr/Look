@@ -36,22 +36,6 @@ namespace Look.Controllers
             UniekMeldingID = _context.Reacties.OrderByDescending(r=>r.ReactieId).ToList().First().ReactieId+1;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostComment([Bind("bericht")] Reactie reactie)
-        {
-            if (ModelState.IsValid)
-            {
-                reactie.ReactieId= _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Count()+1;
-                reactie.GeplaatstOp = DateTime.Now;
-                reactie.Likes = 0;
-                Console.WriteLine("Yes");
-                _context.Meldingen.Where(m=>m.MeldingId==1).First().Reacties.Add(reactie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Meldingen));
-            }
-            return View(reactie);
-        }
         public List<Reactie> MaakFakeReacties(){
             List<Reactie> reacties = new List<Reactie>();
             Reactie reactie = new Reactie();
@@ -65,16 +49,7 @@ namespace Look.Controllers
             return reacties;
         }
 
-        public IActionResult CreateMelding()
-        {
-            try{
-            int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            return View();
-            }catch
-            {
-                return RedirectToAction(nameof(Meldingen));
-            }
-        }
+
         public JsonResult Like()
         {
             return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==1).First().Likes});
@@ -98,22 +73,30 @@ namespace Look.Controllers
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
                 reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
-                
+                var inladen = _context.Meldingen.Where(m=>m.MeldingId==15).First().Reacties.First().ReactieId;
+
                 //dit maakt het id vaan de melding aan
                 reactie.ReactieId =UniekMeldingID;
                 UniekMeldingID++;
 
                 reactie.GeplaatstOp = DateTime.Now;
                 reactie.Likes = 0;
-                Console.WriteLine("ja dit werkt in zekere mate ");
-
-                _context.Add(reactie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Meldingen));
             }
             return View(nameof(Meldingen));
         }
         
+        public IActionResult CreateMelding()
+        {
+            try{
+            int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            return View();
+            }catch
+            {
+                return RedirectToAction(nameof(Meldingen));
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -148,7 +131,6 @@ namespace Look.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine("melding staat delete "+_context.Meldingen.Skip(1).First().Auteur); //dit is ineens niet meer nul
             var melding = await _context.Meldingen
                 .FirstOrDefaultAsync(m => m.Titel == titel);
             if (melding == null)
@@ -180,14 +162,9 @@ namespace Look.Controllers
             ViewData["Zoek"] = z ?? "";
 
             //dit maakt een lijst aan waarop het gesorteerd wordt
-            var gebruikers = _context.Gebruikers.Where(g=>g.GebruikersNummer==3).First();//dit werkt 
+            List<Gebruiker> gebruikers = _context.Gebruikers.ToList();
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
-            
-            foreach (var melding in meldings)
-            {
-                Console.WriteLine("melding is "+ _context.Meldingen); //dit is null
-            }
 
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");

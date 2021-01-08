@@ -149,20 +149,22 @@
                     <h5>@Model.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door:@try{
+                    <h5>Geplaatst door: @try{
                                                         @Model.Auteur.GebruikersNaam
                                             }catch
                                             {
-                                                    <p>Anoniem</p>
+                                                    <a>Anoniem</a>
                                             } </h5>
                 </div>
+
                     <script>
                     fetch("/Melding/Like")
                     .then(r => r.json())
-                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal+'het werkt');
+                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
                     </script>
+
                 <div class="col-md-1">
-                    <a onclick="VoegLikeToe()"><i class="far fa-thumbs-up"></i>@Model.Likes </a><div style="display: inline;" id="AantalLikes"></div>
+                    <a><i class="far fa-thumbs-up"></i> </a><div style="display: inline;" id="AantalLikes"></div>
                 </div>
             </div>
             <div class="modal-body">
@@ -194,7 +196,7 @@
                     }                
                 </div>
             <div class="row p-2 m-1">
-                <partial name="_ReactieToevoegen" for="@Model.Reacties" />
+                <partial name="_ReactieToevoegen"/>
             </div>
         </div>
     </div>
