@@ -228,9 +228,14 @@ namespace Look.Controllers
             //Check of de meegegeven model/parameters voldoen aan de Data Annotations in de Model.cs
             if (ModelState.IsValid)
             {
+                Console.WriteLine("Wachtwoord is: "+password);
                 //Voeg dezelfde encryptie toe aan het meegegeven wachtwoord en vergelijk deze met de wachtwoorden uit de database
                 var f_password = GetMD5(password);
+                Console.WriteLine("Het geEncrypte wachtwoord is: "+f_password);
                 var data = _context.Gebruikers.Where(s => s.EmailAdres.Equals(email) && s.WachtWoord.Equals(f_password)).ToList();
+                Console.WriteLine("Het geEncrypte wachtwoord wat we zoeken is: "+data[0].WachtWoord);
+                Console.WriteLine("Het geEncrypte wachtwoord is: "+email);
+                Console.WriteLine("Het geEncrypte wachtwoord wat we zoeken is: "+data[0].EmailAdres);
 
                 //Als er meerdere Gebruikers zijn geteld in de database is de gebruiker succesvol ingelogd
                 if(data.Count() > 0)
