@@ -13,40 +13,66 @@
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-4">
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Student</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(Model => Model.MeldingId)
-        <div class="form-group">
-            @Html.LabelFor(Model => Model.Titel, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(Model => Model.Titel, new { htmlAttributes = new { @class = "form-control" }})
-                @Html.ValidationMessageFor(Model => Model.Titel, "", new { @class = "text-danger" })
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="ErrorMessage" hidden>
+                    <div class="alert alert-danger" role="alert">
+                        Er is al een bericht met deze titel.
+                    </div>
+                </div>
+            <div class="form-group">
+                <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
+                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                <span asp-validation-for="Titel" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(Model => Model.Inhoud, htmlAttributes: new { @class = "control-label col-lg-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(Model => Model.Inhoud, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(Model => Model.Inhoud, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="Inhoud" class="control-label"></label>
+                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" required></textarea>
+                <span asp-validation-for="Inhoud" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input class="btn btn-dark w-100 d-block" type="submit" value="Save" />
+            <div class="form-group">
+                <label asp-for="Categorie" class="control-label"></label>
+                <input asp-for="Categorie" class="form-control" value ="@Model.Categorie" required />
+                <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
-        </div>
-    </div>
-}
+             <div class="form-group" hidden>
+                <input asp-for="MeldingId" class="form-control" value ="@Model.MeldingId" required />
+                <span asp-validation-for="MeldingId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <input id="OrgineleTitel" value ="@Model.Titel" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary"/>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    function CheckMeldingNaam(){
+        //dit maak de array die wordt meegegeven uit de cs
+        var titels = '(@ViewBag.Titels)';
+        var array = @Html.Raw(Json.Serialize(@ViewBag.Titels));
+        var titel = document.getElementById("Titel").value;
+        
+        //hier wordt gekeken of het er al een keertje in zit en die maakt die dan onzichtbaar
+        var AantalKeerVoorgekomen = false;
+        for (i = 0; i < array.length; i++){
+            if(array[i].toLowerCase()==(titel.toLowerCase())){
+                AantalKeerVoorgekomen=true;
+                if(titel.toLowerCase()==document.getElementById("OrgineleTitel").value.toLowerCase()){
+                    AantalKeerVoorgekomen=false;
+                }
+            }
+        }
+        if(AantalKeerVoorgekomen){
+                document.getElementById('ErrorMessage').hidden = false;
+        }else{
+                document.getElementById('ErrorMessage').hidden = true;
+        }
+    }
+</script>
 
 <div>
     @Html.ActionLink("Back to List", "Meldingen")

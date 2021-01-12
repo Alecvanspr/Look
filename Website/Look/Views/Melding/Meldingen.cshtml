@@ -57,7 +57,23 @@
   }
 </script>
 
+
 <div id="meldingen-content" class="container bg-white py-3">
+       @if(ViewBag.Success==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-success" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+        @if(ViewBag.Error==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+
     @foreach (var Model in Model)
     {
             <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
@@ -93,13 +109,22 @@
                                         }else{
                                         <p>@Model.Inhoud</p>
                                         }
-                                        <a data-toggle="modal" href="#melding-@Model.MeldingId">
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)">
                                             lees meer
                                         </a>
+                                        <input id="GetMeldingId" value='@Model.MeldingId' hidden>
                                     </p>
                                 </div>
                             </div>
-
+                            <script>
+                                //dit voegt er een toe als je er op klikt
+                                function VoegToe(id){
+                                    //var id = document.getElementById('GetMeldingId').value;
+                                    fetch("/Melding/AddView?id="+id)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("MeldingViews").innerHTML = r.aantal);
+                                    }
+                            </script>
                             <div class="melding-footer py-1 m-0 p-0">
                                 <hr>
                                 <div class="row w-100 py-1 m-0 p-0 text-secondary">
@@ -148,7 +173,6 @@
                     @if(ViewBag.gebruiker==(Model.Auteur.GebruikersNummer)) {
                         <li class="nav-item text-center">
                                 <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
-
                             </li>
                     }
                 }catch{}
@@ -224,3 +248,4 @@
         </a>
     }
 </div>
+

@@ -20,20 +20,34 @@ namespace Look.Controllers
 {
     public class LikeInfo{
             public int aantal{get;set;}
-        }
+    }
+    public class ViewInfo{
+            public int aantal{get;set;}
+    }
     public class MeldingController : Controller
     {
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
         private readonly LookContext _context; 
         public long LaatstemeldingID;
         public long UniekMeldingID;
+        public static bool Success;
+        public static bool Error;
+        public static string Message;
 
         public MeldingController(LookContext context)
         {
             _context = context;
+            CheckErrors();
             CheckMeldingenOpDatum();
             LaatstemeldingID = _context.Meldingen.OrderByDescending(m=>m.MeldingId).ToList().First().MeldingId+1;
             UniekMeldingID = _context.Reacties.OrderByDescending(r=>r.ReactieId).ToList().First().ReactieId+1;
+        }
+         public void CheckErrors(){
+             if(Message==null){
+                Success = false;
+                Error = false;
+                Message = "Error";
+             }
         }
 
         public List<Reactie> MaakFakeReacties(){
@@ -65,6 +79,7 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen)); //todo dit moet inlog scherm worden
             }
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PlaatsBericht([Bind("Bericht")] Reactie reactie){
@@ -110,12 +125,13 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
+                //dit kijkt of de titel van de gebruiker al in gebruik is
                 var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList();
                 Console.WriteLine(data.Count+"Dit is de datacount");
                 if(data.Count == 0) {
-                ViewBag.editSuccess = true;
-                ViewBag.editError = false;
-                ViewBag.editSuccessText = "Het Bericht is successvol geplaatst";
+                Success = true;
+                Error = false;
+                Message = "Het Bericht is successvol geplaatst";
 
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 if(!melding.IsPrive){
@@ -137,7 +153,7 @@ namespace Look.Controllers
             else
             {
                 //Toon de error message in de HTML
-                ViewBag.editError = true;
+                ViewBag.CreateError = true;
                 ViewBag.editSuccess = false;
                 ViewBag.editErrorText = "Het bericht is niet geplaats.<br> Er was een bericht met dezelfde titel";
                 Console.WriteLine("Het bericht is niet geplaatst");
@@ -145,7 +161,7 @@ namespace Look.Controllers
             }
                 return RedirectToAction(nameof(Meldingen));
                 }
-                return View(nameof(Meldingen));
+                return RedirectToAction(nameof(Meldingen));
         }
         
         public async Task<IActionResult> Delete(string titel)
@@ -224,6 +240,14 @@ namespace Look.Controllers
             var data = query.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
+           
+            ViewBag.Success = Success;
+            ViewBag.Error = Error;
+            ViewBag.Message = Message;
+            
+            Success = false;
+            Error = false;
+            Message = "Error";
 
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
@@ -252,20 +276,57 @@ namespace Look.Controllers
 
         public ActionResult Edit(int id)
         { 
-            var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
-            Console.WriteLine("het id is = "+id);
+            List<string> titels = new List<string>();
+            foreach(var m in _context.Meldingen){
+                titels.Add(m.Titel);
+            }
+            ViewBag.Titels = titels;
+            ViewBag.registerErrorText = "Deze titel van een bericht is al in gebruik.";
+             var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
             return View(melding);
         }
-        [HttpPost]
-       public async Task<IActionResult> Edit(Melding NieuweMelding)
+       [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("Titel,Inhoud,Categorie,MeldingId")] Melding melding)
         {
-            var OudeMelding = _context.Meldingen.Where(m => m.MeldingId == NieuweMelding.MeldingId).FirstOrDefault();
-            OudeMelding.Titel= NieuweMelding.Titel;
-            OudeMelding.Inhoud = NieuweMelding.Inhoud;
+            if (ModelState.IsValid)
+            {
+                //dit kijkt of de titel van de gebruiker al in gebruik is
+                var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList().Count;
+                
+                //dit checkt of de titel hetzelfde is als ervoor
+                if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).First().Titel==melding.Titel){
+                    data = 0;
+                }
 
-             _context.Update(OudeMelding);
+                if(data == 0) {
+                _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Titel = melding.Titel;
+                 _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Inhoud = melding.Inhoud;
+                _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Categorie = melding.Categorie;
+                await _context.SaveChangesAsync();
+
+                //dit zorgt ervoor dat er een melding wordt weergegeven als het gewijzigd wordt
+                Success = true;
+                Message = "Bericht is successvol gewijzigd!";
+
+            }
+            else
+            {
+                //Toon de error message in de HTML
+                Error = true;
+                Message = "Het bericht is niet geplaatst.";
+                Console.WriteLine("Het bericht is niet geplaatst");
+                return RedirectToAction(nameof(Edit));
+            }
+                return RedirectToAction(nameof(Meldingen));
+                }
+                return RedirectToAction((nameof(Edit)));
+        }
+        public JsonResult AddView(int? id)
+        {
+            _context.Meldingen.Where(m=>m.MeldingId==id).First().Views+=1;
             _context.SaveChanges();
-            return RedirectToAction("Meldingen");
+            return Json(new ViewInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Views});
         }
     }
 }
