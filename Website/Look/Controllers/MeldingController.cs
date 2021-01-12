@@ -30,8 +30,8 @@ namespace Look.Controllers
 
         public MeldingController(LookContext context)
         {
-            //CheckMeldingenOpDatum();
             _context = context;
+            CheckMeldingenOpDatum();
             LaatstemeldingID = _context.Meldingen.OrderByDescending(m=>m.MeldingId).ToList().First().MeldingId+1;
             UniekMeldingID = _context.Reacties.OrderByDescending(r=>r.ReactieId).ToList().First().ReactieId+1;
         }
@@ -52,7 +52,7 @@ namespace Look.Controllers
 
         public JsonResult Like()
         {
-            return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==1).First().Likes});
+            return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
         }
 
         public IActionResult PlaatsBericht()
@@ -91,6 +91,12 @@ namespace Look.Controllers
         {
             try{
             int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            List<string> titels = new List<string>();
+            foreach(var m in _context.Meldingen){
+                titels.Add(m.Titel);
+            }
+            ViewBag.Titels = titels;
+            ViewBag.registerErrorText = "Deze titel van een bericht is al in gebruik.";
             return View();
             }catch
             {
@@ -104,6 +110,13 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
+                var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList();
+                Console.WriteLine(data.Count+"Dit is de datacount");
+                if(data.Count == 0) {
+                ViewBag.editSuccess = true;
+                ViewBag.editError = false;
+                ViewBag.editSuccessText = "Het Bericht is successvol geplaatst";
+
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 if(!melding.IsPrive){
                 int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
@@ -120,9 +133,19 @@ namespace Look.Controllers
                 melding.Views=0;
                 _context.Add(melding);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Meldingen));
             }
-            return View(nameof(Meldingen));
+            else
+            {
+                //Toon de error message in de HTML
+                ViewBag.editError = true;
+                ViewBag.editSuccess = false;
+                ViewBag.editErrorText = "Het bericht is niet geplaats.<br> Er was een bericht met dezelfde titel";
+                Console.WriteLine("Het bericht is niet geplaatst");
+                return RedirectToAction(nameof(CreateMelding));
+            }
+                return RedirectToAction(nameof(Meldingen));
+                }
+                return View(nameof(Meldingen));
         }
         
         public async Task<IActionResult> Delete(string titel)
@@ -166,6 +189,9 @@ namespace Look.Controllers
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
 
+            int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            ViewBag.Gebruiker = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First().GebruikersNummer;
+
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
@@ -179,7 +205,6 @@ namespace Look.Controllers
                 }else{
                     query = meldings;
                 }
-
                 //dit zorgt ervoor dat je kan sorteren
                 if(s!=null){
                     if(s.Equals("likes")){
@@ -200,8 +225,6 @@ namespace Look.Controllers
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
             this.ViewBag.Page = page;
 
-
-
             //Toon de views mits de gebruiker is ingelogd.
             if(CurrentSession != null || DeveloperSession != null)
             {
@@ -213,15 +236,36 @@ namespace Look.Controllers
             }
         }
 
+
+        [HttpPost]
         public async void CheckMeldingenOpDatum(){
+            //hier wordt de verloopdatum gemaakt
             DateTime VerloopDatum = DateTime.Now;
             VerloopDatum = VerloopDatum.AddDays(-30);
-            //addMonths
+
             foreach (var melding in _context.Meldingen.Where(m=>m.AangemaaktOp<VerloopDatum))
             {
                 _context.Meldingen.Remove(melding);
-                await _context.SaveChangesAsync();
             }
+            await _context.SaveChangesAsync();
+        }
+
+        public ActionResult Edit(int id)
+        { 
+            var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
+            Console.WriteLine("het id is = "+id);
+            return View(melding);
+        }
+        [HttpPost]
+       public async Task<IActionResult> Edit(Melding NieuweMelding)
+        {
+            var OudeMelding = _context.Meldingen.Where(m => m.MeldingId == NieuweMelding.MeldingId).FirstOrDefault();
+            OudeMelding.Titel= NieuweMelding.Titel;
+            OudeMelding.Inhoud = NieuweMelding.Inhoud;
+
+             _context.Update(OudeMelding);
+            _context.SaveChanges();
+            return RedirectToAction("Meldingen");
         }
     }
 }

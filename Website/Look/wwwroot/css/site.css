@@ -314,3 +314,8 @@ html {
   text-decoration: underline;
   cursor: pointer;
 }
+
+#show_button{
+  display: none;
+  border: 1px solid #343434;
+ }

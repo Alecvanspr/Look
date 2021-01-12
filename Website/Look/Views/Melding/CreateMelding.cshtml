@@ -16,19 +16,25 @@
     <div class="col-md-4">
         <form asp-action="CreateMelding">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="ErrorMessage" hidden>
+                    <div class="alert alert-danger" role="alert">
+                        Er is al een bericht met deze titel.
+                    </div>
+                </div>
+                
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
-                <input asp-for="Titel" class="form-control" />  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                <input asp-for="Titel" class="form-control" onchange='CheckMeldingNaam()' required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
                 <span asp-validation-for="Titel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inhoud" class="control-label"></label>
-                <textarea asp-for="Inhoud" class="form-control" rows="6"></textarea>
+                <textarea asp-for="Inhoud" class="form-control" rows="6" required></textarea>
                 <span asp-validation-for="Inhoud" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Categorie" class="control-label"></label>
-                <input asp-for="Categorie" class="form-control" />
+                <input asp-for="Categorie" class="form-control" required />
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,11 +45,29 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="CreateMelding" class="btn btn-primary" />
+                <input type="submit" value="CreateMelding" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    function CheckMeldingNaam(){
+        //dit maak de array die wordt meegegeven uit de cs
+        var titels = '(@ViewBag.Titels)';
+        var array = @Html.Raw(Json.Serialize(@ViewBag.Titels));
+        var titel = document.getElementById("Titel").value;
+
+        //hier wordt gekeken of het er al een keertje in zit en die maakt die dan onzichtbaar
+        for (i = 0; i < array.length; i++){
+            if(array[i]==(titel)){
+                document.getElementById('ErrorMessage').hidden = false;
+            }else{
+                document.getElementById('ErrorMessage').hidden = true;
+            }
+        }
+    }
+</script>
 
 <div>
     <a asp-action="Meldingen">Terug naar berichten</a>

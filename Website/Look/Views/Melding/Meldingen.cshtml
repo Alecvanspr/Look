@@ -73,7 +73,6 @@
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
                                         <i class="far fa-clock"></i> 
-
                                         @Model.AangemaaktOp
                                     </h6>
                                 </div>
@@ -145,6 +144,14 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                @try{
+                    @if(ViewBag.gebruiker==(Model.Auteur.GebruikersNummer)) {
+                        <li class="nav-item text-center">
+                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
+
+                            </li>
+                    }
+                }catch{}
                 <div class="col-md-7">
                     <h5>@Model.Titel</h5>
                 </div>
@@ -156,7 +163,6 @@
                                                     <a>Anoniem</a>
                                             } </h5>
                 </div>
-
                     <script>
                     fetch("/Melding/Like")
                     .then(r => r.json())
