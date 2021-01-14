@@ -105,7 +105,8 @@ namespace Look.Controllers
                 int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
                 melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
                 }
-            
+                
+
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Reacties = MaakFakeReacties();
                 melding.Likes=0;
