@@ -171,10 +171,12 @@ namespace Look.Controllers
             List<Gebruiker> gebruikers = _context.Gebruikers.ToList();
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
-
+            try{
             int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
             ViewBag.Gebruiker = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First().GebruikersNummer;
-
+            }catch{
+                meldings = meldingen.Where(m=>m.Auteur!=null).ToList();
+            }
             //Check of er een gebruiker is ingelogd.
             var CurrentSession = this.HttpContext.Session.GetString("Naam");
             var DeveloperSession = "Developer";
@@ -309,6 +311,7 @@ namespace Look.Controllers
                 _context.Reacties.Add(reactie);
                  Console.WriteLine("Comment Aan database toegevoegd ");
                  try{
+                     
                         reacties =_context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties;
                         reacties.Add(reactie);
                  }catch{ //dit maakt een nieuwe list aan als deze er niet automatisch inzit

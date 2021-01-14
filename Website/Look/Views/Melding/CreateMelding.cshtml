@@ -16,6 +16,7 @@
     <div class="col-md-4">
         <form asp-action="CreateMelding">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="output"></div>
             <div id="ErrorMessage" hidden>
                     <div class="alert alert-danger" role="alert">
                         Er is al een bericht met deze titel.
@@ -61,7 +62,6 @@
         //hier wordt gekeken of het er al een keertje in zit en die maakt die dan onzichtbaar
         var AantalKeerVoorgekomen = false;
         for (i = 0; i < array.length; i++){
-            keren_klik++;
             if(array[i].toLowerCase()==(titel.toLowerCase())){
                 AantalKeerVoorgekomen=true;
             }
