@@ -57,7 +57,23 @@
   }
 </script>
 
+
 <div id="meldingen-content" class="container bg-white py-3">
+       @if(ViewBag.Success==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-success" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+        @if(ViewBag.Error==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+
     @foreach (var Model in Model)
     {
             <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
@@ -73,7 +89,6 @@
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
                                         <i class="far fa-clock"></i> 
-
                                         @Model.AangemaaktOp
                                     </h6>
                                 </div>
@@ -94,13 +109,22 @@
                                         }else{
                                         <p>@Model.Inhoud</p>
                                         }
-                                        <a data-toggle="modal" href="#melding-@Model.MeldingId">
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)">
                                             lees meer
                                         </a>
+                                        <input id="GetMeldingId" value='@Model.MeldingId' hidden>
                                     </p>
                                 </div>
                             </div>
-
+                            <script>
+                                //dit voegt er een toe als je er op klikt
+                                function VoegToe(id){
+                                    //var id = document.getElementById('GetMeldingId').value;
+                                    fetch("/Melding/AddView?id="+id)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("MeldingViews").innerHTML = r.aantal);
+                                    }
+                            </script>
                             <div class="melding-footer py-1 m-0 p-0">
                                 <hr>
                                 <div class="row w-100 py-1 m-0 p-0 text-secondary">
@@ -108,13 +132,10 @@
                                         <p>
                                             <div class="categories-title d-inline">
                                                 <p>Categorie:</p>
+                                            </div> 
+                                            <div class="categories-content d-inline">
+                                                <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@Model.Categorie</a>
                                             </div>
-                                            @foreach (var categorie in Model.Categorie)
-                                            {   
-                                                <div class="categories-content d-inline">
-                                                    <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@categorie</a>
-                                                </div>
-                                            }
                                         </p>
                                     </div>
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
@@ -134,10 +155,11 @@
                         </article>
                     </div>
                 </div>
-            </div>  
-    }
-</div>
-
+            </div> 
+            } 
+         </div>
+    </div>
+ </div>
 <!--- Modal voor een nieuw bericht---->
 @foreach (var Model in Model){
 <!--- Modal voor de reacties---->
@@ -145,6 +167,13 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                @try{
+                    @if(ViewBag.gebruiker==(Model.Auteur.GebruikersNummer)) {
+                        <li class="nav-item text-center">
+                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
+                            </li>
+                    }
+                }catch{}
                 <div class="col-md-7">
                     <h5>@Model.Titel</h5>
                 </div>
@@ -156,6 +185,15 @@
                                                     <a>Anoniem</a>
                                             } </h5>
                 </div>
+<<<<<<< HEAD
+=======
+                    <script>
+                    fetch("/Melding/Like")
+                    .then(r => r.json())
+                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
+                    </script>
+
+>>>>>>> 9ae177a525a11595dbef7a87f00dc49330545899
                 <div class="col-md-1">
                     <p>@Html.ActionLink("Like", "Like", "Melding", new { id = @Model.MeldingId })<i class="far fa-thumbs-up"></i>@Model.Likes</p>
                 </div>
@@ -166,35 +204,36 @@
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
-                <!--reactie-->
-                    @if(Model.Reacties==null){
-                        <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
-                    }else{
-                            @foreach (var reacties in Model.Reacties)
-                            {
-                                <div class="container border col-md-8 p-2">
-                                    <div class="row p-0 m-0">
-                                        <div class="col-md-11">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.Likes</p>
-                                        </div>
-                                    </div>
-                                    <div class="row p-0 m-0">
-                                        <p>@reacties.Bericht</p>
-                                    </div>
-                                </div>
-                        <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
-                        }
-                    }                
+
+                <div id="Werkt">
+                    @Html.Partial("_ReactieToevoegen",Model)
                 </div>
-            <div class="row p-2 m-1">
-                <partial name="_ReactieToevoegen"/>
-            </div>
+
+                </div>
+                           <div class="row p-2 m-1">
+                    <div class="col-md-10">
+                        <input class="form-control" id="reactie" value=""/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                        <div id="ReactieOutput"></div>
+                    </div>
+                    </div>
+                        <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)"><a >Plaats Reactie</a></button>       
+                        <script>           
+                            //dit voegt er een toe als je er op klikt
+                                function VoegReactieToe(id){
+                                    document.getElementById("ReactieOutput").innerHTML = "Niks Werkt";
+                                    var inhoud = document.getElementById('reactie').value;
+                                    document.getElementById("ReactieOutput").innerHTML = inhoud;
+                                    fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("ReactieOutput").innerHTML = r.bericht);
+                                    document.getElementById("reactie").value = "";
+                                    }
+                            </script>
         </div>
     </div>
-</div>
+     </div>
 }
+ </div>
 <div style="text-align: center;">
     @if (ViewBag.Page > 0)
     {
@@ -211,3 +250,4 @@
         </a>
     }
 </div>
+

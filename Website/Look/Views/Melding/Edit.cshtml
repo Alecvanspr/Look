@@ -1,58 +1,54 @@
 @model Look.Models.Melding
-
 @{
-    ViewData["Title"] = "Nieuw bericht";
+    ViewBag.Title = "Edit";
 }
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-5">
-        <h1>Nieuwe Melding</h1>
-        <h4>Melding</h4>
+        <h1>Bewerk Melding</h1>
+        <h4>@Model.Titel</h4>
     </div>
 </div>
-<hr/>
+
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-4">
-        <form asp-action="CreateMelding">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div id="output"></div>
             <div id="ErrorMessage" hidden>
                     <div class="alert alert-danger" role="alert">
                         Er is al een bericht met deze titel.
                     </div>
                 </div>
-                
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
-                <input asp-for="Titel" class="form-control" onchange='CheckMeldingNaam()' required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
                 <span asp-validation-for="Titel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inhoud" class="control-label"></label>
-                <textarea asp-for="Inhoud" class="form-control" rows="6" required></textarea>
+                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" required></textarea>
                 <span asp-validation-for="Inhoud" class="text-danger"></span>
             </div>
-            <div class="form-group">
+              <div class="form-group">
                 <label asp-for="Categorie" for="categorie" class="control-label"></label>
-                <select asp-for="Categorie" name="categorie" class="form-control">
+                <select asp-for="Categorie" name="categorie" class="control-label">
                     <option value="Gevonden voorwerp">Gevonden voorwerp</option>
-                    <option value="Verloren voorwerp">Verloren voorwerp</option>
                     <option value="Bijeenkomst">Bijeenkomst</option>
                     <option value="Overlast">Overlast</option>
-                    <option value="Verdachte activiteit">Verdachte activiteit</option>
+                    <option value="Criminaliteit">Criminaliteit</option>
                 </select>
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="IsPrive" class="control-label"></label>
-                <div class= "col-md-2">
-                <input type="checkbox" asp-for="IsPrive" class="form-control" value="true"/>
-                <span asp-validation-for="IsPrive" class="text-danger"></span>
-                </div>
+             <div class="form-group" hidden>
+                <input asp-for="MeldingId" class="form-control" value ="@Model.MeldingId" required />
+                <span asp-validation-for="MeldingId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <input id="OrgineleTitel" value ="@Model.Titel" />
             </div>
             <div class="form-group">
-                <input type="submit" value="CreateMelding" class="btn btn-primary"/>
+                <input type="submit" value="Edit" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -64,12 +60,15 @@
         var titels = '(@ViewBag.Titels)';
         var array = @Html.Raw(Json.Serialize(@ViewBag.Titels));
         var titel = document.getElementById("Titel").value;
-
+        
         //hier wordt gekeken of het er al een keertje in zit en die maakt die dan onzichtbaar
         var AantalKeerVoorgekomen = false;
         for (i = 0; i < array.length; i++){
             if(array[i].toLowerCase()==(titel.toLowerCase())){
                 AantalKeerVoorgekomen=true;
+                if(titel.toLowerCase()==document.getElementById("OrgineleTitel").value.toLowerCase()){
+                    AantalKeerVoorgekomen=false;
+                }
             }
         }
         if(AantalKeerVoorgekomen){
@@ -81,9 +80,5 @@
 </script>
 
 <div>
-    <a asp-action="Meldingen">Terug naar berichten</a>
+    @Html.ActionLink("Back to List", "Meldingen")
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
