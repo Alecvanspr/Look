@@ -158,10 +158,11 @@
                         </article>
                     </div>
                 </div>
-            </div>  
-    }
-</div>
-
+            </div> 
+            } 
+         </div>
+    </div>
+ </div>
 <!--- Modal voor een nieuw bericht---->
 @foreach (var Model in Model){
 <!--- Modal voor de reacties---->
@@ -203,35 +204,35 @@
                 </div>
                 <hr/>
                 <div class="col-md-2"></div>
-                <!--reactie-->
-                    @if(Model.Reacties==null){
-                        <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
-                    }else{
-                            @foreach (var reacties in Model.Reacties)
-                            {
-                                <div class="container border col-md-8 p-2">
-                                    <div class="row p-0 m-0">
-                                        <div class="col-md-11">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.Likes</p>
-                                        </div>
-                                    </div>
-                                    <div class="row p-0 m-0">
-                                        <p>@reacties.Bericht</p>
-                                    </div>
-                                </div>
-                        <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>
-                        }
-                    }                
+
+                <div id="Werkt">
+                    @Html.Partial("_ReactieToevoegen",Model)
                 </div>
-            <div class="row p-2 m-1">
-                <partial name="_ReactieToevoegen"/>
-            </div>
+
+                </div>
+                           <div class="row p-2 m-1">
+                    <div class="col-md-10">
+                        <input class="form-control" id="reactie" value=""/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                    </div>
+                    </div>
+                        <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)"><a >Plaats Reactie</a></button>       
+                        <script>           
+                            //dit voegt er een toe als je er op klikt
+                                function VoegReactieToe(id){
+                                    document.getElementById("ReactieOutput").innerHTML = "Niks Werkt";
+                                    var inhoud = document.getElementById('reactie').value;
+                                    document.getElementById("ReactieOutput").innerHTML = inhoud;
+                                    fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("ReactieOutput").innerHTML = r.bericht);
+                                    document.getElementById("reactie").value = "";
+                                    }
+                            </script>
         </div>
     </div>
-</div>
+     </div>
 }
+ </div>
 <div style="text-align: center;">
     @if (ViewBag.Page > 0)
     {

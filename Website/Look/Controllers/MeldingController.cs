@@ -18,11 +18,11 @@ using PagedList;
 
 namespace Look.Controllers
 {
-    public class LikeInfo{
+    public class IntInfo{
             public int aantal{get;set;}
     }
-    public class ViewInfo{
-            public int aantal{get;set;}
+    public class StringInfo{
+            public string bericht{get;set;}
     }
     public class MeldingController : Controller
     {
@@ -66,40 +66,7 @@ namespace Look.Controllers
 
         public JsonResult Like()
         {
-            return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
-        }
-
-        public IActionResult PlaatsBericht()
-        {
-            try{
-            int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            return View();
-            }catch
-            {
-                return RedirectToAction(nameof(Meldingen)); //todo dit moet inlog scherm worden
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PlaatsBericht([Bind("Bericht")] Reactie reactie){
-            if (ModelState.IsValid)
-            {
-                //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
-                int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-                reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
-                var inladen = _context.Meldingen.Where(m=>m.MeldingId==15).First().Reacties.First().ReactieId;
-
-                //dit maakt het id vaan de melding aan
-                reactie.ReactieId =UniekMeldingID;
-                UniekMeldingID++;
-
-                reactie.GeplaatstOp = DateTime.Now;
-                reactie.Likes = 0;
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Meldingen));
-            }
-            return View(nameof(Meldingen));
+            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
         }
         
         public IActionResult CreateMelding()
@@ -326,7 +293,36 @@ namespace Look.Controllers
         {
             _context.Meldingen.Where(m=>m.MeldingId==id).First().Views+=1;
             _context.SaveChanges();
-            return Json(new ViewInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Views});
+            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Views});
+        }
+
+        public JsonResult PostComment(int? id, string inhoud){
+            Reactie reactie = new Reactie();
+            int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            reactie.ReactieId = UniekMeldingID;
+            UniekMeldingID++;
+            reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
+            reactie.GeplaatstOp = DateTime.Now;
+            reactie.Bericht=inhoud;
+            List<Reactie> reacties;
+            try{
+                _context.Reacties.Add(reactie);
+                 Console.WriteLine("Comment Aan database toegevoegd ");
+                 try{
+                        reacties =_context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties;
+                        reacties.Add(reactie);
+                 }catch{ //dit maakt een nieuwe list aan als deze er niet automatisch inzit
+                        reacties = new List<Reactie>();
+                        reacties.Add(reactie);
+                        _context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties=reacties;
+                 }
+                Console.WriteLine(reacties);
+            }catch{
+                Console.WriteLine("error"); 
+            }
+            Console.WriteLine("Comment geplaatst");
+             _context.SaveChanges();
+            return Json(new StringInfo { bericht =inhoud});
         }
     }
 }

@@ -276,6 +276,7 @@ namespace Look.Controllers
                 RedirectToAction("Login");
             return View();
         }
+        
 
         //Methode die de Register form uitvoert zodra er op de submit knop is gedrukt
         [HttpPost]
