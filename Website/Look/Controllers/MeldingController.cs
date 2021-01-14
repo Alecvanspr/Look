@@ -18,10 +18,7 @@ using PagedList;
 
 namespace Look.Controllers
 {
-    public class LikeInfo{
-            public int aantal{get;set;}
-        }
-    public class MeldingController : Controller
+        public class MeldingController : Controller
     {
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
         private readonly LookContext _context; 
@@ -49,10 +46,47 @@ namespace Look.Controllers
             return reacties;
         }
 
-
-        public JsonResult Like()
+        public ActionResult Like(long id)
         {
-            return Json(new LikeInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==1).First().Likes});
+            var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(p => p.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.GebruikersNummer == IngelogdeGebruiker.GebruikersNummer).FirstOrDefault();
+            Liked _newLiked = new Liked();
+            _newLiked.GebruikersNummer = IngelogdeGebruiker.GebruikersNummer;
+            _newLiked.MeldingId = _melding.MeldingId;
+                        
+            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            var DeveloperSession = "Developer";
+
+            if (CurrentSession != null || DeveloperSession != null)
+            {
+                if (_liked == null)
+                {
+                    _melding.Likes++;
+                    _newLiked.heeftGeliked = true;
+                    _context.Liked.Add(_newLiked);
+                    _context.SaveChanges();
+                } else {
+                    if (_liked.heeftGeliked == false)
+                    {
+                        _melding.Likes++;
+                        _liked.heeftGeliked = true;
+                        _context.Update(_melding);
+                        _context.Update(_liked);
+                        _context.SaveChanges();
+                    } else {
+                        _melding.Likes--;
+                        _liked.heeftGeliked = false;
+                        _context.Update(_melding);
+                        _context.Update(_liked);
+                        _context.SaveChanges();
+                    }
+                }
+            } else {
+                return RedirectToAction("Login");
+            }
+            return RedirectToAction(nameof(Meldingen)); //TODO: op dezelfde pagina blijven wanneer een bericht is geliked
         }
 
         public IActionResult PlaatsBericht()
@@ -155,7 +189,7 @@ namespace Look.Controllers
 
         //s is sorteren, z is zoeken
 
-            public IActionResult Meldingen(string s,string z, int page = 0)
+        public IActionResult Meldingen(string s,string z, int page = 0)
         {
             //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";

@@ -156,15 +156,8 @@
                                                     <a>Anoniem</a>
                                             } </h5>
                 </div>
-
-                    <script>
-                    fetch("/Melding/Like")
-                    .then(r => r.json())
-                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
-                    </script>
-
                 <div class="col-md-1">
-                    <a><i class="far fa-thumbs-up"></i> </a><div style="display: inline;" id="AantalLikes"></div>
+                    <p>@Html.ActionLink("Like", "Like", "Melding", new { id = @Model.MeldingId })<i class="far fa-thumbs-up"></i>@Model.Likes</p>
                 </div>
             </div>
             <div class="modal-body">

@@ -12,6 +12,7 @@ namespace Look
         public DbSet<Gebruiker> Gebruikers {get; set;}
         public DbSet<Melding> Meldingen {get; set;}
         public DbSet<Reactie> Reacties {get; set;}
+        public DbSet<Liked> Liked { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder ModelBuilder)
