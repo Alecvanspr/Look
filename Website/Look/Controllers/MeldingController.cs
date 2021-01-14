@@ -105,11 +105,7 @@ namespace Look.Controllers
                 int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
                 melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
                 }
-                
-                //dit zorgt ervoor dat er een uniek nummer wordt aangemaakt voor de meldingen
-                melding.MeldingId = LaatstemeldingID;
-                LaatstemeldingID++;
-
+            
                 melding.AangemaaktOp = DateTime.Now;
                 melding.Reacties = MaakFakeReacties();
                 melding.Likes=0;
