@@ -143,9 +143,9 @@
                                             Geplaatst door:
                                                 <a href="#">
                                                     @try{
-                                                    @Model.Auteur.GebruikersNaam
+                                                        @Model.Auteur.FullName()
                                                     }catch{
-                                                        <a>Annoniem</a>
+                                                        <a>Anoniem</a>
                                                     }
                                                 </a>
                                         </p>
@@ -157,7 +157,6 @@
                 </div>
             </div> 
             } 
-         </div>
     </div>
  </div>
 <!--- Modal voor een nieuw bericht---->
@@ -168,7 +167,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 @try{
-                    @if(ViewBag.gebruiker==(Model.Auteur.GebruikersNummer)) {
+                    @if(ViewBag.gebruiker==(Model.Auteur.Id)) {
                         <li class="nav-item text-center">
                                 <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
                             </li>
@@ -179,7 +178,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5>Geplaatst door: @try{
-                                                        @Model.Auteur.GebruikersNaam
+                                                        @Model.Auteur.FullName()
                                             }catch
                                             {
                                                     <a>Anoniem</a>

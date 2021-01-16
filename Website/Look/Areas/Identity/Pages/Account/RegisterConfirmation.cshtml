@@ -1,0 +1,22 @@
+@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<header>
+    <div id="register-confirmation-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">@ViewData["Title"]</h1>
+                <p class="text-secondary">
+                    Je bent succesvol geregistreerd. Je ontvangt binnen enkele ogenblikken een e-mail om je e-mailadres te verifiëren.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -15,35 +15,31 @@ using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
+using Look.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Look.Controllers
 {
-        public class MeldingController : Controller
-        {
-        public class IntInfo
-        {
-            public int aantal{get;set;}
-        }
-        public class StringInfo
-        {
-            public string bericht{get;set;}
-        }
-        private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
-        private readonly LookContext _context; 
-        public long LaatstemeldingID;
-        public long UniekMeldingID;
+    public class MeldingController : Controller
+    {
+        private readonly ILogger<MeldingController> _logger;
+        private readonly LookIdentityDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _singInManager;
         public static bool Success;
         public static bool Error;
         public static string Message;
 
-        public MeldingController(LookContext context)
+        public MeldingController(ILogger<MeldingController> logger, LookIdentityDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _logger = logger;
+            _userManager = userManager;
+            _singInManager = signInManager;
             CheckErrors();
             CheckMeldingenOpDatum();
-            LaatstemeldingID = _context.Meldingen.OrderByDescending(m=>m.MeldingId).ToList().First().MeldingId+1;
-            UniekMeldingID = _context.Reacties.OrderByDescending(r=>r.ReactieId).ToList().First().ReactieId+1;
         }
+    
          public void CheckErrors(){
              if(Message==null){
                 Success = false;
@@ -52,30 +48,39 @@ namespace Look.Controllers
              }
         }
 
-        public List<Reactie> MaakFakeReacties(){
-            List<Reactie> reacties = new List<Reactie>();
-            Reactie reactie = new Reactie();
-            reactie.ReactieId = UniekMeldingID;
-            UniekMeldingID++;
-            reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==3).First();
-            reactie.GeplaatstOp = DateTime.Now;
-            reactie.Bericht ="Een reactie";
-            reactie.Likes = 0;
-            reacties.Add(reactie);
-            return reacties;
+        public class IntInfo
+        {
+            public int aantal{get;set;}
         }
+        public class StringInfo
+        {
+            public string bericht{get;set;}
+        }
+
+        // public List<Reactie> MaakFakeReacties(){
+        //     List<Reactie> reacties = new List<Reactie>();
+        //     Reactie reactie = new Reactie();
+        //     reactie.ReactieId = UniekMeldingID;
+        //     UniekMeldingID++;
+        //     reactie.GeplaatstDoor = _context.Users.Where( g=> g.Id==3).First();
+        //     reactie.GeplaatstOp = DateTime.Now;
+        //     reactie.Bericht ="Een reactie";
+        //     reactie.Likes = 0;
+        //     reacties.Add(reactie);
+        //     return reacties;
+        // }
 
         public ActionResult Like(long id)
         {
-            var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(p => p.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
+            var CurrentSessionUserId = _userManager.GetUserId(User);
+            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.GebruikersNummer == IngelogdeGebruiker.GebruikersNummer).FirstOrDefault();
+            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.Gebruiker.Id == IngelogdeGebruiker.Id).FirstOrDefault();
             Liked _newLiked = new Liked();
-            _newLiked.GebruikersNummer = IngelogdeGebruiker.GebruikersNummer;
+            _newLiked.UserId = IngelogdeGebruiker.Id;
             _newLiked.MeldingId = _melding.MeldingId;
                         
-            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            var CurrentSession = _userManager.GetUserId(User);
             var DeveloperSession = "Developer";
 
             if (CurrentSession != null || DeveloperSession != null)
@@ -111,7 +116,7 @@ namespace Look.Controllers
         public IActionResult PlaatsBericht()
         {
             try{
-            int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            string isNull = _userManager.GetUserId(User);
             return View();
             }catch
             {
@@ -124,27 +129,19 @@ namespace Look.Controllers
             if (ModelState.IsValid)
             {
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
-                int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-                reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
+                string auteur = _userManager.GetUserId(User);
+                reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
                 var inladen = _context.Meldingen.Where(m=>m.MeldingId==15).First().Reacties.First().ReactieId;
 
-                //dit maakt het id vaan de melding aan
-                reactie.ReactieId =UniekMeldingID;
-                UniekMeldingID++;
-
-                reactie.GeplaatstOp = DateTime.Now;
-                reactie.Likes = 0;
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Meldingen));
             }
             return View(nameof(Meldingen));
-            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
+            // return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
         }
         
         public IActionResult CreateMelding()
         {
             try{
-            int? isNull = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
+            string isNull = _userManager.GetUserId(User);
             List<string> titels = new List<string>();
             foreach(var m in _context.Meldingen){
                 titels.Add(m.Titel);
@@ -174,13 +171,13 @@ namespace Look.Controllers
 
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 if(!melding.IsPrive){
-                int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-                melding.Auteur = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
+                    var auteur = _userManager.GetUserId(User);
+                    melding.Auteur = _context.Users.FirstOrDefault(g => g.Id == auteur);
                 }
                 
 
                 melding.AangemaaktOp = DateTime.Now;
-                melding.Reacties = MaakFakeReacties();
+                // melding.Reacties = MaakFakeReacties();
                 melding.Likes=0;
                 melding.Views=0;
                 _context.Add(melding);
@@ -237,19 +234,18 @@ namespace Look.Controllers
             ViewData["Zoek"] = z ?? "";
 
             //dit maakt een lijst aan waarop het gesorteerd wordt
-            List<Gebruiker> gebruikers = _context.Gebruikers.ToList();
+            List<ApplicationUser> gebruikers = _context.Users.ToList();
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
             try{
-            int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            ViewBag.Gebruiker = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First().GebruikersNummer;
+            string auteur = _userManager.GetUserId(User);
+            ViewBag.Gebruiker = _context.Users.Where(g => g.Id==auteur).First().Id;
             }catch{
                 meldings = meldingen.Where(m=>m.Auteur!=null).ToList();
             }
             //Check of er een gebruiker is ingelogd.
-            var CurrentSession = this.HttpContext.Session.GetString("Naam");
+            var CurrentSession = _userManager.GetUserId(User);
             var DeveloperSession = "Developer";
-            LaatstemeldingID = meldings.Count();
             
             //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
             if(page==0){
@@ -369,10 +365,8 @@ namespace Look.Controllers
 
         public JsonResult PostComment(int? id, string inhoud){
             Reactie reactie = new Reactie();
-            int auteur = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
-            reactie.ReactieId = UniekMeldingID;
-            UniekMeldingID++;
-            reactie.GeplaatstDoor = _context.Gebruikers.Where(g=>g.GebruikersNummer==auteur).First();
+            string auteur = _userManager.GetUserId(User);
+            reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
             reactie.GeplaatstOp = DateTime.Now;
             reactie.Bericht=inhoud;
             List<Reactie> reacties;

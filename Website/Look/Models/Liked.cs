@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Look.Areas.Identity.Data;
 
 namespace Look.Models
 {
@@ -12,9 +13,9 @@ namespace Look.Models
         [Key]
         public long LikedId { get; set; }
 
-        public int GebruikersNummer { get; set; }
+        public string UserId { get; set; }
         [NotMapped]
-        public Gebruiker Gebruiker { get; set; }
+        public ApplicationUser Gebruiker { get; set; }
 
         public long MeldingId { get; set; }
         [NotMapped]

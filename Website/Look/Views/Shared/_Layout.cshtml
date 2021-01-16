@@ -13,8 +13,6 @@
 <body>
     <div class="d-flex toggled" id="wrapper">
         <div id="page-content-wrapper">
-            @using Microsoft.AspNetCore.Http
-            @inject IHttpContextAccessor httpContextAccessor   
             <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
                 <!--NAVBAR BRAND-->
                 <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
@@ -55,16 +53,16 @@
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                         </li>
-                        @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null) 
+                        @if(SignInManager.IsSignedIn(User)) 
                         {
                             <li class="nav-item text-center">
-                                <a class="button-href" asp-area="" asp-controller="Home" asp-action="Profiel"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2"><i class="nav-profile mr-2 text-white fas fa-user"></i>@httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</button></a>
+                                <a id="manage" class="button-href" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2"><i class="nav-profile mr-2 text-white fas fa-user"></i>@UserManager.GetUserName(User)</button></a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item text-center">
-                                <a class="button-href" asp-controller="Home" asp-action="Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                                <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
                             </li>
                         }
                     </ul>
@@ -107,6 +105,7 @@
                             <h6>INSTAGRAM</h6>
                         </div>
                     </div>
+
                     <div class="row w-100 p-0 m-0 text-secondary text-center">
                         <div class="col-12">
                             <p class="m-0">&copy; Copyright 2020, Look</p>
@@ -191,24 +190,18 @@
             @await RenderSectionAsync("Scripts", required: false)
         </div>
     
-        @* @if(httpContextAccessor.HttpContext.Session.GetString("Naam") != null)
-        { *@
-            <!-- Sidebar -->
-            <div class="bg-dark text-white toggled" id="sidebar-wrapper">
-                <div class="sidebar-heading">
-                    <h5>Welkom, @httpContextAccessor.HttpContext.Session.GetString("VoorNaam")</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a asp-controller="Home" asp-action="Profiel" class="list-group-item list-group-item-action list-group-item-dark">Profiel</a>
-                    <a asp-controller="Melding" asp-action="Meldingen" class="list-group-item list-group-item-action list-group-item-dark">Meldingen</a>
-                    <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Chat</a>
-                </div>
+        <!-- Sidebar -->
+        <div class="bg-dark text-white toggled" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+                <h5>Welkom, @UserManager.GetUserName(User)</h5>
             </div>
-        @* }
-        else
-        {
-
-        } *@
+            <div class="list-group list-group-flush w-100">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="list-group-item list-group-item-action list-group-item-dark">Profiel</a>
+                <a asp-controller="Melding" asp-action="Meldingen" class="list-group-item list-group-item-action list-group-item-dark">Meldingen</a>
+                <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Chat</a>
+                <a id="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="list-group-item list-group-item-action list-group-item-white">Uitloggen</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
