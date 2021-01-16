@@ -3,14 +3,16 @@ using System;
 using Look.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    partial class LookIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210116133448_RoleUserManager")]
+    partial class RoleUserManager
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,7 @@ namespace Look.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Role Claim");
+                    b.ToTable("Role CLaim");
                 });
 
             modelBuilder.Entity("Look.Areas.Identity.Data.ApplicationUser", b =>

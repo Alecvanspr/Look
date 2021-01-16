@@ -37,7 +37,7 @@ namespace Look.Areas.Identity.Data
             modelBuilder.Entity<ApplicationUserLogin>().ToTable("User Login");
             modelBuilder.Entity<ApplicationUserToken>().ToTable("User Token");
             modelBuilder.Entity<ApplicationUserRole>().ToTable("User Role");
-            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("Role CLaim");
+            modelBuilder.Entity<ApplicationRoleClaim>().ToTable("Role Claim");
 
             modelBuilder.Entity<ApplicationUser>(b =>
             {

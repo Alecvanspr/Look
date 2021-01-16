@@ -10,5 +10,15 @@ namespace Look.Areas.Identity.Data
     {
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
         public virtual ICollection<ApplicationRoleClaim> RoleClaims { get; set; }
+        
+        public ApplicationRole() : base()
+        {
+
+        }
+
+        public ApplicationRole(string roleName) : base(roleName)
+        {
+            
+        }
     }
 }
