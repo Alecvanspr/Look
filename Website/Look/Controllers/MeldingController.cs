@@ -18,18 +18,16 @@ using PagedList;
 
 namespace Look.Controllers
 {
-<<<<<<< HEAD
         public class MeldingController : Controller
-=======
-    public class IntInfo{
+        {
+        public class IntInfo
+        {
             public int aantal{get;set;}
-    }
-    public class StringInfo{
+        }
+        public class StringInfo
+        {
             public string bericht{get;set;}
-    }
-    public class MeldingController : Controller
->>>>>>> 9ae177a525a11595dbef7a87f00dc49330545899
-    {
+        }
         private static List<Gebruiker> _gebruikers = new List<Gebruiker>();
         private readonly LookContext _context; 
         public long LaatstemeldingID;
@@ -69,7 +67,6 @@ namespace Look.Controllers
 
         public ActionResult Like(long id)
         {
-<<<<<<< HEAD
             var CurrentSessionUserId = this.HttpContext.Session.GetInt32("IdGebruiker").Value;
             Gebruiker IngelogdeGebruiker = _context.Gebruikers.Where(p => p.GebruikersNummer == CurrentSessionUserId).FirstOrDefault();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
@@ -141,9 +138,7 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen));
             }
             return View(nameof(Meldingen));
-=======
             return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
->>>>>>> 9ae177a525a11595dbef7a87f00dc49330545899
         }
         
         public IActionResult CreateMelding()

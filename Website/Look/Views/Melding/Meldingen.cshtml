@@ -185,15 +185,11 @@
                                                     <a>Anoniem</a>
                                             } </h5>
                 </div>
-<<<<<<< HEAD
-=======
                     <script>
                     fetch("/Melding/Like")
                     .then(r => r.json())
                     .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
                     </script>
-
->>>>>>> 9ae177a525a11595dbef7a87f00dc49330545899
                 <div class="col-md-1">
                     <p>@Html.ActionLink("Like", "Like", "Melding", new { id = @Model.MeldingId })<i class="far fa-thumbs-up"></i>@Model.Likes</p>
                 </div>
