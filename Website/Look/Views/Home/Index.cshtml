@@ -10,20 +10,17 @@
             <div class="col-md-6 bg-white w-100 m-0 text-wrap">
                 <h1 class="text-break">Ontdek Look</h1>
                 <p class="text-secondary">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Praesent ultricies massa at dolor ultrices blandit. 
-                    Nullam nibh sem, hendrerit in sapien et, semper iaculis enim. 
-                    Morbi a lacus lacinia, porttitor ipsum at, interdum erat. Donec at ornare sapien. 
-                    In laoreet lacus vel aliquam condimentum. Fusce pellentesque dui erat, vitae eleifend sem molestie ac. 
-                    Duis scelerisque maximus lacinia. Aliquam quis commodo massa. 
-                    Fusce sagittis pulvinar magna, ut interdum metus interdum nec.
+                    Look richt zich op het Haagse stadsdeel Vogelwijk. Wij hebben gekozen voor jouw buurt, omdat jij en jouw buurt voornamelijk uit jonge mensen en gezinnen bestaat! Verder vinden wij uw buurt een prachtige wijk waar onze applicatie heel goed gebruikt kan worden.<br/><br/>
+                    Omdat de gemiddelde waarde van de huizen van u en uw buren hoger ligt dan elders in Den Haag, lijden wij af dat het risico op inbraak dan ook hoger is. Ook hier kunt u Look voor inschakelen om verdachte activiteit anoniem te melden.<br/><br/>
+                    Omdat u en uw buren in Vogelwijk voor een groot gedeelte uit gezinnen bestaat, is het essentieel dat er veel ruimte is voor uw kinderen om veilig buiten te kunnen spelen. Ook moet thuis natuurlijk ten alle tijden een veilige plek zijn. Ook voor dit doeleinde kunt u Look excellent toepassen. 
+
                 </p>
             </div>
             <div class="col-md-6 bg-white w-100 m-0 p-5 text-center d-flex align-content-center align-items-center">
                 <div class="form-wrapper bg-secondary container p-3 rounded">
-                    <a class="button-href" asp-area="" asp-controller="Home" asp-action="Register"><button class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button></a>
+                    <a class="button-href" asp-area="Identity" asp-page="/Account/Register"><button class="btn btn-dark w-100 d-block"><h6 class="my-1">AANMELDEN</h6></button></a>
                     <p class="text-white my-2">Heeft u al een account?</p>
-                    <a class="button-href" asp-area="" asp-controller="Home" asp-action="Login"><button class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button></a>
+                    <a class="button-href" asp-area="Identity" asp-page="/Account/Login"><button class="btn btn-dark w-100 d-block"><h6 class="my-1">INLOGGEN</h6></button></a>
                 </div>
             </div>
         </div>
@@ -34,13 +31,13 @@
     <div id="indexCarousel" class="carousel slide carousel-fade d-block" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100" src="~/images/index-slide-1.svg" alt="First slide">
+                <img class="d-block w-100" src="~/images/VogelWijkBuurt.jpg" alt="First slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="~/images/index-slide-2.svg" alt="Second slide">
+                <img class="d-block w-100" src="~/images/VogelWijkStrandje.jpg" alt="Second slide">
             </div>
             <div class="carousel-item">
-                <img class="d-block w-100" src="~/images/index-slide-3.svg" alt="Third slide">
+                <img class="d-block w-100" src="~/images/VogelWijkvanBoven.jpg" alt="Third slide">
             </div>
         </div>
         <a class="carousel-control-prev" href="#indexCarousel" role="button" data-slide="prev">
@@ -59,14 +56,12 @@
         <div class="col-md-8 m-0 p-0">
             <h1>Wat brengt Look naar jouw buurt?</h1>
             <p class="text-secondary">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Praesent ultricies massa at dolor ultrices blandit. 
-                Nullam nibh sem, hendrerit.
+                Het doel van onze applicatie is om bij de mensen in buurten een gevoel van vrijheid en eenheid te creëren. Onze applicatie heeft de mogelijkheid om te communiceren met medemensen uit je buurt. Hieruit kunnen bijvoorbeeld buurtevenementen voortkomen. Ook is het de bedoeling dat de buren onderling melding kunnen maken als er buiten een verdachte situatie plaatsvindt.
             </p>
         </div>
     </div>
-    <div class="row m-0 bg-white py-5 text-dark justify-content-between align-content-center align-items-center">
-        <div class="col-md-3 bg-white feature text-center">
+    <div class="d-inline-block row m-0 bg-white py-5 text-dark justify-content-between align-content-center align-items-center">
+        <div class="d-inline-block col-md-3 bg-white feature text-center">
             <div class="row m-0 p-1 w-100">
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
@@ -75,20 +70,19 @@
                 </div>
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
-                        <h6>PUNT</h6>
+                        <h6>Anonieme Melding</h6>
                     </div>
                 </div>
             </div>
             <div class="row m-0 p-1">
                 <div class="col-12">
                     <p class="text-secondary">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Praesent ultricies massa.
+                        In het meldingenscherm kunnen er (anonieme) meldingen worden gedaan van bijvoorbeeld criminaliteit of overlast.
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 bg-white feature text-center">
+        <div class="d-inline-block col-md-3 bg-white feature text-center ml-5 mr-5">
             <div class="row m-0 p-1 w-100">
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
@@ -97,20 +91,19 @@
                 </div>
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
-                        <h6>PUNT</h6>
+                        <h6>Publieke Melding</h6>
                     </div>
                 </div>
             </div>
             <div class="row m-0 p-1">
                 <div class="col-12">
                     <p class="text-secondary">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Praesent ultricies massa.
+                        In het meldingenscherm kunt u ook publieke meldingen maken, hier kunt u bijvoorbeeld uw buren op de hoogte brengen van een bijeenkomst die u aan het plannen bent of gevonden voorwerpen melden.
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 bg-white feature text-center">
+        <div class="d-inline-block col-md-3 bg-white feature text-center">
             <div class="row m-0 p-1 w-100">
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
@@ -119,15 +112,14 @@
                 </div>
                 <div class="row m-0 p-1 text-center w-100">
                     <div class="col-12">
-                        <h6>PUNT</h6>
+                        <h6>Chatfunctie</h6>
                     </div>
                 </div>
             </div>
             <div class="row m-0 p-1">
                 <div class="col-12">
                     <p class="text-secondary">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Praesent ultricies massa.
+                        In de chatfunctie kunt u een gesprek met de hele buurt voeren, zonder enige contactgegevens uit te hoeven wisselen. Dit kan zowel onder uw eigen naam of met een anonieme gebruikersnaam.
                     </p>
                 </div>
             </div>

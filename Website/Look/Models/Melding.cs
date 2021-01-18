@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Look.Areas.Identity.Data;
 
 namespace Look.Models
 {
@@ -17,7 +18,7 @@ namespace Look.Models
         public int Likes { get; set; }
         public int Views { get; set; }
         public bool IsActief { get; set;}
-        public Gebruiker Auteur {get;set;}
+        public ApplicationUser Auteur {get;set;}
         public List<Reactie> Reacties { get; set; }
         public string Categorie { get; set; }
     }

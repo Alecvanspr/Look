@@ -1,0 +1,249 @@
+@{
+    ViewData["Title"] = "Buurtmeldingen";
+}
+@model List<Melding>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<header>
+    <div id="meldingen-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">Buurtmeldingen</h1>
+                <p class="text-secondary">
+                    Bekijk hier de meldingen in je buurt.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="meldingen-controls" class="container bg-white py-3">
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+        <div class="col-md-4 p-2 m-0">
+            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
+        </div>
+
+        <div class="col-md-4 p-2 m-0">
+            <div class="form-inline form-search w-100 m-0 justify-content-center">
+        <form asp-action="Meldingen" method="get">
+                <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" value="@ViewData["Zoek"]">
+                 <input hidden type="text" placeholder="inputSorteer" aria-label="inputSorteer" name="s" value="@ViewData["Sorteer"]">
+                <button class="btn btn-dark m-0" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+            </div>
+        </div>
+
+        <div class="col-md-4 p-2 m-0">
+            <div class="form-inline m-0 select-box">
+                <select id="inputSorteer" class="form-control w-100" onchange="javascript:SorterenOpQuery(this)">
+                    <option selected>Sorteren op...</option>
+                    <option value="s=datum">Nieuwste</option>
+                    <option value="s=likes">Meeste likes</option>
+                    <option value="s=views">Meeste weergaven</option>
+                    <option value="s=reacties">Meeste reacties</option>
+                    <option value="s=titel">Naam</option>
+                </select>
+                <i class="fas fa-angle-down selector"></i>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+<script>
+      function SorterenOpQuery(elm)
+  {
+     window.location = "/Melding/Meldingen?z="+document.getElementById("zoekbalk").value+"&"+elm.value;
+  }
+</script>
+
+
+<div id="meldingen-content" class="container bg-white py-3">
+       @if(ViewBag.Success==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-success" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+        @if(ViewBag.Error==true){
+            <div id="ErrorMessage">
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.Message
+                    </div>
+                </div>
+        }
+
+    @foreach (var Model in Model)
+    {
+            <div class="row m-0 bg-white py-4 text-dark align-content-end align-items-end justify-content-center">
+                <div class="col-md-12 w-100 p-0 m-0">
+                    <div class="melding bg-white p-4 rounded box-shadow-full">
+                        <article>
+                            <div class="melding-header py-1 w-100 row m-0 p-0 align-content-end align-items-end">
+                                <div class="col-md-6 w-100 m-0 p-0">
+                                    <h2 class="text-wrap">
+                                        @Model.Titel
+                                    </h2>
+                                </div>
+                                <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
+                                    <h6 class="text-secondary ls-0 float-md-right">
+                                        <i class="far fa-clock"></i> 
+                                        @Model.AangemaaktOp
+                                    </h6>
+                                </div>
+                                @if(Model.IsActief==true)
+                                    {
+                                        <div style="height: 2px;" class="container-fluid bg-success"></div>
+                                    }else
+                                    {
+                                        <div style="height: 2px;" class="container-fluid bg-danger"></div>
+                                    }
+                            </div>
+
+                            <div class="melding-content py-2 row m-0 p-0">
+                                <div class="col-md-12 m-0 p-0">
+                                    <p class="text-wrap">
+                                        @if(Model.Inhoud.Length>300){
+                                        <p>@Model.Inhoud.Substring(0,300)...</p>
+                                        }else{
+                                        <p>@Model.Inhoud</p>
+                                        }
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)">
+                                            lees meer
+                                        </a>
+                                        <input id="GetMeldingId" value='@Model.MeldingId' hidden>
+                                    </p>
+                                </div>
+                            </div>
+                            <script>
+                                //dit voegt er een toe als je er op klikt
+                                function VoegToe(id){
+                                    //var id = document.getElementById('GetMeldingId').value;
+                                    fetch("/Melding/AddView?id="+id)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("MeldingViews").innerHTML = r.aantal);
+                                    }
+                            </script>
+                            <div class="melding-footer py-1 m-0 p-0">
+                                <hr>
+                                <div class="row w-100 py-1 m-0 p-0 text-secondary">
+                                    <div class="col-md-6 w-100 m-0 p-0 text-secondary">
+                                        <p>
+                                            <div class="categories-title d-inline">
+                                                <p>Categorie:</p>
+                                            </div> 
+                                            <div class="categories-content d-inline">
+                                                <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@Model.Categorie</a>
+                                            </div>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 w-100 m-0 p-0 text-secondary">
+                                        <p class="float-md-right">
+                                            Geplaatst door:
+                                                <a href="#">
+                                                    @try{
+                                                    @Model.Auteur.FullName()
+                                                    }catch{
+                                                        <a>Annoniem</a>
+                                                    }
+                                                </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div> 
+            } 
+         </div>
+    </div>
+ </div>
+<!--- Modal voor een nieuw bericht---->
+@foreach (var Model in Model){
+<!--- Modal voor de reacties---->
+<div class="modal fade bd-example-modal-lg" id="melding-@Model.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @try{
+                    @if(ViewBag.gebruiker==(Model.Auteur.Id)) {
+                        <li class="nav-item text-center">
+                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
+                            </li>
+                    }
+                }catch{}
+                <div class="col-md-7">
+                    <h5>@Model.Titel</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5>Geplaatst door: @try{
+                                                        @Model.Auteur.FullName()
+                                            }catch
+                                            {
+                                                    <a>Anoniem</a>
+                                            } </h5>
+                </div>
+                    <script>
+                    fetch("/Melding/Like")
+                    .then(r => r.json())
+                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
+                    </script>
+                <div class="col-md-1">
+                    <p>@Html.ActionLink("Like", "Like", "Melding", new { id = @Model.MeldingId })<i class="far fa-thumbs-up"></i>@Model.Likes</p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row p-3 m-0">
+                    <P>@Model.Inhoud</P>     
+                </div>
+                <hr/>
+                <div class="col-md-2"></div>
+
+                <div id="Werkt">
+                    @Html.Partial("_ReactieToevoegen",Model)
+                </div>
+
+                </div>
+                           <div class="row p-2 m-1">
+                    <div class="col-md-10">
+                        <input class="form-control" id="reactie" value=""/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                        <div id="ReactieOutput"></div>
+                    </div>
+                    </div>
+                        <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)"><a >Plaats Reactie</a></button>       
+                        <script>           
+                            //dit voegt er een toe als je er op klikt
+                                function VoegReactieToe(id){
+                                    document.getElementById("ReactieOutput").innerHTML = "Niks Werkt";
+                                    var inhoud = document.getElementById('reactie').value;
+                                    document.getElementById("ReactieOutput").innerHTML = inhoud;
+                                    fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud)
+                                    .then(r => r.json())
+                                    .then(r =>document.getElementById("ReactieOutput").innerHTML = r.bericht);
+                                    document.getElementById("reactie").value = "";
+                                    }
+                            </script>
+        </div>
+    </div>
+     </div>
+}
+ </div>
+<div style="text-align: center;">
+    @if (ViewBag.Page > 0)
+    {
+        <a href="@Url.Action("Meldingen", new { page = ViewBag.Page - 1 })"
+        class="btn btn-default">
+        <p class="paginering"><i class="fas fa-chevron-left"></i>Vorige Pagina </p>   
+        </a>
+    }
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+        <a href="@Url.Action("Meldingen", new { page = ViewBag.Page + 1 })"
+        class="btn btn-default">
+        <p class="paginering">Volgende Pagina <i class="fas fa-chevron-right"></i></p>
+        </a>
+    }
+</div>
+

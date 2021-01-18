@@ -1,0 +1,46 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Uitloggen";
+}
+
+<header>
+    <div id="login-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">@ViewData["Title"]</h1>
+                <p class="text-secondary">
+                    Hier kan je uitloggen uit je account.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="login-content" class="container bg-white py-3">
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+        <div class=" col-8 col-md-6 col-lg-4 p-0 py-5 p-0">
+            <img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/>
+        </div>
+    </div>
+    
+
+    <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
+        <div class="col-md-8 p-0 m-0">
+            <section class="w-100 text-center">
+                @{
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        <form class="form-inline w-100" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                            <button type="submit" class="btn btn-dark w-100 d-block">Uitloggen</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p>Je bent succesvol uitgelogd.</p>
+                    }
+                }
+            </section>
+        </div>
+    </div>
+</div>

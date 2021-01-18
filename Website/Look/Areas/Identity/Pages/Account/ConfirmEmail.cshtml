@@ -1,0 +1,18 @@
+@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "E-mailverificatie";
+}
+
+<header>
+    <div id="confirm-email-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">@ViewData["Title"]</h1>
+                <p class="text-secondary">
+                    Je e-mailadres is succesvol geverifieerd. <a id="login" asp-area="Identity" asp-page="/Account/Login">Klik hier om in te loggen</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
