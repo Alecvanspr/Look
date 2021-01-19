@@ -198,6 +198,13 @@
                 <div class="row p-3 m-0">
                     <P>@Model.Inhoud</P>     
                 </div>
+                @if(Model.AfbeeldingTitel != null) {
+                    string AfbeeldingUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.AfbeeldingData));
+                    
+                    <div class="row p-3 m-0">
+                        <img src=@AfbeeldingUrl alt="">
+                    </div>
+                }
                 <hr/>
                 <div class="col-md-2"></div>
 
