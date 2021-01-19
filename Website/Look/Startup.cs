@@ -24,9 +24,11 @@ namespace Look
 {
     public class Startup
     {
+        public static IConfiguration StaticConfiguration { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            StaticConfiguration = configuration;
         }
 
         public IConfiguration Configuration { get; }

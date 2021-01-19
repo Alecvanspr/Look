@@ -13,7 +13,7 @@
 <body>
     <div class="d-flex toggled" id="wrapper">
         <div id="page-content-wrapper">
-            <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
+            <nav class="navbar text-dark navbar-expand-lg bg-white box-shadow justify-content-center">
                 <!--NAVBAR BRAND-->
                 <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
                     <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
@@ -37,22 +37,7 @@
                     </ul>
 
                     <!--SOCIAL LINKS / BUTTONS-->
-                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://instagram.com/#">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://twitter.com/#">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://facebook.com/#">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </li>
+                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-lg-end">
                         @if(SignInManager.IsSignedIn(User)) 
                         {
                             <li class="nav-item text-center">
@@ -63,6 +48,9 @@
                         {
                             <li class="nav-item text-center">
                                 <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                            </li>
+                            <li class="nav-item text-center">
+                                <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Register"><button type="button" class="btn btn-dark nav-link ml-2">Registreren</button></a>
                             </li>
                         }
                     </ul>
