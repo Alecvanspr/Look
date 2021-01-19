@@ -11,7 +11,7 @@
             <div class="col-md-12 m-0 p-0 text-wrap">
                 <h1 class="text-break">@ViewData["Title"]</h1>
                 <p class="text-secondary">
-                    Log hier in bij uw account. Heb je nog geen account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Meld je dan aan</a>.
+                    Log hier in bij je account. Heb je nog geen account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Meld je dan aan</a>.
                 </p>
             </div>
         </div>
@@ -40,6 +40,7 @@
                         <input asp-for="Input.Password" class="form-control form-validation" required/>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
+
                     <div class="form-group w-100">
                         <div class="checkbox">
                             <label asp-for="Input.RememberMe">
