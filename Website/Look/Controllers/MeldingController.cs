@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -157,7 +159,7 @@ namespace Look.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding, IFormFile Afbeelding)
         {
             if (ModelState.IsValid)
             {
@@ -168,6 +170,15 @@ namespace Look.Controllers
                 Success = true;
                 Error = false;
                 Message = "Het Bericht is successvol geplaatst";
+
+                melding.AfbeeldingTitel = Path.GetFileName(Afbeelding.FileName);
+                
+                MemoryStream ms = new MemoryStream();
+                Afbeelding.CopyTo(ms);
+                melding.AfbeeldingData = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
 
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 if(!melding.IsPrive){

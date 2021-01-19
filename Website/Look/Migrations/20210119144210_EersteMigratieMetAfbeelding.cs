@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class EersteMigratieMetAfbeelding : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,7 +70,7 @@ namespace Look.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role CLaim",
+                name: "Role Claim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -81,9 +81,9 @@ namespace Look.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role CLaim", x => x.Id);
+                    table.PrimaryKey("PK_Role Claim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Role CLaim_Role_RoleId",
+                        name: "FK_Role Claim_Role_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
@@ -100,6 +100,8 @@ namespace Look.Migrations
                     AangemaaktOp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Titel = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Inhoud = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    AfbeeldingTitel = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    AfbeeldingData = table.Column<byte[]>(type: "longblob", nullable: true),
                     Likes = table.Column<int>(type: "int", nullable: false),
                     Views = table.Column<int>(type: "int", nullable: false),
                     IsActief = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -114,7 +116,7 @@ namespace Look.Migrations
                         column: x => x.AuteurId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,8 +255,8 @@ namespace Look.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role CLaim_RoleId",
-                table: "Role CLaim",
+                name: "IX_Role Claim_RoleId",
+                table: "Role Claim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
@@ -293,7 +295,7 @@ namespace Look.Migrations
                 name: "Reacties");
 
             migrationBuilder.DropTable(
-                name: "Role CLaim");
+                name: "Role Claim");
 
             migrationBuilder.DropTable(
                 name: "User Claim");

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210116133448_RoleUserManager")]
-    partial class RoleUserManager
+    [Migration("20210119144210_EersteMigratieMetAfbeelding")]
+    partial class EersteMigratieMetAfbeelding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,7 +65,7 @@ namespace Look.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Role CLaim");
+                    b.ToTable("Role Claim");
                 });
 
             modelBuilder.Entity("Look.Areas.Identity.Data.ApplicationUser", b =>
@@ -260,6 +260,12 @@ namespace Look.Migrations
 
                     b.Property<DateTime>("AangemaaktOp")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<byte[]>("AfbeeldingData")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("AfbeeldingTitel")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("AuteurId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");

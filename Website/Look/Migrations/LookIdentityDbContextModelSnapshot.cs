@@ -259,6 +259,12 @@ namespace Look.Migrations
                     b.Property<DateTime>("AangemaaktOp")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<byte[]>("AfbeeldingData")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("AfbeeldingTitel")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("AuteurId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
