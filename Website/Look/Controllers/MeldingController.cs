@@ -90,24 +90,12 @@ namespace Look.Controllers
                 if (_liked == null)
                 {
                     _melding.Likes++;
-                    _newLiked.heeftGeliked = true;
                     _context.Liked.Add(_newLiked);
                     _context.SaveChanges();
                 } else {
-                    if (_liked.heeftGeliked == false)
-                    {
-                        _melding.Likes++;
-                        _liked.heeftGeliked = true;
-                        _context.Update(_melding);
-                        _context.Update(_liked);
-                        _context.SaveChanges();
-                    } else {
-                        _melding.Likes--;
-                        _liked.heeftGeliked = false;
-                        _context.Update(_melding);
-                        _context.Update(_liked);
-                        _context.SaveChanges();
-                    }
+                    _melding.Likes--;
+                    _context.Liked.Remove(_liked);
+                    _context.SaveChanges();
                 }
             } else {
                 return RedirectToAction("Login");

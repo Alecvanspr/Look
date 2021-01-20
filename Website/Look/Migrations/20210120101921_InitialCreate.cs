@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class EersteMigratieMetAfbeelding : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,15 +12,12 @@ namespace Look.Migrations
                 name: "Liked",
                 columns: table => new
                 {
-                    LikedId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    MeldingId = table.Column<long>(type: "bigint", nullable: false),
-                    heeftGeliked = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
+                    MeldingId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Liked", x => x.LikedId);
+                    table.PrimaryKey("PK_Liked", x => new { x.UserId, x.MeldingId });
                 });
 
             migrationBuilder.CreateTable(
@@ -116,7 +113,7 @@ namespace Look.Migrations
                         column: x => x.AuteurId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

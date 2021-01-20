@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210119144210_EersteMigratieMetAfbeelding")]
-    partial class EersteMigratieMetAfbeelding
+    [Migration("20210120101921_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -234,20 +234,13 @@ namespace Look.Migrations
 
             modelBuilder.Entity("Look.Models.Liked", b =>
                 {
-                    b.Property<long>("LikedId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<long>("MeldingId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("heeftGeliked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("LikedId");
+                    b.HasKey("UserId", "MeldingId");
 
                     b.ToTable("Liked");
                 });
