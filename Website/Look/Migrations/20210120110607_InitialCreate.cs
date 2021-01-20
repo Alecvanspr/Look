@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class EersteMigratieMetAfbeelding : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,7 @@ namespace Look.Migrations
                     LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     HouseNumber = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    HouseNumberAddition = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     ZipCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     IsAnonymous = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -116,7 +117,7 @@ namespace Look.Migrations
                         column: x => x.AuteurId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
