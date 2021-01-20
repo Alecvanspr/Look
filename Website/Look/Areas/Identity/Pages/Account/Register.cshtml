@@ -26,6 +26,7 @@
 
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-8 p-0 m-0">
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
             <section class="w-100">
                 <form class="needs-validation w-100" id="account" method="post" oninput='ConfirmPassword.setCustomValidity(ConfirmPassword.value != Password.value ? "Passwords do not match." : "")' novalidate>
                     <div class="form-row">
@@ -43,30 +44,35 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group col-md-9">
+                        <div class="form-group col-md-6">
                             <label asp-for="Input.Street"></label>
-                            <input asp-for="Input.Street" class="form-control form-validation" required />
-                            <span asp-validation-for="Input.Street" class="text-danger"></span>
+                            <input asp-for="Input.Street" class="form-control form-validation address-fill" required />
+                            <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
                         </div>
                         
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label asp-for="Input.HouseNumber"></label>
-                            <input asp-for="Input.HouseNumber" pattern="[0-9]+" class="form-control form-validation" required />
+                            <input asp-for="Input.HouseNumber" pattern="[0-9]+" class="form-control form-validation address-fill" required />
                             <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label asp-for="Input.HouseNumberAddition"></label>
+                            <input asp-for="Input.HouseNumberAddition" pattern="[a-zA-Z0-9]+" class="form-control form-validation address-fill" />
+                            <span asp-validation-for="Input.HouseNumberAddition" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <div class="form-group col-md-8">
-                            <label asp-for="Input.City"></label>
-                            <input asp-for="Input.City" class="form-control form-validation" required />
-                            <span asp-validation-for="Input.City" class="text-danger"></span>
-                        </div>
-                        
                         <div class="form-group col-md-4">
                             <label asp-for="Input.ZipCode"></label>
                             <input asp-for="Input.ZipCode" class="form-control form-validation" required />
-                            <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
+                            <span asp-validation-for="Input.ZipCode" pattern="[1-9][0-9]{3}\s?[a-zA-Z]{2}" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="form-group col-md-8">
+                            <label asp-for="Input.City"></label>
+                            <input asp-for="Input.City" class="form-control form-validation" required/>
+                            <span asp-validation-for="Input.City" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -114,6 +120,39 @@
         </div>
     </div>
 </div>
+
+<script id="RealTimeAddressValidation">
+    function is_int(value) {
+        $(".address-fill").keyup(function() {
+
+        var zip = document.getElementById('Input.ZipCode');
+        var number = document.getElementById('Input.HouseNumber');
+        var suffix = document.getElementById('Input.HouseNumberAddition');
+
+        // Call Ziptastic for information
+        $.ajax({
+        url: "https://api.spikkl.nl/geo/nld/lookup.json?key=873c05369f00770deef375bd6e4ba5e3&postal_code="+zip.val()+"&street_number="+number.val()+"&street_number_suffix="+suffix.val(),
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        success: function(result, success) {
+
+            $("#Input.City").val(result.city);
+
+            $("#Input.Street").val(result.state);
+
+        },
+        error: function(result, success) {
+            
+            $("#Input.City").val("");
+
+            $("#Input.Street").val("");
+        }
+
+        });
+
+    });
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

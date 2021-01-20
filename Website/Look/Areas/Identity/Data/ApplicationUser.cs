@@ -25,6 +25,8 @@ namespace Look.Areas.Identity.Data
         [PersonalData]
         public string HouseNumber {get; set;}
         [PersonalData]
+        public string HouseNumberAddition {get; set;}
+        [PersonalData]
         public string City { get; set; }
         [PersonalData]
         public string ZipCode { get; set; }
@@ -34,6 +36,24 @@ namespace Look.Areas.Identity.Data
         public string FullName()
         {
             return FirstName + " " + LastName;
+        }
+
+        public string FullHouseNumber()
+        {
+            if(HouseNumberAddition == null)
+            {
+                return HouseNumber;
+            }
+            else
+            {
+                return HouseNumber + "-" + HouseNumberAddition;
+            }
+            
+        }
+
+        public string FullAddress()
+        {
+            return Street + " " + FullHouseNumber() + ", " + ZipCode + " " + City;
         }
 
     }
