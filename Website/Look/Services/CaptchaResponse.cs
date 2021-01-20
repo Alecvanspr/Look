@@ -11,7 +11,7 @@ namespace Look.Services
         public static string Validate(string EncodedResponse)
         {
             var client = new WebClient();
-            string secret = Startup.StaticConfiguration["recaptchaPrivatekey"];
+            string secret = "6Lf50P8ZAAAAAPBibNSCSw-H8YzyTrWzmu_GGrtp";
             var GoogleReply = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, EncodedResponse));
             var captchaResponse = JsonConvert.DeserializeObject<CaptchaResponse>(GoogleReply);
 
