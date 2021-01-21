@@ -17,7 +17,7 @@ namespace Look.Services
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+            return Execute("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", subject, message, email);
         }
 
         public Task Execute(string apiKey, string subject, string message, string email)
@@ -25,7 +25,7 @@ namespace Look.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("look-no-reply@dechaun.com", Options.SendGridUser),
+                From = new EmailAddress("look-no-reply@dechaun.com", "lookwebapp"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

@@ -11,7 +11,7 @@
             <div class="col-md-12 m-0 p-0 text-wrap">
                 <h1 class="text-break">@ViewData["Title"]</h1>
                 <p class="text-secondary">
-                    Log hier in bij uw account. Heb je nog geen account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Meld je dan aan</a>.
+                    Log hier in bij je account. Heb je nog geen account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"tabindex="1" >Meld je dan aan</a>.
                 </p>
             </div>
         </div>
@@ -32,35 +32,36 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group w-100">
                         <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control form-validation" required/>
+                        <input asp-for="Input.Email" class="form-control form-validation" tabindex="1"  role="textbox" required/>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group w-100">
                         <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control form-validation" required/>
+                        <input asp-for="Input.Password" class="form-control form-validation" tabindex="1"  role="textbox" required/>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
+
                     <div class="form-group w-100">
                         <div class="checkbox">
                             <label asp-for="Input.RememberMe">
-                                <input asp-for="Input.RememberMe" />
+                                <input asp-for="Input.RememberMe" tabindex="1" />
                                 @Html.DisplayNameFor(m => m.Input.RememberMe)
                             </label>
                         </div>
                     </div>
                     <div class="form-group w-100">
-                        <button type="submit" class="btn btn-dark w-100 d-block">Inloggen</button>
+                        <button type="submit" class="btn btn-dark w-100 d-block" tabindex="1">Inloggen</button>
                         @* <input name="__RequestVerificationToken" type="hidden" value="<token_generated_here>"> *@
                     </div>
                     <div class="form-group text-center">
                         <p>
-                            <a id="forgot-password" asp-page="./ForgotPassword">Wachtwoord vergeten?</a>
+                            <a id="forgot-password" asp-page="./ForgotPassword" tabindex="1" role="button" aria-pressed="false">Wachtwoord vergeten?</a>
                         </p>
                         <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Ik heb nog geen account</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" tabindex="1" role="button" aria-pressed="false">Ik heb nog geen account</a>
                         </p>
                         <p>
-                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Verifieer e-mailadres</a>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" tabindex="1" role="button" aria-pressed="false">Verifieer e-mailadres</a>
                         </p>
                     </div>
                 </form>

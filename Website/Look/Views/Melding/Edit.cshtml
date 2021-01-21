@@ -17,22 +17,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div id="ErrorMessage" hidden>
                     <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         Er is al een bericht met deze titel.
                     </div>
                 </div>
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
-                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' tabindex="1" role="textbox" required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
                 <span asp-validation-for="Titel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inhoud" class="control-label"></label>
-                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" required></textarea>
+                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" tabindex="1"  role="textbox"required></textarea>
                 <span asp-validation-for="Inhoud" class="text-danger"></span>
             </div>
               <div class="form-group">
                 <label asp-for="Categorie" for="categorie" class="control-label"></label>
-                <select asp-for="Categorie" name="categorie" class="control-label">
+                <select asp-for="Categorie" name="categorie" class="control-label" tabindex="1">
                     <option value="Gevonden voorwerp">Gevonden voorwerp</option>
                     <option value="Bijeenkomst">Bijeenkomst</option>
                     <option value="Overlast">Overlast</option>
@@ -41,14 +42,14 @@
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
              <div class="form-group" hidden>
-                <input asp-for="MeldingId" class="form-control" value ="@Model.MeldingId" required />
+                <input asp-for="MeldingId" class="form-control" value ="@Model.MeldingId"  role="textbox"  tabindex="1" required />
                 <span asp-validation-for="MeldingId" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
                 <input id="OrgineleTitel" value ="@Model.Titel" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary"/>
+                <input type="submit" value="Edit" tabindex="1" class="btn btn-primary" role="button" aria-pressed="false"/>
             </div>
         </form>
     </div>

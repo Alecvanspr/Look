@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -69,13 +71,12 @@ namespace Look.Controllers
         //     reacties.Add(reactie);
         //     return reacties;
         // }
-
-        public ActionResult Like(long id)
-        {
+        
+        public JsonResult Like(long id){
             var CurrentSessionUserId = _userManager.GetUserId(User);
             ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.Gebruiker.Id == IngelogdeGebruiker.Id).FirstOrDefault();
+            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.UserId == IngelogdeGebruiker.Id).FirstOrDefault();
             Liked _newLiked = new Liked();
             _newLiked.UserId = IngelogdeGebruiker.Id;
             _newLiked.MeldingId = _melding.MeldingId;
@@ -88,29 +89,15 @@ namespace Look.Controllers
                 if (_liked == null)
                 {
                     _melding.Likes++;
-                    _newLiked.heeftGeliked = true;
                     _context.Liked.Add(_newLiked);
                     _context.SaveChanges();
                 } else {
-                    if (_liked.heeftGeliked == false)
-                    {
-                        _melding.Likes++;
-                        _liked.heeftGeliked = true;
-                        _context.Update(_melding);
-                        _context.Update(_liked);
-                        _context.SaveChanges();
-                    } else {
-                        _melding.Likes--;
-                        _liked.heeftGeliked = false;
-                        _context.Update(_melding);
-                        _context.Update(_liked);
-                        _context.SaveChanges();
-                    }
+                    _melding.Likes--;
+                    _context.Liked.Remove(_liked);
+                    _context.SaveChanges();
                 }
-            } else {
-                return RedirectToAction("Login");
-            }
-            return RedirectToAction(nameof(Meldingen)); //TODO: op dezelfde pagina blijven wanneer een bericht is geliked
+            } 
+            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Likes});
         }
 
         public IActionResult PlaatsBericht()
@@ -157,7 +144,7 @@ namespace Look.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding, IFormFile Afbeelding)
         {
             if (ModelState.IsValid)
             {
@@ -168,6 +155,16 @@ namespace Look.Controllers
                 Success = true;
                 Error = false;
                 Message = "Het Bericht is successvol geplaatst";
+                try{
+                melding.AfbeeldingTitel = Path.GetFileName(Afbeelding.FileName);
+                
+                MemoryStream ms = new MemoryStream();
+                Afbeelding.CopyTo(ms);
+                melding.AfbeeldingData = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
+                }catch{}
 
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 if(!melding.IsPrive){
@@ -197,14 +194,10 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen));
         }
         
-        public async Task<IActionResult> Delete(string titel)
+        public async Task<IActionResult> Delete(long id)
         {
-            if (titel == null)
-            {
-                return NotFound();
-            }
             var melding = await _context.Meldingen
-                .FirstOrDefaultAsync(m => m.Titel == titel);
+                .FirstOrDefaultAsync(m => m.MeldingId == id);
             if (melding == null)
             {
                 return NotFound();

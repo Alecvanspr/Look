@@ -232,20 +232,13 @@ namespace Look.Migrations
 
             modelBuilder.Entity("Look.Models.Liked", b =>
                 {
-                    b.Property<long>("LikedId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<long>("MeldingId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("heeftGeliked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("LikedId");
+                    b.HasKey("UserId", "MeldingId");
 
                     b.ToTable("Liked");
                 });
@@ -258,6 +251,12 @@ namespace Look.Migrations
 
                     b.Property<DateTime>("AangemaaktOp")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<byte[]>("AfbeeldingData")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("AfbeeldingTitel")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("AuteurId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");

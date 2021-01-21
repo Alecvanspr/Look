@@ -87,7 +87,9 @@ namespace Look.Areas.Identity.Data
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<Reactie>()
                 .Property(i => i.ReactieId)
-                .ValueGeneratedOnAdd();    
+                .ValueGeneratedOnAdd();   
+            modelBuilder.Entity<Liked>()
+                .HasKey(p => new { p.UserId, p.MeldingId});
         }
     }
 }

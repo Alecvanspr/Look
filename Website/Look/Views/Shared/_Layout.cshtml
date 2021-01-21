@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
+<head >
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Look</title>
@@ -10,15 +10,15 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
-<body>
+<body tabindex="0" >
     <div class="d-flex toggled" id="wrapper">
         <div id="page-content-wrapper">
-            <nav class="navbar text-dark navbar-expand-md bg-white box-shadow justify-content-center">
+            <nav class="navbar text-dark navbar-expand-lg bg-white box-shadow justify-content-center">
                 <!--NAVBAR BRAND-->
                 <p class="navbar-brand m-0 p-0 d-flex w-50 mr-auto">
-                    <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
+                    <a class="navbar-img d-inline" asp-area="" asp-controller="Home" asp-action="Index" role="button" aria-pressed="false"><img class="w-100" alt="Het logo van Look" src="~/images/FINAL_OFF_BLACK_FULL_TRANSPARENT.png"/></a>
                 </p>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarSupportedContent"aria-expanded="false" aria-label="Toggle navigation" role="button" aria-pressed="false">
                     <i class="navbar-toggler-icon nav-link fas fa-bars text-dark"></i>
                 </button>
 
@@ -26,43 +26,31 @@
                     <!--NAVIGATION LINKS-->
                     <ul class="navbar-nav nav-links w-100 justify-content-center">
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" role="button" aria-pressed="false" >Home </a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel">Buurten</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel" role="button" aria-pressed="false">Buurten</a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Melding" asp-action="Meldingen">Contact</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Melding" asp-action="Meldingen"role="button" aria-pressed="false">Contact</a>
                         </li>
                     </ul>
 
                     <!--SOCIAL LINKS / BUTTONS-->
-                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-md-end">
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://instagram.com/#">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://twitter.com/#">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link p-2" href="https://facebook.com/#">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                        </li>
+                    <ul class="nav ml-auto nav-socials w-100 justify-content-center justify-content-lg-end">
                         @if(SignInManager.IsSignedIn(User)) 
                         {
                             <li class="nav-item text-center">
-                                <a id="manage" class="button-href" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2"><i class="nav-profile mr-2 text-white fas fa-user"></i>@UserManager.GetUserName(User)</button></a>
+                                <a id="manage" class="button-href" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><button id="menu-toggle" type="button" class="btn btn-dark nav-link ml-2" role="button" aria-pressed="false"><i class="nav-profile mr-2 text-white fas fa-user" tabindex="0" ></i>@UserManager.GetUserName(User)</button></a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item text-center">
-                                <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Login"><button type="button" class="btn btn-dark nav-link ml-2">Inloggen</button></a>
+                                <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Login"><button type="button" class="btn btn-dark nav-link ml-2" role="button" aria-pressed="false" >Inloggen</button></a>
+                            </li>
+                            <li class="nav-item text-center">
+                                <a class="button-href" id="login" asp-area="Identity" asp-page="/Account/Register"><button type="button" class="btn btn-dark nav-link ml-2" role="button" aria-pressed="false">Registreren</button></a>
                             </li>
                         }
                     </ul>

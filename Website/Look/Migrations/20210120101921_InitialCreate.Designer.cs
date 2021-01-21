@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210116133448_RoleUserManager")]
-    partial class RoleUserManager
+    [Migration("20210120101921_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,7 +65,7 @@ namespace Look.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Role CLaim");
+                    b.ToTable("Role Claim");
                 });
 
             modelBuilder.Entity("Look.Areas.Identity.Data.ApplicationUser", b =>
@@ -234,20 +234,13 @@ namespace Look.Migrations
 
             modelBuilder.Entity("Look.Models.Liked", b =>
                 {
-                    b.Property<long>("LikedId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<long>("MeldingId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("heeftGeliked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("LikedId");
+                    b.HasKey("UserId", "MeldingId");
 
                     b.ToTable("Liked");
                 });
@@ -260,6 +253,12 @@ namespace Look.Migrations
 
                     b.Property<DateTime>("AangemaaktOp")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<byte[]>("AfbeeldingData")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("AfbeeldingTitel")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("AuteurId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");

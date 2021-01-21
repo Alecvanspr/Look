@@ -2,7 +2,7 @@
                @model Look.Models.Melding
 
                     @if(Model.Reacties==null){
-                        <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
+                        <p tabindex="1">Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
                     }else{
                             @foreach (var reacties in Model.Reacties)
                             {
@@ -11,11 +11,11 @@
                                         <div class="col-md-11">
                                         </div>
                                         <div class="col-md-1">
-                                            <a><i class="far fa-thumbs-up"></i></a><p style="display: inline;">@reacties.Likes</p>
+                                            <a><i class="far fa-thumbs-up" tabindex="1"></i></a><p style="display: inline;">@reacties.Likes</p>
                                         </div>
                                     </div>
                                     <div class="row p-0 m-0">
-                                        <p>@reacties.Bericht</p>
+                                        <p tabindex="1">@reacties.Bericht</p>
                                     </div>
                                 </div>
                         <hr class="p-0 mt-3 mb-0 ml-0 mr-0"/>

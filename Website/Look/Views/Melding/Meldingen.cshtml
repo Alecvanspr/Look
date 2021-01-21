@@ -9,7 +9,7 @@
         <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
             <div class="col-md-12 m-0 p-0 text-wrap">
                 <h1 class="text-break">Buurtmeldingen</h1>
-                <p class="text-secondary">
+                <p class="text-secondary" tabindex="1">
                     Bekijk hier de meldingen in je buurt.
                 </p>
             </div>
@@ -20,22 +20,22 @@
 <div id="meldingen-controls" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-4 p-2 m-0">
-            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
+            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
         </div>
 
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline form-search w-100 m-0 justify-content-center">
         <form asp-action="Meldingen" method="get">
-                <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" value="@ViewData["Zoek"]">
+                <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" tabindex="1" value="@ViewData["Zoek"]">
                  <input hidden type="text" placeholder="inputSorteer" aria-label="inputSorteer" name="s" value="@ViewData["Sorteer"]">
-                <button class="btn btn-dark m-0" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-dark m-0" type="submit"role="button" aria-pressed="false"><i class="fa fa-search"></i></button>
         </form>
             </div>
         </div>
 
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline m-0 select-box">
-                <select id="inputSorteer" class="form-control w-100" onchange="javascript:SorterenOpQuery(this)">
+                <select id="inputSorteer" class="form-control w-100" tabindex="1" onchange="javascript:SorterenOpQuery(this)">
                     <option selected>Sorteren op...</option>
                     <option value="s=datum">Nieuwste</option>
                     <option value="s=likes">Meeste likes</option>
@@ -62,6 +62,7 @@
        @if(ViewBag.Success==true){
             <div id="ErrorMessage">
                     <div class="alert alert-success" role="alert">
+                        <i class="fa fa-check" aria-hidden="true"></i>
                         @ViewBag.Message
                     </div>
                 </div>
@@ -69,6 +70,7 @@
         @if(ViewBag.Error==true){
             <div id="ErrorMessage">
                     <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         @ViewBag.Message
                     </div>
                 </div>
@@ -82,7 +84,7 @@
                         <article>
                             <div class="melding-header py-1 w-100 row m-0 p-0 align-content-end align-items-end">
                                 <div class="col-md-6 w-100 m-0 p-0">
-                                    <h2 class="text-wrap">
+                                    <h2 class="text-wrap" tabindex="1">
                                         @Model.Titel
                                     </h2>
                                 </div>
@@ -105,19 +107,19 @@
                                 <div class="col-md-12 m-0 p-0">
                                     <p class="text-wrap">
                                         @if(Model.Inhoud.Length>300){
-                                        <p>@Model.Inhoud.Substring(0,300)...</p>
+                                        <p tabindex="1">@Model.Inhoud.Substring(0,300)...</p>
                                         }else{
-                                        <p>@Model.Inhoud</p>
+                                        <p tabindex="1">@Model.Inhoud</p>
                                         }
-                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)">
-                                            lees meer
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)" tabindex="1">
+                                            lees meer van dit bericht
                                         </a>
                                         <input id="GetMeldingId" value='@Model.MeldingId' hidden>
                                     </p>
                                 </div>
                             </div>
                             <script>
-                                //dit voegt er een toe als je er op klikt
+                                //dit voegt een View toe als je er op klikt
                                 function VoegToe(id){
                                     //var id = document.getElementById('GetMeldingId').value;
                                     fetch("/Melding/AddView?id="+id)
@@ -129,14 +131,12 @@
                                 <hr>
                                 <div class="row w-100 py-1 m-0 p-0 text-secondary">
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
-                                        <p>
-                                            <div class="categories-title d-inline">
+                                            <div class="categories-title d-inline" tabindex="1">
                                                 <p>Categorie:</p>
                                             </div> 
                                             <div class="categories-content d-inline">
-                                                <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary">#@Model.Categorie</a>
+                                                <a href="#" class="py-2 px-3 rounded-0 border categorie text-secondary" tabindex="1" >#@Model.Categorie</a>
                                             </div>
-                                        </p>
                                     </div>
                                     <div class="col-md-6 w-100 m-0 p-0 text-secondary">
                                         <p class="float-md-right">
@@ -169,16 +169,15 @@
             <div class="modal-header">
                 @try{
                     @if(ViewBag.gebruiker==(Model.Auteur.Id)) {
-                        <li class="nav-item text-center">
-                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2">Edit</button></a>
-                            </li>
+                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Bewerk</button></a>
+                                 <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
                     }
                 }catch{}
-                <div class="col-md-7">
+                <div class="col-md-7" tabindex="1">
                     <h5>@Model.Titel</h5>
                 </div>
                 <div class="col-md-4">
-                    <h5>Geplaatst door: @try{
+                    <h5 tabindex="1" >Geplaatst door: @try{
                                                         @Model.Auteur.FullName()
                                             }catch
                                             {
@@ -186,18 +185,29 @@
                                             } </h5>
                 </div>
                     <script>
-                    fetch("/Melding/Like")
-                    .then(r => r.json())
-                    .then(r =>document.getElementById("AantalLikes").innerHTML = r.aantal);
+                        function MeldingLiken(id){
+                            fetch("/Melding/Like?id="+id)
+                            .then(r => r.json())
+                            .then(r =>document.getElementById("AantalLikes-"+id).innerHTML = r.aantal);
+                        }
                     </script>
                 <div class="col-md-1">
-                    <p>@Html.ActionLink("Like", "Like", "Melding", new { id = @Model.MeldingId })<i class="far fa-thumbs-up"></i>@Model.Likes</p>
+                    <button onclick="MeldingLiken(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false">LIKE</button>
+                   <p><a onclick="MeldingLiken()" data-id="@Model.MeldingId"><i class="far fa-thumbs-up"></i></a></p>
+                       <div id="AantalLikes-@Model.MeldingId">bla die bla</div> 
                 </div>
             </div>
             <div class="modal-body">
                 <div class="row p-3 m-0">
-                    <P>@Model.Inhoud</P>     
+                    <p tabindex="1">@Model.Inhoud</p>     
                 </div>
+                @if(Model.AfbeeldingTitel != null) {
+                    string AfbeeldingUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.AfbeeldingData));
+                    
+                    <div class="row p-3 m-0">
+                        <img src=@AfbeeldingUrl alt="">
+                    </div>
+                }
                 <hr/>
                 <div class="col-md-2"></div>
 
@@ -205,14 +215,14 @@
                     @Html.Partial("_ReactieToevoegen",Model)
                 </div>
 
-                </div>
-                           <div class="row p-2 m-1">
-                    <div class="col-md-10">
-                        <input class="form-control" id="reactie" value=""/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
-                        <div id="ReactieOutput"></div>
+                    <div class="row p-2 m-1">
+                        <div class="col-md-10">
+                            <input class="form-control" id="reactie" value="" tabindex="1"/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                            <div id="ReactieOutput"></div>
+                        </div>
+                       <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false"><a >Plaats Reactie</a></button>       
                     </div>
-                    </div>
-                        <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)"><a >Plaats Reactie</a></button>       
+
                         <script>           
                             //dit voegt er een toe als je er op klikt
                                 function VoegReactieToe(id){
@@ -225,10 +235,11 @@
                                     document.getElementById("reactie").value = "";
                                     }
                             </script>
+                        </div>
+                    </div>
+                </div>
         </div>
-    </div>
-     </div>
-}
+        }
  </div>
 <div style="text-align: center;">
     @if (ViewBag.Page > 0)
