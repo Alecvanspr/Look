@@ -191,10 +191,9 @@
                             .then(r =>document.getElementById("AantalLikes-"+id).innerHTML = r.aantal);
                         }
                     </script>
-                <div class="col-md-1">
-                    <button onclick="MeldingLiken(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false">LIKE</button>
-                   <p><a onclick="MeldingLiken()" data-id="@Model.MeldingId"><i class="far fa-thumbs-up"></i></a></p>
-                       <div id="AantalLikes-@Model.MeldingId">bla die bla</div> 
+                <div class="col-md-1 d-inline-block">
+                    <button class="btn btn-link" onclick="MeldingLiken(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false"><p><a onclick="MeldingLiken()" data-id="@Model.MeldingId"><i class="far fa-thumbs-up"></i></a></p></button>
+                       <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
                 </div>
             </div>
             <div class="modal-body">
