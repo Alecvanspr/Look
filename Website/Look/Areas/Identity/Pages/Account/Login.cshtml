@@ -32,12 +32,12 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group w-100">
                         <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control form-validation" tabindex="1" required/>
+                        <input asp-for="Input.Email" class="form-control form-validation" tabindex="1"  role="textbox" required/>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group w-100">
                         <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control form-validation" tabindex="1" required/>
+                        <input asp-for="Input.Password" class="form-control form-validation" tabindex="1"  role="textbox" required/>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
 
@@ -55,13 +55,13 @@
                     </div>
                     <div class="form-group text-center">
                         <p>
-                            <a id="forgot-password" asp-page="./ForgotPassword" tabindex="1">Wachtwoord vergeten?</a>
+                            <a id="forgot-password" asp-page="./ForgotPassword" tabindex="1" role="button" aria-pressed="false">Wachtwoord vergeten?</a>
                         </p>
                         <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" tabindex="1">Ik heb nog geen account</a>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" tabindex="1" role="button" aria-pressed="false">Ik heb nog geen account</a>
                         </p>
                         <p>
-                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" tabindex="1">Verifieer e-mailadres</a>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" tabindex="1" role="button" aria-pressed="false">Verifieer e-mailadres</a>
                         </p>
                     </div>
                 </form>
