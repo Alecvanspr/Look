@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Edit";
 }
+@if(ViewBag.Gebruiker==ViewBag.Auteur){
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-5">
@@ -83,3 +84,9 @@
 <div>
     @Html.ActionLink("Back to List", "Meldingen")
 </div>
+}else{
+    <div>oh you naughty naughty
+
+        <iframe width="1280" height="750" src="https://www.youtube.com/embed/HAxp9PJMxSg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div> 
+}

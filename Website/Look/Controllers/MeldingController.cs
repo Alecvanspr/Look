@@ -201,8 +201,14 @@ namespace Look.Controllers
                 .FirstOrDefaultAsync(m => m.MeldingId == id);
             if (melding == null)
             {
-                return NotFound();
+                return View(melding);
             }
+            var CurrentSessionUserId = _userManager.GetUserName(User);
+            List<ApplicationUser> gebruikers = _context.Users.ToList();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            
+            ViewBag.Gebruiker = CurrentSessionUserId.ToString();
+            ViewBag.Auteur = _melding.Auteur.ToString();        
             return View(melding);
         }
 
@@ -284,7 +290,7 @@ namespace Look.Controllers
                 }
             }
             //dit geeft het aantal tabs
-            const int pageSize = 3;
+            const int pageSize = 10;
             var count = query.Count();
             var data = query.Skip(page * pageSize).Take(pageSize).ToList();
             this.ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
@@ -323,6 +329,13 @@ namespace Look.Controllers
 
         public ActionResult Edit(int id)
         { 
+            var CurrentSessionUserId = _userManager.GetUserName(User);
+            List<ApplicationUser> gebruikers = _context.Users.ToList();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            
+            ViewBag.Gebruiker = CurrentSessionUserId.ToString();
+            ViewBag.Auteur = _melding.Auteur.ToString();      
+             
             List<string> titels = new List<string>();
             foreach(var m in _context.Meldingen){
                 titels.Add(m.Titel);
