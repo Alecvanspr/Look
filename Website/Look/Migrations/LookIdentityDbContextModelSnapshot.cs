@@ -94,6 +94,9 @@ namespace Look.Migrations
                     b.Property<string>("HouseNumber")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("HouseNumberAddition")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("tinyint(1)");
 
