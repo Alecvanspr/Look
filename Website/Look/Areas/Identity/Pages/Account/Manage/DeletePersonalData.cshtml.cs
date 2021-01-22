@@ -32,6 +32,7 @@ namespace Look.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Wachtwoord")]
             public string Password { get; set; }
         }
 
