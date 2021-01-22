@@ -182,6 +182,13 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen));
         }
         
+        public IActionResult Rapporteren(long Id) {
+            var Melding = _context.Meldingen.Where(M => M.MeldingId == Id).First();
+
+            return View(Melding);
+            
+        }
+
         public async Task<IActionResult> Delete(long id)
         {
             
