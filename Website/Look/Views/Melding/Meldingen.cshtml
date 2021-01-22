@@ -169,9 +169,11 @@
             <div class="modal-header">
                  <div class="col-md-7" tabindex="1">
                      <div class="row">
-                        @if(await UserManager.GetUserAsync(User) == Model.Auteur ||  await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")) {
+                        @if(await UserManager.GetUserAsync(User) == Model.Auteur){
                             <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Bewerk</button></a>
                             <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
+                        }else if(await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
+                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
                         }
                     <h5>@Model.Titel</h5>
                 </div>

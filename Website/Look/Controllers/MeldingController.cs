@@ -17,8 +17,8 @@ using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Look.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Look.Controllers
 {
@@ -201,23 +201,39 @@ namespace Look.Controllers
                 .FirstOrDefaultAsync(m => m.MeldingId == id);
             if (melding == null)
             {
-                return View(melding);
+                return NotFound();
             }
-            var CurrentSessionUserId = _userManager.GetUserId(User);
-            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
-            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            Console.WriteLine(IngelogdeGebruiker);
-            Console.WriteLine(_melding.Auteur);
-            ViewBag.Gebruiker = IngelogdeGebruiker;
-            ViewBag.Auteur = _melding.Auteur;        
             return View(melding);
         }
+
 
         // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        // [Authorize(Roles = "Moderator,Member,SuperAdmin,Admin")]
         public async Task<IActionResult> DeleteConfirmed(long MeldingId)
+        {
+            var melding = await _context.Meldingen.FindAsync(MeldingId);
+            _context.Meldingen.Remove(melding);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Meldingen));
+        }
+
+        [Authorize(Roles = "Moderator")]
+        public async Task<IActionResult> ModeratorDelete(long id)
+        {
+            var melding = await _context.Meldingen
+                .FirstOrDefaultAsync(m => m.MeldingId == id);
+            if (melding == null)
+            {
+                return NotFound();
+            }
+            return View(melding);
+        }
+
+        [Authorize(Roles = "Moderator")]
+        [HttpPost, ActionName("ModeratorDelete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ModeratorDeleteConfirmed(long MeldingId)
         {
             var melding = await _context.Meldingen.FindAsync(MeldingId);
             _context.Meldingen.Remove(melding);
