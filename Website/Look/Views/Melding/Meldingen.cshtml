@@ -170,10 +170,10 @@
                  <div class="col-md-7" tabindex="1">
                      <div class="row">
                         @if(await UserManager.GetUserAsync(User) == Model.Auteur){
-                            <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Bewerk</button></a>
-                            <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
+                             <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></i></button></a>
+                            <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false"  aria-label="Bewerk uw bericht"><i class="far fa-edit"></i></button></a>
                         }else if(await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
-                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
+                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></button></a>
                         }
                     <h5>@Model.Titel</h5>
                 </div>
