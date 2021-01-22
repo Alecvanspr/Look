@@ -40,7 +40,6 @@ namespace Look.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Je e-mailadres is succesvol geverifieerd." : "Er is iets fout gegaan tijdens het verifiëren van je e-mailadres.";
             return Page();
         }
     }

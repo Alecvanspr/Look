@@ -22,7 +22,8 @@ namespace Look.Areas.Identity
                     ServerVersion.FromString("8.0.22-mysql"))
                 );
 
-                services.AddIdentity<ApplicationUser, ApplicationRole>()
+                services.AddIdentity<ApplicationUser, ApplicationRole>(options => 
+                    options.SignIn.RequireConfirmedAccount = true)
                     .AddEntityFrameworkStores<LookIdentityDbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders()
