@@ -201,8 +201,15 @@ namespace Look.Controllers
                 .FirstOrDefaultAsync(m => m.MeldingId == id);
             if (melding == null)
             {
-                return NotFound();
+                return View(melding);
             }
+            var CurrentSessionUserId = _userManager.GetUserId(User);
+            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            Console.WriteLine(IngelogdeGebruiker);
+            Console.WriteLine(_melding.Auteur);
+            ViewBag.Gebruiker = IngelogdeGebruiker;
+            ViewBag.Auteur = _melding.Auteur;        
             return View(melding);
         }
 

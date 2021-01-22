@@ -23,12 +23,12 @@
                 </div>
             <div class="form-group">
                 <label asp-for="Titel" class="control-label"></label> <!--dit is wat erboven komt te staan--> 
-                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' tabindex="1" role="textbox" required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                <input asp-for="Titel" class="form-control" value ="@Model.Titel" onchange='CheckMeldingNaam()' tabindex="1" role="textbox"  minlength="8" maxlength="30" required/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
                 <span asp-validation-for="Titel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inhoud" class="control-label"></label>
-                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" tabindex="1"  role="textbox"required></textarea>
+                <textarea asp-for="Inhoud" class="form-control" rows="6" value ="@Model.Inhoud" tabindex="1"  role="textbox"  minlength="20" maxlength="500" required></textarea>
                 <span asp-validation-for="Inhoud" class="text-danger"></span>
             </div>
               <div class="form-group">
