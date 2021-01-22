@@ -10,7 +10,7 @@
             <div class="col-md-12 m-0 p-0 text-wrap">
                 <h1 class="text-break">@ViewData["Title"]</h1>
                 <p class="text-secondary">
-                    Hij kan je een nieuw account aanmaken. Heb je al een account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log dan in</a>.
+                    Hier kan je een nieuw account aanmaken. Heb je al een account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log dan in</a>.
                 </p>
             </div>
         </div>
@@ -50,12 +50,12 @@
                             <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
                         </div>
                         
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-4 col-8">
                             <label asp-for="Input.HouseNumber"></label>
                             <input asp-for="Input.HouseNumber" pattern="[0-9]+" class="form-control form-validation address-fill" required />
                             <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-2 col-4">
                             <label asp-for="Input.HouseNumberAddition"></label>
                             <input asp-for="Input.HouseNumberAddition" pattern="[a-zA-Z0-9]+" class="form-control form-validation address-fill" />
                             <span asp-validation-for="Input.HouseNumberAddition" class="text-danger"></span>
@@ -120,39 +120,6 @@
         </div>
     </div>
 </div>
-
-<script id="RealTimeAddressValidation">
-    function is_int(value) {
-        $(".address-fill").keyup(function() {
-
-        var zip = document.getElementById('Input.ZipCode');
-        var number = document.getElementById('Input.HouseNumber');
-        var suffix = document.getElementById('Input.HouseNumberAddition');
-
-        // Call Ziptastic for information
-        $.ajax({
-        url: "https://api.spikkl.nl/geo/nld/lookup.json?key=873c05369f00770deef375bd6e4ba5e3&postal_code="+zip.val()+"&street_number="+number.val()+"&street_number_suffix="+suffix.val(),
-        cache: false,
-        dataType: "json",
-        type: "GET",
-        success: function(result, success) {
-
-            $("#Input.City").val(result.city);
-
-            $("#Input.Street").val(result.state);
-
-        },
-        error: function(result, success) {
-            
-            $("#Input.City").val("");
-
-            $("#Input.Street").val("");
-        }
-
-        });
-
-    });
-</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

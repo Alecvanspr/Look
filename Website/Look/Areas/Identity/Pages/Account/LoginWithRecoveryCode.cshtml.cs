@@ -32,9 +32,9 @@ namespace Look.Areas.Identity.Pages.Account
         public class InputModel
         {
             [BindProperty]
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
-            [Display(Name = "Recovery Code")]
+            [Display(Name = "Herstelcode")]
             public string RecoveryCode { get; set; }
         }
 
@@ -82,7 +82,7 @@ namespace Look.Areas.Identity.Pages.Account
             else
             {
                 _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
+                ModelState.AddModelError(string.Empty, "Ongeldige herstelcode ingevoerd.");
                 return Page();
             }
         }

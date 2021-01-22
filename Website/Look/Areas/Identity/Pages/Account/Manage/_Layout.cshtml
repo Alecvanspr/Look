@@ -9,16 +9,25 @@
     }
 }
 
-<h2>Manage your account</h2>
+<header>
+    <div id="meldingen-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-break">Profiel</h1>
+                <p class="text-secondary">
+                    Bewerk hier je profiel.
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
+<div id="meldingen-controls" class="container bg-white py-3" >
+    <div class ="row m-0 bg-white px-2 text-dark">
+        <div class="col-lg-3">
             <partial name="_ManageNav" />
         </div>
-        <div class="col-md-9">
+        <div class="col-lg-9">
             @RenderBody()
         </div>
     </div>

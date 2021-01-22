@@ -28,12 +28,12 @@ namespace Look.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [Display(Name = "E-mailadres")]
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [Display(Name = "Wachtwoord")]
             [StringLength(20, ErrorMessage = "Het {0} moet uit minimaal {2} en maximaal {1} karakters bestaan.", MinimumLength = 8)]
             [DataType(DataType.Password)]

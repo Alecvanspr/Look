@@ -31,7 +31,7 @@ namespace Look.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [EmailAddress]
             [Display(Name = "E-mailadres")]
             public string Email { get; set; }

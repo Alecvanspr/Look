@@ -14,7 +14,6 @@ using Look.Models;
 using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
 using Look.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 

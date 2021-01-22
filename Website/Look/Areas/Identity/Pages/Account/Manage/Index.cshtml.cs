@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Look.Areas.Identity.Data;
+using Look.Services;
 
 namespace Look.Areas.Identity.Pages.Account.Manage
 {
@@ -23,8 +24,6 @@ namespace Look.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -33,55 +32,57 @@ namespace Look.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Gebruikersnaam")]
+            public string UserName {get; set;}
 
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Voornaam")]
             public string FirstName {get; set;}
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Achternaam")]
             public string LastName {get; set;}
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Straat")]
             public string Street { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Huisnummer")]
             public string HouseNumber {get; set;}
-            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Toevoeging")]
+            public string HouseNumberAddition {get; set;}
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Woonplaats")]
             public string City { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Postcode")]
-            [RegularExpression(@"[1-9][0-9]{3}\s?[a-zA-Z]{2}", ErrorMessage = "De postcode moet bestaan uit een combinatie van 4 cijfers en 2 letters. <i>VB: 1234AB</i>")]
+            [RegularExpression(@"[1-9][0-9]{3}\s?[a-zA-Z]{2}", ErrorMessage = "De postcode moet bestaan uit een combinatie van 4 cijfers en 2 letters. VB: 1234AB")]
             public string ZipCode { get; set; }
             public bool IsAnonymous {get; set;}
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber,
+                UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Street = user.Street,
                 HouseNumber = user.HouseNumber,
+                HouseNumberAddition = user.HouseNumberAddition,
                 City = user.City,
                 ZipCode = user.ZipCode,
-                IsAnonymous = user.IsAnonymous,
+                IsAnonymous = user.IsAnonymous
             };
         }
 
@@ -100,6 +101,9 @@ namespace Look.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
+            bool IsAddressValid = (AddressCheck.Validate(Input.ZipCode, Input.HouseNumber, Input.HouseNumberAddition, Input.Street, Input.City).status == "ok" ? true : false);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -111,15 +115,10 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            //username error message in profile
+            if(Input.UserName != user.UserName)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                user.UserName = Input.UserName;
             }
 
             //firstname error message in profile
@@ -146,6 +145,12 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                 user.HouseNumber = Input.HouseNumber;
             }
 
+            //housenumberaddition error message in profile
+            if(Input.HouseNumberAddition != user.HouseNumberAddition)
+            {
+                user.HouseNumberAddition = Input.HouseNumberAddition;
+            }
+
             //city error message in profile
             if(Input.City != user.City)
             {
@@ -164,11 +169,19 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                 user.IsAnonymous = Input.IsAnonymous;
             }
 
-            await _userManager.UpdateAsync(user);
+            if(IsAddressValid)
+            {
+                await _userManager.UpdateAsync(user);
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "Je profiel is succesvol gewijzigd.";
+                return RedirectToPage();
+            }
+            else
+            {
+                StatusMessage = "Error, je hebt een ongeldig adres opgegeven.";
+                return RedirectToPage();
+            }
         }
     }
 }

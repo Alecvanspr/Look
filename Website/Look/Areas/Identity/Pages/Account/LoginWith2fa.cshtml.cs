@@ -33,13 +33,13 @@ namespace Look.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
+            [StringLength(7, ErrorMessage = "De {0} moet tenminste {2} en maximaal {1} tekens lang zijn.", MinimumLength = 6)]
             [DataType(DataType.Text)]
-            [Display(Name = "Authenticator code")]
+            [Display(Name = "Authenticatie code")]
             public string TwoFactorCode { get; set; }
 
-            [Display(Name = "Remember this machine")]
+            [Display(Name = "Herinner dit apparaat")]
             public bool RememberMachine { get; set; }
         }
 
@@ -91,7 +91,7 @@ namespace Look.Areas.Identity.Pages.Account
             else
             {
                 _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
+                ModelState.AddModelError(string.Empty, "Ongeldige authenticatiecode ingevoerd.");
                 return Page();
             }
         }

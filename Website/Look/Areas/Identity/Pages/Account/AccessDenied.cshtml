@@ -1,10 +1,17 @@
 ﻿@page
 @model AccessDeniedModel
 @{
-    ViewData["Title"] = "Access denied";
+    ViewData["Title"] = "Toegang geweigerd";
 }
-
 <header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
+    <div id="register-header" class="container bg-white py-3">
+        <div class="row m-0 bg-white py-1 text-dark justify-content-center align-content-center align-items-center">
+            <div class="col-md-12 m-0 p-0 text-wrap">
+                <h1 class="text-danger text-break">@ViewData["Title"]</h1>
+                <p class="text-danger">
+                    Je hebt geen toegang tot deze pagina.
+                </p>
+            </div>
+        </div>
+    </div>
 </header>

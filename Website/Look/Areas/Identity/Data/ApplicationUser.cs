@@ -17,9 +17,11 @@ namespace Look.Areas.Identity.Data
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
         
         [PersonalData]
-        public string FirstName {get; set;}
+        public override string UserName { get; set; }
         [PersonalData]
-        public string LastName {get; set;}
+        public string FirstName { get; set; }
+        [PersonalData]
+        public string LastName { get; set; }
         [PersonalData]
         public string Street { get; set; }
         [PersonalData]

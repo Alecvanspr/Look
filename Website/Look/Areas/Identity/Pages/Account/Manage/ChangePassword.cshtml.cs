@@ -34,20 +34,20 @@ namespace Look.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Huidige wachtwoord")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
+            [StringLength(20, ErrorMessage = "Het {0} moet uit minimaal {2} en maximaal {1} karakters bestaan.", MinimumLength = 8)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nieuwe wachtwoord")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Verifieer nieuwe wachtwoord")]
+            [Compare("NewPassword", ErrorMessage = "De nieuwe wachtwoorden komen niet overeen.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -88,12 +88,13 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "Je wachtwoord is succesvol gewijzigd.";
 
             return RedirectToPage();
         }

@@ -31,8 +31,8 @@ namespace Look.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
+            [StringLength(20, ErrorMessage = "Het {0} moet uit minimaal {2} en maximaal {1} karakters bestaan.", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }

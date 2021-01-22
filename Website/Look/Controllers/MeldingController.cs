@@ -16,7 +16,6 @@ using Look.Models;
 using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
 using Look.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 
@@ -115,6 +114,7 @@ namespace Look.Controllers
         public async Task<IActionResult> PlaatsBericht([Bind("Bericht")] Reactie reactie){
             if (ModelState.IsValid)
             {
+                
                 //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
                 string auteur = _userManager.GetUserId(User);
                 reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
@@ -236,9 +236,6 @@ namespace Look.Controllers
             }catch{
                 meldings = meldingen.Where(m=>m.Auteur!=null).ToList();
             }
-            //Check of er een gebruiker is ingelogd.
-            var CurrentSession = _userManager.GetUserId(User);
-            var DeveloperSession = "Developer";
             
             //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
             if(page==0){
@@ -277,14 +274,12 @@ namespace Look.Controllers
             Message = "Error";
 
             //Toon de views mits de gebruiker is ingelogd.
-            if(CurrentSession != null || DeveloperSession != null)
+            if(User.Identity.IsAuthenticated)
             {
                 return View(data);
             }
-            else
-            {
-                return RedirectToAction("Login");
-            }
+
+            return View(data);
         }
 
 

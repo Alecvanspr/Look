@@ -58,19 +58,19 @@ namespace Look.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Voornaam")]
             public string FirstName {get; set;}
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Achternaam")]
             public string LastName {get; set;}
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Straat")]
             public string Street { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Huisnummer")]
             public string HouseNumber {get; set;}
@@ -78,23 +78,23 @@ namespace Look.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "Toevoeging")]
             public string HouseNumberAddition {get; set;}
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Woonplaats")]
             public string City { get; set; }
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [DataType(DataType.Text)]
             [Display(Name = "Postcode")]
             [RegularExpression(@"[1-9][0-9]{3}\s?[a-zA-Z]{2}", ErrorMessage = "De postcode moet bestaan uit een combinatie van 4 cijfers en 2 letters. <i>VB: 1234AB</i>")]
             public string ZipCode { get; set; }
             public bool IsAnonymous {get; set;}
 
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [EmailAddress]
             [Display(Name = "E-mailadres")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [StringLength(20, ErrorMessage = "Het {0} moet uit minimaal {2} en maximaal {1} karakters bestaan.", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Wachtwoord")]
@@ -122,67 +122,78 @@ namespace Look.Areas.Identity.Pages.Account
                 bool IsCaptchaValid = (CaptchaResponse.Validate(EncodedResponse) == "true" ? true : false);
 
                 bool IsAddressValid = (AddressCheck.Validate(Input.ZipCode, Input.HouseNumber, Input.HouseNumberAddition, Input.Street, Input.City).status == "ok" ? true : false);
+                
+                bool NotEmailExists = await _userManager.FindByEmailAsync(Input.Email) == null ? true : false;
 
                 if(IsCaptchaValid)
                 {
                     _logger.LogInformation("Captcha Valid");
-                    if(IsAddressValid)
+                    if(NotEmailExists)
                     {
-                        _logger.LogInformation("Address Valid");
-
-                        var user = new ApplicationUser 
-                        { 
-                            FirstName = Input.FirstName,
-                            LastName = Input.LastName,
-                            Street = Input.Street,
-                            HouseNumber = Input.HouseNumber,
-                            HouseNumberAddition = Input.HouseNumberAddition,
-                            City = Input.City,
-                            ZipCode = Input.ZipCode,
-                            IsAnonymous = false,
-                            UserName = Input.Email,
-                            Email = Input.Email
-                        };
-
-                        var result = await _userManager.CreateAsync(user, Input.Password);
-
-                        if (result.Succeeded)
+                        _logger.LogInformation("Email Not In Use");
+                        if(IsAddressValid)
                         {
-                            StatusMessage = "Je bent succesvol geregistreerd.";
+                            _logger.LogInformation("Address Valid");
 
-                            _logger.LogInformation("User created a new account with password.");
-                            await _userManager.AddToRoleAsync(user, Enums.Roles.Member.ToString());
+                            var user = new ApplicationUser 
+                            { 
+                                FirstName = Input.FirstName,
+                                LastName = Input.LastName,
+                                Street = Input.Street,
+                                HouseNumber = Input.HouseNumber,
+                                HouseNumberAddition = Input.HouseNumberAddition,
+                                City = Input.City,
+                                ZipCode = Input.ZipCode,
+                                IsAnonymous = false,
+                                UserName = Input.Email,
+                                Email = Input.Email
+                            };
 
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                            var callbackUrl = Url.Page(
-                                "/Account/ConfirmEmail",
-                                pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                                protocol: Request.Scheme);
+                            var result = await _userManager.CreateAsync(user, Input.Password);
 
-                            await _emailSender.SendEmailAsync(Input.Email, "Look E-mailadresverificatie",
-                                $"Verifieer je e-mailadres door <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier te klikken</a>.");
-
-                            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                            if (result.Succeeded)
                             {
-                                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                                StatusMessage = "Je bent succesvol geregistreerd.";
+
+                                _logger.LogInformation("User created a new account with password.");
+                                await _userManager.AddToRoleAsync(user, Enums.Roles.Member.ToString());
+
+                                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                                var callbackUrl = Url.Page(
+                                    "/Account/ConfirmEmail",
+                                    pageHandler: null,
+                                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                    protocol: Request.Scheme);
+
+                                await _emailSender.SendEmailAsync(Input.Email, "Look E-mailadresverificatie",
+                                    $"Verifieer je e-mailadres door <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier te klikken</a>.");
+
+                                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                                {
+                                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                                }
+                                else
+                                {
+                                    await _signInManager.SignInAsync(user, isPersistent: false);
+                                    return LocalRedirect(returnUrl);
+                                }
                             }
-                            else
+                            foreach (var error in result.Errors)
                             {
-                                await _signInManager.SignInAsync(user, isPersistent: false);
-                                return LocalRedirect(returnUrl);
+                                ModelState.AddModelError(string.Empty, error.Description);
                             }
                         }
-                        foreach (var error in result.Errors)
+                        else
                         {
-                            ModelState.AddModelError(string.Empty, error.Description);
+                            StatusMessage = "Error, je hebt een ongeldig adres opgegeven.";
+                            _logger.LogError("Address Invalid");
                         }
                     }
                     else
                     {
-                        StatusMessage = "Error, je hebt een ongeldig adres opgegeven.";
-                        _logger.LogError("Address Invalid");
+                        StatusMessage = "Error, het e-mailadres dat je hebt opgegeven is al in gebruik.";
+                        _logger.LogError("Email In Use");
                     }
                 }
                 else

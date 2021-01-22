@@ -1,18 +1,20 @@
 ﻿@page
 @model ShowRecoveryCodesModel
 @{
-    ViewData["Title"] = "Recovery codes";
+    ViewData["Title"] = "Herstelcodes";
     ViewData["ActivePage"] = "TwoFactorAuthentication";
 }
 
-<partial name="_StatusMessage" for="StatusMessage" />
-<h4>@ViewData["Title"]</h4>
+<div class="row justify-content-lg-end justify-content-center">
+    <div class="col-lg-10 col-12 py-lg-0 py-md-5">
+        <h4>@ViewData["Title"]</h4>
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="alert alert-warning" role="alert">
     <p>
-        <strong>Put these codes in a safe place.</strong>
+        <strong>Bewaar deze codes goed.</strong>
     </p>
     <p>
-        If you lose your device and don't have the recovery codes you will lose access to your account.
+        Als je je toestel kwijtraakt en je herstelcodes niet hebt, verlies je toegang tot je account.
     </p>
 </div>
 <div class="row">

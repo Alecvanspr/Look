@@ -32,6 +32,7 @@ namespace Look.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
+        [Display(Name = "E-mailadres")]
         public string Email { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -44,9 +45,9 @@ namespace Look.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Nieuwe e-mailadres")]
             public string NewEmail { get; set; }
         }
 
@@ -105,11 +106,11 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "De verificatiemail om je e-mailadres te wijzigen is onderweg. Neem een kijkje in je inbox.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Je e-mailadres is ongewijzigd.";
             return RedirectToPage();
         }
 

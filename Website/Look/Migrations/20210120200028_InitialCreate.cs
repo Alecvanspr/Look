@@ -43,6 +43,7 @@ namespace Look.Migrations
                     LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     HouseNumber = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    HouseNumberAddition = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     ZipCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     IsAnonymous = table.Column<bool>(type: "tinyint(1)", nullable: false),
