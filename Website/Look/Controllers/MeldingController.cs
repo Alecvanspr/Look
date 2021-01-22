@@ -17,6 +17,7 @@ using Look;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Look.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Look.Controllers
@@ -208,6 +209,7 @@ namespace Look.Controllers
         // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        // [Authorize(Roles = "Moderator,Member,SuperAdmin,Admin")]
         public async Task<IActionResult> DeleteConfirmed(long MeldingId)
         {
             var melding = await _context.Meldingen.FindAsync(MeldingId);
