@@ -58,19 +58,6 @@ namespace Look.Controllers
         {
             public string bericht{get;set;}
         }
-
-        // public List<Reactie> MaakFakeReacties(){
-        //     List<Reactie> reacties = new List<Reactie>();
-        //     Reactie reactie = new Reactie();
-        //     reactie.ReactieId = UniekMeldingID;
-        //     UniekMeldingID++;
-        //     reactie.GeplaatstDoor = _context.Users.Where( g=> g.Id==3).First();
-        //     reactie.GeplaatstOp = DateTime.Now;
-        //     reactie.Bericht ="Een reactie";
-        //     reactie.Likes = 0;
-        //     reacties.Add(reactie);
-        //     return reacties;
-        // }
         
         public JsonResult Like(long id){
             var CurrentSessionUserId = _userManager.GetUserId(User);
@@ -265,11 +252,9 @@ namespace Look.Controllers
             List<ApplicationUser> gebruikers = _context.Users.ToList();
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
-            try{
-            string auteur = _userManager.GetUserId(User);
-            ViewBag.Gebruiker = _context.Users.Where(g => g.Id==auteur).First().Id;
-            }catch{
-                meldings = meldingen.Where(m=>m.Auteur!=null).ToList();
+            var CurrentSessionUserId = _userManager.GetUserName(User);
+            if(CurrentSessionUserId==null){ 
+                return Redirect("~/Identity/Account/Login");  
             }
             
             //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
@@ -333,13 +318,6 @@ namespace Look.Controllers
 
         public ActionResult Edit(int id)
         { 
-            var CurrentSessionUserId = _userManager.GetUserName(User);
-            List<ApplicationUser> gebruikers = _context.Users.ToList();
-            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            
-            ViewBag.Gebruiker = CurrentSessionUserId.ToString();
-            ViewBag.Auteur = _melding.Auteur.ToString();      
-             
             List<string> titels = new List<string>();
             foreach(var m in _context.Meldingen){
                 titels.Add(m.Titel);
@@ -347,7 +325,16 @@ namespace Look.Controllers
             ViewBag.Titels = titels;
             ViewBag.registerErrorText = "Deze titel van een bericht is al in gebruik.";
              var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
-            return View(melding);
+            var CurrentSessionUserId = _userManager.GetUserName(User);
+            List<ApplicationUser> gebruikers = _context.Users.ToList();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            
+            var Gebruiker = CurrentSessionUserId.ToString();
+            if(Gebruiker==_melding.Auteur.ToString()){ 
+                return View(melding);
+            }else{
+                return RedirectToAction(nameof(Meldingen));
+            }
         }
        [HttpPost]
         [ValidateAntiForgeryToken]

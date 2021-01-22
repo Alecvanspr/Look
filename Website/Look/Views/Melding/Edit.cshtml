@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Edit";
 }
-@if(ViewBag.Gebruiker==ViewBag.Auteur){
+@if(await UserManager.GetUserAsync(User)==Model.Auteur||await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-5">
