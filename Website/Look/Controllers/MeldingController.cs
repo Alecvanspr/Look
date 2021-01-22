@@ -207,9 +207,12 @@ namespace Look.Controllers
             List<ApplicationUser> gebruikers = _context.Users.ToList();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
             
-            ViewBag.Gebruiker = CurrentSessionUserId.ToString();
-            ViewBag.Auteur = _melding.Auteur.ToString();        
-            return View(melding);
+            var Gebruiker = CurrentSessionUserId.ToString();
+            if(Gebruiker==_melding.Auteur.ToString()){ 
+                return View(melding);
+            }else{
+                return RedirectToAction(nameof(Meldingen));
+            }
         }
 
 

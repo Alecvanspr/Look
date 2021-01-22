@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Delete";
 }
-@if(ViewBag.Gebruiker==ViewBag.Auteur){
+@if(await UserManager.GetUserAsync(User)==Model.Auteur||await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
 <h1>Delete</h1>
 <h3>Are you sure you want to delete this?</h3>
 <div>
