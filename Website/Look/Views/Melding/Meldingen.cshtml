@@ -172,8 +172,10 @@
                         @if(await UserManager.GetUserAsync(User) == Model.Auteur){
                              <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></i></button></a>
                             <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false"  aria-label="Bewerk uw bericht"><i class="far fa-edit"></i></button></a>
-                        }else if(await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
-                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></button></a>
+                        } else if(await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
+                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder dit bericht"><i class="fas fa-trash"></i></button></a>
+                        } else {
+                            <a class="button-href" asp-controller="Melding" asp-action="Rapporteren" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Rapporteer dit bericht"><i class="fas fa-exclamation-triangle"></i></button></a>
                         }
                     <h5>@Model.Titel</h5>
                 </div>
