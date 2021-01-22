@@ -185,8 +185,33 @@ namespace Look.Controllers
         public IActionResult Rapporteren(long Id) {
             var Melding = _context.Meldingen.Where(M => M.MeldingId == Id).First();
 
-            return View(Melding);
-            
+            return View(Melding);   
+        }
+
+        [Authorize(Roles = "Member")]
+        [HttpPost]
+        public async Task<IActionResult> Rapporteren([Bind("Categorie")] MeldingRapport rapport, string GerapporteerdeMelding) {
+            if(ModelState.IsValid)
+            {
+                var _user = await _userManager.GetUserAsync(User);
+                var _userId = await _userManager.GetUserIdAsync(_user);
+                var BestaandRapport = _context.MeldingRapporten.Where(M => M.GemaaktDoor.ToString() == _userId && M.GerapporteerdeMelding.ToString() == GerapporteerdeMelding);
+
+                if(BestaandRapport == null) {
+                    var Melding = _context.Meldingen.Where(M => M.MeldingId.ToString() == GerapporteerdeMelding).First();
+
+                    rapport.GerapporteerdeMelding = Melding;
+                    rapport.GemaaktDoor = _user;
+                    rapport.GeplaatstOp = DateTime.Now;
+                    _context.MeldingRapporten.Add(rapport);
+                    _context.SaveChanges();
+                
+                    return RedirectToAction("Meldingen");
+                }
+                
+            }
+
+            return RedirectToAction("Meldingen");
         }
 
         public async Task<IActionResult> Delete(long id)

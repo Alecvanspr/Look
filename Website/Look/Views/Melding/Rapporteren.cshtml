@@ -1,5 +1,7 @@
+@model Melding;
+
 @{
-    ViewData["Title"] = "Melding rapporterem";
+    ViewData["Title"] = "Melding rapporteren";
 }
 
 <header>
@@ -28,12 +30,12 @@
                 <form class="needs-validation w-100" id="rapport" method="post" novalidate>
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group w-100">
-                        <label for="rapport-type">Example select</label>
-                        <input class="form-control" id="rapport-type" readonly required />
+                        <label for="GerapporteerdeMelding">Het nummer van de melding die u wilt rapporteren:</label>
+                        <input name="GerapporteerdeMelding" id="GerapporteerdeMelding" class="form-control" value="@Model.MeldingId" id="rapport-type" readonly required />
                     </div>
                     <div class="form-group w-100">
-                        <label for="rapport-type">Selecteer reden van rapporten:</label>
-                        <select class="form-control" id="rapport-type" required>
+                        <label for="Categorie">Selecteer reden van rapporten:</label>
+                        <select class="form-control" name="Categorie" id="Categorie" required>
                             <option>Aanstootgevend taalgebruik</option>
                             <option>Seksuele inhoud</option>
                             <option>Gewelddadige inhoud</option>
