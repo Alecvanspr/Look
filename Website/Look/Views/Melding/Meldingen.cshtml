@@ -167,10 +167,12 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                @if(ViewBag.gebruiker==(Model.Auteur.Id) || await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")) {
-                    <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Bewerk</button></a>
-                    <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
-                }
+                @try{
+                    @if(ViewBag.gebruiker==(Model.Auteur.Id)) {
+                                <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Bewerk</button></a>
+                                 <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false">Verwijder</button></a>
+                    }
+                }catch{}
                 <div class="col-md-7" tabindex="1">
                     <h5>@Model.Titel</h5>
                 </div>
@@ -203,7 +205,7 @@
                     string AfbeeldingUrl = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Model.AfbeeldingData));
                     
                     <div class="row p-3 m-0">
-                        <img src=@AfbeeldingUrl alt="Een afbeelding over de melding">
+                        <img src=@AfbeeldingUrl alt="">
                     </div>
                 }
                 <hr/>

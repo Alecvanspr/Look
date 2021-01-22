@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList;
 using Look.Areas.Identity.Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Look.Controllers
@@ -75,7 +74,7 @@ namespace Look.Controllers
         
         public JsonResult Like(long id){
             var CurrentSessionUserId = _userManager.GetUserId(User);
-            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();            
+            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
             Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.UserId == IngelogdeGebruiker.Id).FirstOrDefault();
             Liked _newLiked = new Liked();
@@ -194,7 +193,7 @@ namespace Look.Controllers
                 }
                 return RedirectToAction(nameof(Meldingen));
         }
-
+        
         public async Task<IActionResult> Delete(long id)
         {
             var melding = await _context.Meldingen
@@ -222,7 +221,7 @@ namespace Look.Controllers
         //s is sorteren, z is zoeken
 
         public IActionResult Meldingen(string s,string z, int page = 0)
-        {   
+        {
             //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";
             ViewData["Zoek"] = z ?? "";
