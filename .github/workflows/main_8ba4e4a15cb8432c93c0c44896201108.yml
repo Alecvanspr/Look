@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - groepje-e1
+name: Build and deploy ASP.Net Core app to Azure Web App - 8ba4e4a15cb8432c93c0c44896201108
 
 on:
   push:
@@ -21,15 +21,15 @@ jobs:
         dotnet-version: '3.1.102'
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release Website/Look
 
     - name: dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp Website/Look
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'groepje-e1'
+        app-name: '8ba4e4a15cb8432c93c0c44896201108'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_fe6ef5b1e2214b588765f72628488281 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_18d42394f8004d49bf6df8977cf6c751 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
