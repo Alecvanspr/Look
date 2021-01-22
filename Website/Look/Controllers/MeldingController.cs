@@ -197,6 +197,7 @@ namespace Look.Controllers
         
         public async Task<IActionResult> Delete(long id)
         {
+            
             var melding = await _context.Meldingen
                 .FirstOrDefaultAsync(m => m.MeldingId == id);
             if (melding == null)
@@ -354,24 +355,25 @@ namespace Look.Controllers
         {
             if (ModelState.IsValid)
             {
-                //dit kijkt of de titel van de gebruiker al in gebruik is
-                var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList().Count;
+                if(melding.Auteur == await _userManager.GetUserAsync(User)) {
+                    //dit kijkt of de titel van de gebruiker al in gebruik is
+                    var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList().Count;
                 
-                //dit checkt of de titel hetzelfde is als ervoor
-                if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).First().Titel==melding.Titel){
-                    data = 0;
-                }
+                    //dit checkt of de titel hetzelfde is als ervoor
+                    if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).First().Titel==melding.Titel){
+                        data = 0;
+                    }
 
-                if(data == 0) {
-                _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Titel = melding.Titel;
-                 _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Inhoud = melding.Inhoud;
-                _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Categorie = melding.Categorie;
-                await _context.SaveChangesAsync();
+                    if(data == 0) {
+                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Titel = melding.Titel;
+                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Inhoud = melding.Inhoud;
+                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Categorie = melding.Categorie;
+                    await _context.SaveChangesAsync();
 
-                //dit zorgt ervoor dat er een melding wordt weergegeven als het gewijzigd wordt
-                Success = true;
-                Message = "Bericht is successvol gewijzigd!";
-
+                    //dit zorgt ervoor dat er een melding wordt weergegeven als het gewijzigd wordt
+                    Success = true;
+                    Message = "Bericht is successvol gewijzigd!";
+                    }
             }
             else
             {
