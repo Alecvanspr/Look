@@ -259,6 +259,7 @@ namespace Look.Controllers
             List<ApplicationUser> gebruikers = _context.Users.ToList();
             var meldingen = _context.Meldingen;
             List<Melding> meldings = meldingen.ToList();
+            var meldingenOphalen = _context.Meldingen;
             var CurrentSessionUserId = _userManager.GetUserName(User);
             if(CurrentSessionUserId==null){ 
                 return Redirect("~/Identity/Account/Login");  
@@ -282,6 +283,13 @@ namespace Look.Controllers
                         query = query.OrderByDescending(M=>M.Titel).ToList();
                     }else if(s.Equals("datum")){
                         query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                    }else if(s.Equals("GelikteBerichten")){
+                        List<Melding> TijdelijkeMeldings = new List<Melding>();
+                        var _liked = _context.Likes.Where(p=>p.UserId == "a3346334-ace7-4136-bbb8-d53ef4f8f0b5").ToList();
+                        foreach(var Geliked in _liked){
+                            TijdelijkeMeldings.Add(query.Where(q=>q.MeldingId==Geliked.MeldingId).First());
+                        }
+                        query = TijdelijkeMeldings;
                     }
                 }
             }
