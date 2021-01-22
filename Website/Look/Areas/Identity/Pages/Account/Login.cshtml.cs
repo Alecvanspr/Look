@@ -101,6 +101,12 @@ namespace Look.Areas.Identity.Pages.Account
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
+                if(result.IsNotAllowed)
+                {
+                    _logger.LogWarning("User has to have his email confirmed.");
+                    ModelState.AddModelError(string.Empty, "Je e-mailadres moet geverifieerd zijn om in te kunnen loggen.");
+                    return Page();
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Er is een fout opgetreden bij het inloggen.");
