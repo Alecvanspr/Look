@@ -231,7 +231,7 @@ namespace Look.Controllers
             if(Gebruiker==_melding.Auteur.ToString()){ 
                 return View(melding);
             }else{
-                return RedirectToAction(nameof(Meldingen));
+                return Redirect("~/Identity/Account/AccessDenied"); 
             }
         }
 
@@ -365,7 +365,7 @@ namespace Look.Controllers
             if(Gebruiker==_melding.Auteur.ToString()){ 
                 return View(melding);
             }else{
-                return RedirectToAction(nameof(Meldingen));
+                 return Redirect("~/Identity/Account/AccessDenied"); 
             }
         }
        [HttpPost]
