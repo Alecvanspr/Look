@@ -241,7 +241,7 @@ namespace Look.Controllers
             if(page==0){
                 //dit zorgt ervoor dat je kan zoeken
                 if(z!=null){
-                    query = meldings.Where(m=>m.Categorie.Contains(z)).ToList();
+                    query = meldings.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
                 }else{
                     query = meldings;
                 }
