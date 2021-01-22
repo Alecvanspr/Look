@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210120200028_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210122115827_EersteMigratie")]
+    partial class EersteMigratie
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -18,7 +18,7 @@ namespace Look.Areas.Identity.Data
     {
         public DbSet<Melding> Meldingen {get; set;}
         public DbSet<Reactie> Reacties {get; set;}
-        public DbSet<Liked> Liked { get; set; }
+        public DbSet<Liked> Likes { get; set; }
 
         public LookIdentityDbContext(DbContextOptions<LookIdentityDbContext> options)
             : base(options)

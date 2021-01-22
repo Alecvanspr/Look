@@ -75,7 +75,7 @@ namespace Look.Controllers
             var CurrentSessionUserId = _userManager.GetUserId(User);
             ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            Liked _liked = _context.Liked.Where(p => p.MeldingId == id && p.UserId == IngelogdeGebruiker.Id).FirstOrDefault();
+            Liked _liked = _context.Likes.Where(p => p.MeldingId == id && p.UserId == IngelogdeGebruiker.Id).FirstOrDefault();
             Liked _newLiked = new Liked();
             _newLiked.UserId = IngelogdeGebruiker.Id;
             _newLiked.MeldingId = _melding.MeldingId;
@@ -88,11 +88,11 @@ namespace Look.Controllers
                 if (_liked == null)
                 {
                     _melding.Likes++;
-                    _context.Liked.Add(_newLiked);
+                    _context.Likes.Add(_newLiked);
                     _context.SaveChanges();
                 } else {
                     _melding.Likes--;
-                    _context.Liked.Remove(_liked);
+                    _context.Likes.Remove(_liked);
                     _context.SaveChanges();
                 }
             } 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class EersteMigratie : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,6 +39,7 @@ namespace Look.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     FirstName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
@@ -47,7 +48,6 @@ namespace Look.Migrations
                     City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     ZipCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     IsAnonymous = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    UserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
@@ -114,7 +114,7 @@ namespace Look.Migrations
                         column: x => x.AuteurId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,13 +222,13 @@ namespace Look.Migrations
                         column: x => x.MeldingId,
                         principalTable: "Meldingen",
                         principalColumn: "MeldingId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reacties_User_GeplaatstDoorId",
                         column: x => x.GeplaatstDoorId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(
