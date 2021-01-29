@@ -19,29 +19,28 @@ using Microsoft.EntityFrameworkCore;
 using Look.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Look.Controllers
 {
     public class MeldingController : Controller
     {
-        private readonly ILogger<MeldingController> _logger;
         private readonly LookIdentityDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _singInManager;
+        //private readonly SignInManager<ApplicationUser> _singInManager;
         public static bool Success;
         public static bool Error;
         public static string Message;
 
-        public MeldingController(ILogger<MeldingController> logger, LookIdentityDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public MeldingController(LookIdentityDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            _logger = logger;
             _userManager = userManager;
-            _singInManager = signInManager;
+            //_singInManager = signInManager;
             CheckErrors();
             CheckMeldingenOpDatum();
         }
-    
+
          public void CheckErrors(){
              if(Message==null){
                 Success = false;
@@ -97,21 +96,6 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen)); //todo dit moet inlog scherm worden
             }
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PlaatsBericht([Bind("Bericht")] Reactie reactie){
-            if (ModelState.IsValid)
-            {
-                
-                //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
-                string auteur = _userManager.GetUserId(User);
-                reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
-                var inladen = _context.Meldingen.Where(m=>m.MeldingId==15).First().Reacties.First().ReactieId;
-
-            }
-            return View(nameof(Meldingen));
-            // return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==15).First().Likes});
-        }
         
         public IActionResult CreateMelding()
         {
@@ -128,6 +112,9 @@ namespace Look.Controllers
             {
                 return RedirectToAction(nameof(Meldingen));
             }
+        }
+        public ViewResult bekijk(){
+            return View();
         }
 
         [HttpPost]
@@ -270,7 +257,7 @@ namespace Look.Controllers
             return RedirectToAction(nameof(Meldingen));
         }
 
-         public static List<Melding> query=null;
+         public static List<Melding> query= new List<Melding>();
 
         //s is sorteren, z is zoeken
 
@@ -282,11 +269,12 @@ namespace Look.Controllers
 
             //dit maakt een lijst aan waarop het gesorteerd wordt
             List<ApplicationUser> gebruikers = _context.Users.ToList();
-            var meldingen = _context.Meldingen;
-            List<Melding> meldings = meldingen.ToList();
+            List<Melding> meldings = _context.Meldingen.ToList();
+            var ReactiesOphalen = _context.Reacties.ToList();
             var meldingenOphalen = _context.Meldingen;
-            var CurrentSessionUserId = _userManager.GetUserName(User);
+            var CurrentSessionUserId = _userManager.GetUserId(User);
             if(CurrentSessionUserId==null){ 
+                ViewData["login"] ="Login";
                 return Redirect("~/Identity/Account/Login");  
             }
             
@@ -299,24 +287,8 @@ namespace Look.Controllers
                     query = meldings;
                 }
                 //dit zorgt ervoor dat je kan sorteren
-                if(s!=null){
-                    if(s.Equals("likes")){
-                        query = query.OrderByDescending(M=>M.Likes).ToList();
-                    }else if(s.Equals("views")){
-                        query = query.OrderByDescending(M=>M.Views).ToList();
-                    }else if(s.Equals("titels")){
-                        query = query.OrderByDescending(M=>M.Titel).ToList();
-                    }else if(s.Equals("datum")){
-                        query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
-                    }else if(s.Equals("GelikteBerichten")){
-                        List<Melding> TijdelijkeMeldings = new List<Melding>();
-                        var _liked = _context.Likes.Where(p=>p.UserId == "a3346334-ace7-4136-bbb8-d53ef4f8f0b5").ToList();
-                        foreach(var Geliked in _liked){
-                            TijdelijkeMeldings.Add(query.Where(q=>q.MeldingId==Geliked.MeldingId).First());
-                        }
-                        query = TijdelijkeMeldings;
-                    }
-                }
+                query = SorteerOpFiler(s,query);
+                
             }
             //dit geeft het aantal tabs
             const int pageSize = 10;
@@ -341,7 +313,32 @@ namespace Look.Controllers
 
             return View(data);
         }
+        public Melding ReturnEerste(){
+            return _context.Meldingen.FirstOrDefault();
+        }
+        public List<Melding> SorteerOpFiler(String s,List<Melding> query){
+            var CurrentSessionUserId = _userManager.GetUserId(User);
+            if(s!=null){
+                    if(s.Equals("Meeste likes")){
+                        query = query.OrderByDescending(M=>M.Likes).ToList();
+                    }else if(s.Equals("Meeste weergaven")){
+                        query = query.OrderByDescending(M=>M.Views).ToList();
+                    }else if(s.Equals("Naam")){
+                        query = query.OrderByDescending(M=>M.Titel).ToList();
+                    }else if(s.Equals("Nieuwste")){
+                        query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                    }else if(s.Equals("Gelikete Berichten")){
+                        var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
+                        var _meldingIds = _context.Meldingen.ToList().Select(m=>m.MeldingId);
 
+                        var GelikteMeldingIDs = _meldingIds.Except(_liked).ToList();
+                        foreach(var berichten in GelikteMeldingIDs){
+                            query.Remove(query.Where(m=>m.MeldingId==berichten).FirstOrDefault());
+                        }
+                    }
+                }
+            return query;
+        }
 
         [HttpPost]
         public async void CheckMeldingenOpDatum(){
@@ -356,7 +353,7 @@ namespace Look.Controllers
             await _context.SaveChangesAsync();
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         { 
             List<string> titels = new List<string>();
             foreach(var m in _context.Meldingen){
@@ -364,7 +361,7 @@ namespace Look.Controllers
             }
             ViewBag.Titels = titels;
             ViewBag.registerErrorText = "Deze titel van een bericht is al in gebruik.";
-             var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
+            var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
             var CurrentSessionUserId = _userManager.GetUserName(User);
             List<ApplicationUser> gebruikers = _context.Users.ToList();
             Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
@@ -376,13 +373,15 @@ namespace Look.Controllers
                  return Redirect("~/Identity/Account/AccessDenied"); 
             }
         }
-       [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("Titel,Inhoud,Categorie,MeldingId")] Melding melding)
         {
             if (ModelState.IsValid)
             {
-                if(melding.Auteur == await _userManager.GetUserAsync(User)) {
+
+                Console.WriteLine(await _userManager.GetUserAsync(User));
+                if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Auteur == await _userManager.GetUserAsync(User)){
                     //dit kijkt of de titel van de gebruiker al in gebruik is
                     var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList().Count;
                 
@@ -421,7 +420,8 @@ namespace Look.Controllers
             return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Views});
         }
 
-        public JsonResult PostComment(int? id, string inhoud){
+        public IActionResult PostComment(int? id, string inhoud){
+            ViewBag.Comments = _context.Meldingen.Where(m=>m.MeldingId==id).FirstOrDefault();
             Reactie reactie = new Reactie();
             string auteur = _userManager.GetUserId(User);
             reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
@@ -430,9 +430,7 @@ namespace Look.Controllers
             List<Reactie> reacties;
             try{
                 _context.Reacties.Add(reactie);
-                 Console.WriteLine("Comment Aan database toegevoegd ");
                  try{
-                     
                         reacties =_context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties;
                         reacties.Add(reactie);
                  }catch{ //dit maakt een nieuwe list aan als deze er niet automatisch inzit
@@ -446,7 +444,10 @@ namespace Look.Controllers
             }
             Console.WriteLine("Comment geplaatst");
              _context.SaveChanges();
-            return Json(new StringInfo { bericht =inhoud});
+
+            Success = true;
+            Message = "Uw reactie is geplaatst!";
+            return Redirect("~/Melding/Meldingen#melding-"+id); 
         }
     }
 }
