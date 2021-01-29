@@ -26,4 +26,9 @@ namespace Look.Models
     {
         public Melding GerapporteerdeReactie {get; set;}
     }
+
+    public class RapportViewModel {
+        public List<MeldingRapport> meldingRapporten {get; set;}
+        public List<ReactieRapport> reactieRapporten {get; set;}
+    }
 }

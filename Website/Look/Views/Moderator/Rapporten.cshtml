@@ -1,0 +1,13 @@
+@model RapportViewModel;
+
+<div>
+    @foreach (var rapport in Model.meldingRapporten)
+    {
+        <p>Melding</p>
+    }
+
+    @foreach (var rapport in Model.reactieRapporten)
+    {
+        <p>Reactie</p>
+    }
+</div>
