@@ -36,12 +36,13 @@
         <div class="col-md-4 p-2 m-0">
             <div class="form-inline m-0 select-box">
                 <select id="inputSorteer" class="form-control w-100" tabindex="1" onchange="javascript:SorterenOpQuery(this)">
-                    <option selected>Sorteren op...</option>
-                    <option value="s=datum">Nieuwste</option>
-                    <option value="s=likes">Meeste likes</option>
-                    <option value="s=views">Meeste weergaven</option>
+                    <option selected>@ViewData["Sorteer"]</option>
+                    <option value="s=Nieuwste">Nieuwste</option>
+                    <option value="s=Meeste likes">Meeste likes</option>
+                    <option value="s=Meeste weergaven">Meeste weergaven</option>
                     <option value="s=reacties">Meeste reacties</option>
-                    <option value="s=titel">Naam</option>
+                    <option value="s=Naam">Naam</option>
+                    <option value="s=Gelikete Berichten">Uw gelikete berichten</option>
                 </select>
                 <i class="fas fa-angle-down selector"></i>
             </div>
@@ -90,8 +91,10 @@
                                 </div>
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
+                                         <i class="far fa-thumbs-up"></i> 
+                                         <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
                                         <i class="far fa-clock"></i> 
-                                        @Model.AangemaaktOp
+                                         @Model.AangemaaktOp
                                     </h6>
                                 </div>
                                 @if(Model.IsActief==true)
@@ -197,7 +200,8 @@
                     </script>
                 <div class="col-md-1 d-inline-block">
                     <button class="btn btn-link" onclick="MeldingLiken(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false"><p><a onclick="MeldingLiken()" data-id="@Model.MeldingId"><i class="far fa-thumbs-up"></i></a></p></button>
-                       <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
+                    <input id="refresh" value="false" hidden>
+                    <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
                 </div>
             </div>
             <div class="modal-body">
@@ -211,37 +215,43 @@
                         <img src=@AfbeeldingUrl alt="">
                     </div>
                 }
-                <hr/>
                 <div class="col-md-2"></div>
-
-                <div id="Werkt">
-                    @Html.Partial("_ReactieToevoegen",Model)
+                <div class="Partial">
+                     @Html.Partial("_ReactieToevoegen",Model)
                 </div>
-
                     <div class="row p-2 m-1">
-                        <div class="col-md-10">
-                            <input class="form-control" id="reactie" value="" tabindex="1"/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
-                            <div id="ReactieOutput"></div>
-                        </div>
-                       <button class="btn btn-primary" onclick="VoegReactieToe(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false"><a >Plaats Reactie</a></button>       
+                    <div class="col-md-10">
+                        <div class="form-group">
+                        <input class="form-control" id="reactie-@Model.MeldingId" minlength="3" maxlength="30"/>
                     </div>
-
-                        <script>           
-                            //dit voegt er een toe als je er op klikt
-                                function VoegReactieToe(id){
-                                    document.getElementById("ReactieOutput").innerHTML = "Niks Werkt";
-                                    var inhoud = document.getElementById('reactie').value;
-                                    document.getElementById("ReactieOutput").innerHTML = inhoud;
-                                    fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud)
-                                    .then(r => r.json())
-                                    .then(r =>document.getElementById("ReactieOutput").innerHTML = r.bericht);
-                                    document.getElementById("reactie").value = "";
-                                    }
-                            </script>
-                        </div>
+                    </div>
+                        <button class="btn btn-primary" onclick="PlaatsReactie(@Model.MeldingId)"><a >Plaats Reactie</a></button>     
+                        <div id="ReactieOutput-@Model.MeldingId"></div>
+                    </div>
                     </div>
                 </div>
+            </div>
         </div>
+   <script>           
+         //dit voegt er een toe als je er op klikt
+         function PlaatsReactie(id){
+             VoegReactieToe(id);
+         }
+        function VoegReactieToe(id){
+            
+            document.getElementById('ReactieOutput-'+id).innerHTML = id;
+            var inhoud = document.getElementById('reactie-'+id).value;
+            window.location.href = "https://localhost:5001/Melding/PostComment?id="+id+"&inhoud="+inhoud;
+            //fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud);
+        }
+        function refresh(){
+            if(document.getElementById("refresh")){
+                document.getElementById("refresh").innerHTML = false
+                location.reload();
+            }
+        }
+
+   </script>
         }
  </div>
 <div style="text-align: center;">
@@ -260,4 +270,3 @@
         </a>
     }
 </div>
-
