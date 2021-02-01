@@ -257,12 +257,15 @@ namespace Look.Controllers
             return RedirectToAction(nameof(Meldingen));
         }
 
-         public static List<Melding> query= new List<Melding>();
+         public static List<Melding> query;
 
         //s is sorteren, z is zoeken
 
         public IActionResult Meldingen(string s,string z, int page = 0)
         {
+            if (query==null){
+                query = new List<Melding>();
+            }
             //dit zijn de de termen waarop het gesorteerd wordt
             ViewData["Sorteer"] = s ?? "datum";
             ViewData["Zoek"] = z ?? "";
@@ -275,13 +278,14 @@ namespace Look.Controllers
             var CurrentSessionUserId = _userManager.GetUserId(User);
             if(CurrentSessionUserId==null){ 
                 ViewData["login"] ="Login";
-                return Redirect("~/Identity/Account/Login");  
+                return Redirect("~/Identity/Account/Login");
             }
             
             //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
             if(page==0){
                 //dit zorgt ervoor dat je kan zoeken
-                query = ZoekenOpFilter(s,query);
+                query = ZoekenOpFilter(z,query);
+
                 //dit zorgt ervoor dat je kan sorteren
                 query = SorteerOpFiler(s,query);
                 
@@ -313,29 +317,37 @@ namespace Look.Controllers
             return _context.Meldingen.FirstOrDefault();
         }
         public List<Melding> ZoekenOpFilter(String z, List<Melding> Lijst){
+            //var ReactiesOphalen = _context.Reacties.ToList();
+            var meldingenOphalen = _context.Meldingen.ToList();
+            Console.WriteLine("ZoekenOpFilter "+meldingenOphalen.FirstOrDefault().Titel);
+            //Console.WriteLine("ZoekenOpFilter 2 "+Lijst.FirstOrDefault().Titel);
+            try{
+            Console.WriteLine("z is "+z);
+            }catch{Console.WriteLine("z is leeg");}
             if(z!=null){
-                    Lijst = _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
+                    return _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
                 }else{
-                    Lijst = _context.Meldingen.ToList();
+                    return _context.Meldingen.ToList();
                 }
-            return Lijst;
         }
-        public List<Melding> SorteerOpFiler(String s,List<Melding> query){
+        public List<Melding> SorteerOpFiler(String s,List<Melding> Lijst){
+            var ReactiesOphalen = _context.Reacties.ToList();
+            var meldingenOphalen = _context.Meldingen.ToList();
             var CurrentSessionUserId = _userManager.GetUserId(User);
             if(s!=null){
                     if(s.Equals("Meeste likes")){
-                        query = query.OrderByDescending(M=>M.Likes).ToList();
+                        return query.OrderByDescending(M=>M.Likes).ToList();
                     }else if(s.Equals("Meeste weergaven")){
-                        query = query.OrderByDescending(M=>M.Views).ToList();
+                        return query.OrderByDescending(M=>M.Views).ToList();
                     }else if(s.Equals("Naam")){
-                        query = query.OrderByDescending(M=>M.Titel).ToList();
+                        return query.OrderByDescending(M=>M.Titel).ToList();
                     }else if(s.Equals("Nieuwste")){
-                        query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                        return query.OrderByDescending(M=>M.AangemaaktOp).ToList();
                     }else if(s.Equals("Gelikete Berichten")){
-                        query=sorteerGelikedeMeldingen(query,CurrentSessionUserId);
+                        return sorteerGelikedeMeldingen(query,CurrentSessionUserId);
                     }
                 }
-            return query;
+                return query;
         }
         public List<Melding> sorteerGelikedeMeldingen(List<Melding> query, string CurrentSessionUserId){
                 var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
