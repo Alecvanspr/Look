@@ -328,16 +328,20 @@ namespace Look.Controllers
                     }else if(s.Equals("Nieuwste")){
                         query = query.OrderByDescending(M=>M.AangemaaktOp).ToList();
                     }else if(s.Equals("Gelikete Berichten")){
-                        var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
-                        var _meldingIds = _context.Meldingen.ToList().Select(m=>m.MeldingId);
-
-                        var GelikteMeldingIDs = _meldingIds.Except(_liked).ToList();
-                        foreach(var berichten in GelikteMeldingIDs){
-                            query.Remove(query.Where(m=>m.MeldingId==berichten).FirstOrDefault());
-                        }
+                        query=sorteerGelikedeMeldingen(query,CurrentSessionUserId);
                     }
                 }
             return query;
+        }
+        public List<Melding> sorteerGelikedeMeldingen(List<Melding> query, string CurrentSessionUserId){
+                var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
+                var _meldingIds = _context.Meldingen.ToList().Select(m=>m.MeldingId);
+
+                var GelikteMeldingIDs = _meldingIds.Except(_liked).ToList();
+                foreach(var berichten in GelikteMeldingIDs){
+                query.Remove(query.Where(m=>m.MeldingId==berichten).FirstOrDefault());
+             }
+             return query;
         }
 
         [HttpPost]
@@ -353,7 +357,7 @@ namespace Look.Controllers
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         { 
             List<string> titels = new List<string>();
             foreach(var m in _context.Meldingen){

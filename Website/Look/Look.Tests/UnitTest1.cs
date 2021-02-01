@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.Abstractions;
 using Microsoft.Extensions.Logging.Abstractions;
+using Autofac.Extras.Moq;
+
 
 namespace Look.Tests
 {
@@ -27,17 +29,34 @@ namespace Look.Tests
     {
         private string databaseName;
 
-        //deze methode vult de database aan
+
         public LookIdentityDbContext getContext(){
             LookIdentityDbContext context = getNewContext(true);
+
             context.Meldingen.Add(new Melding {Titel="Ik eet pizza",Inhoud="ik heb lekker een pizza gegeten",Likes=3,Views=5,Categorie="pizzas"});
             context.Meldingen.Add(new Melding {Titel="Ik bak taarten",Inhoud="ik heb goede taart recepten",Likes=5,Views=24,Categorie="Taarten"}); 
             context.Meldingen.Add(new Melding {Titel="Ik heb een jas gevonden",Inhoud="Er lag een gele jas in het speeltuintje",Likes=76,Views=145,Categorie="Gevonden Voorwerp"}); 
             context.Meldingen.Add(new Melding {Titel="Testen Schrijven",Inhoud="Poeh hey wat was ik hier lang mee bezig",Likes=0,Views=1,Categorie="Testen"}); 
+           
+
+            context.Users.Add(new ApplicationUser { FirstName = "Bastiaan", LastName = "van Toor", UserName="Bassie",Email="Grappenmaker@gmail.com"});
+            context.Users.Add(new ApplicationUser { FirstName = "Adriaan" ,LastName = "van Toor" , UserName="Adriaan",Email="Acrobaatje"});
+            
+
+            var liked1 = new Liked();
+            liked1.UserId= context.Users.FirstOrDefault().Id;
+            liked1.MeldingId = context.Meldingen.FirstOrDefault().MeldingId;
+            var liked2 = new Liked();
+            liked2.UserId= context.Users.FirstOrDefault().Id;
+            liked2.MeldingId = context.Meldingen.Where(m=>m.Titel=="Testen Schrijven").FirstOrDefault().MeldingId;
+            var liked3 = new Liked();
+            liked3.UserId= context.Users.Where(u=>u.UserName=="Bassie").FirstOrDefault().Id;
+            liked3.MeldingId = context.Meldingen.FirstOrDefault().MeldingId;
+            
             context.SaveChanges();
             return getNewContext(false);
         }
-        //deze methode maakt een lege database
+
         private LookIdentityDbContext getNewContext(bool NewDb){
             if(NewDb) this.databaseName = Guid.NewGuid().ToString();
             
@@ -47,50 +66,21 @@ namespace Look.Tests
             
             return new LookIdentityDbContext(options);
         }
-        //dit maakt een user manager aan.
+
+
         private UserManager<ApplicationUser> GetUserManager(){
             var UserStore = new Mock<IUserStore<ApplicationUser>>();
             var UserManager = new Mock<UserManager<ApplicationUser>>(UserStore.Object,null,null,null,null,null,null,null,null);
             return UserManager.Object;
         }
-        //deze methode maakt een MeldingCreator aan dit zorgt ervoor dat er minder code duplication is.
+
+
         public MeldingController createMeldingController(){
             var context = getContext();
             var usermanager = GetUserManager();
             return new MeldingController(context,usermanager);
         }
+        
 
-        //deze eerste test is meer om te testen of we in de MeldingController konden komen.
-        [Fact]
-        public void IndexTest(){
-            var MeldingController = createMeldingController();
-            Assert.IsType<ViewResult>(MeldingController.bekijk());
-        }
-        //in de onderstaande test hebben wij gest of het sorteren en het filteren werkt.
-
-        [Fact] //Deze checkt of de SorteerOpFilter de volledige lijst terug geeft.
-        public void SorteerOpFilterTest1(){
-            var context = getContext();
-            var usermanager = GetUserManager();
-            var MeldingController = new MeldingController(context,usermanager);
-            
-            var Meldingen = new List<Melding>();
-               Meldingen.Add(new Melding {Titel="bericht1",Inhoud="inhoud1",Views=20});
-               Meldingen.Add( new Melding {Titel="bericht2",Inhoud="inhoud2",Views=10});
-               Meldingen.Add( new Melding {Titel="bericht3",Inhoud="inhoud3",Views=30});
-
-
-            var query = MeldingController.SorteerOpFiler("Meeste Weergaven",Meldingen);
-            Assert.True(query.Count==3);
-        }
-        [Fact]
-        public void TestDatabase(){
-            var context = getContext();
-            var usermanager = GetUserManager();
-            var MeldingController = new MeldingController(context,usermanager);
-
-            var melding = MeldingController.ReturnEerste();
-            Assert.True(context.Meldingen.FirstOrDefault()==null);
-        }
     }
 }
