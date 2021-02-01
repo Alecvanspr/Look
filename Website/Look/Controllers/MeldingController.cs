@@ -281,11 +281,7 @@ namespace Look.Controllers
             //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
             if(page==0){
                 //dit zorgt ervoor dat je kan zoeken
-                if(z!=null){
-                    query = meldings.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
-                }else{
-                    query = meldings;
-                }
+                query = ZoekenOpFilter(s,query);
                 //dit zorgt ervoor dat je kan sorteren
                 query = SorteerOpFiler(s,query);
                 
@@ -315,6 +311,14 @@ namespace Look.Controllers
         }
         public Melding ReturnEerste(){
             return _context.Meldingen.FirstOrDefault();
+        }
+        public List<Melding> ZoekenOpFilter(String z, List<Melding> query){
+            if(z!=null){
+                    query = _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
+                }else{
+                    query = _context.Meldingen.ToList();
+                }
+            return query;
         }
         public List<Melding> SorteerOpFiler(String s,List<Melding> query){
             var CurrentSessionUserId = _userManager.GetUserId(User);
