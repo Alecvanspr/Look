@@ -312,13 +312,13 @@ namespace Look.Controllers
         public Melding ReturnEerste(){
             return _context.Meldingen.FirstOrDefault();
         }
-        public List<Melding> ZoekenOpFilter(String z, List<Melding> query){
+        public List<Melding> ZoekenOpFilter(String z, List<Melding> Lijst){
             if(z!=null){
-                    query = _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
+                    Lijst = _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
                 }else{
-                    query = _context.Meldingen.ToList();
+                    Lijst = _context.Meldingen.ToList();
                 }
-            return query;
+            return Lijst;
         }
         public List<Melding> SorteerOpFiler(String s,List<Melding> query){
             var CurrentSessionUserId = _userManager.GetUserId(User);
