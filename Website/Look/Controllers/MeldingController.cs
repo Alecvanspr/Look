@@ -288,7 +288,6 @@ namespace Look.Controllers
 
                 //dit zorgt ervoor dat je kan sorteren
                 query = SorteerOpFiler(s,query);
-                
             }
             //dit geeft het aantal tabs
             const int pageSize = 10;
@@ -310,20 +309,13 @@ namespace Look.Controllers
             {
                 return View(data);
             }
-
             return View(data);
         }
         public Melding ReturnEerste(){
             return _context.Meldingen.FirstOrDefault();
         }
         public List<Melding> ZoekenOpFilter(String z, List<Melding> Lijst){
-            //var ReactiesOphalen = _context.Reacties.ToList();
             var meldingenOphalen = _context.Meldingen.ToList();
-            Console.WriteLine("ZoekenOpFilter "+meldingenOphalen.FirstOrDefault().Titel);
-            //Console.WriteLine("ZoekenOpFilter 2 "+Lijst.FirstOrDefault().Titel);
-            try{
-            Console.WriteLine("z is "+z);
-            }catch{Console.WriteLine("z is leeg");}
             if(z!=null){
                     return _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
                 }else{
