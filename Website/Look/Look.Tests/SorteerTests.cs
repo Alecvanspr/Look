@@ -87,7 +87,7 @@ namespace Look.Tests
         [InlineData("Meeste weergaven","Ik bak taarten")]
         public void TestFilteren(string sorteerVar,string expected){
             MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
-            List<Melding> output = meldingController.SorteerOpFiler(sor,getContext().Meldingen.ToList());
+            List<Melding> output = meldingController.SorteerOpFiler(sorteerVar,getContext().Meldingen.ToList());
             Assert.True(output.FirstOrDefault().Titel==expected);
         }
     }
