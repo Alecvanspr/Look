@@ -113,9 +113,6 @@ namespace Look.Controllers
                 return RedirectToAction(nameof(Meldingen));
             }
         }
-        public ViewResult bekijk(){
-            return View();
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -310,9 +307,6 @@ namespace Look.Controllers
                 return View(data);
             }
             return View(data);
-        }
-        public Melding ReturnEerste(){
-            return _context.Meldingen.FirstOrDefault();
         }
         public List<Melding> ZoekenOpFilter(String z, List<Melding> Lijst){
             var meldingenOphalen = _context.Meldingen.ToList();

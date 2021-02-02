@@ -25,7 +25,7 @@ using Autofac.Extras.Moq;
 namespace Look.Tests
 {
     
-    public class SorteerTests
+    public class CreateMeldingTest
     {
         private string databaseName;
 
@@ -72,23 +72,30 @@ namespace Look.Tests
             var output = context.Meldingen.Where(m=>m.MeldingId==id).FirstOrDefault().Titel;
             Assert.True(output==expected);
         }
+        [Theory]
+        [InlineData("TestMelding1","TestMelding1")]
+        [InlineData("TestMelding2","TestMelding2")]
+        public void testCreateMelding(string expected,string titel){
+            MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
+            Melding melding = new Melding{Titel=titel,Inhoud="dit is een test demo", Categorie="Een leuke catagorie", IsPrive=false};
+            meldingController.CreateMelding(melding,null);
+            var meldingen = getContext(); 
+            Assert.True(meldingen.Meldingen.Where(m=>m.Titel==expected).FirstOrDefault().Titel==expected);
+        }
+        [Theory]
+        [InlineData("Demobericht","TestMelding1","Demobericht")]
+        [InlineData("Demobericht2","TestMelding2","Demobericht2")]
+        public void testEditMelding(string expected,string titelMelding1,string nieuweTitel){
+            MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
+            Melding CreatedMelding = new Melding{Titel=titelMelding1,Inhoud="dit is een test demo", Categorie="Een leuke catagorie", IsPrive=false};
+            meldingController.CreateMelding(CreatedMelding,null);
+            var meldingen = getContext(); 
+            Melding editedMelding = CreatedMelding;
+            editedMelding.Titel = nieuweTitel;
+            meldingController.Edit(editedMelding);
+            Assert.True(meldingen.Meldingen.Where(m=>m.Titel==expected).FirstOrDefault().Titel==expected);
+        }
+        
 
-        [Theory]
-        [InlineData("pizza","Ik eet pizza")]
-        [InlineData("gele","Ik heb een jas gevonden")]
-        public void TestSorteren(string zoekopdracht,string expected){
-            MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
-            List<Melding> output = meldingController.ZoekenOpFilter(zoekopdracht,getContext().Meldingen.ToList());
-            Assert.True(output.FirstOrDefault().Titel==expected);
-        }
-        [Theory]
-        [InlineData("Meeste likes","Ik heb een jas gevonden")]
-        [InlineData("Naam","Ik eet pizza")]
-        [InlineData("Meeste weergaven","Ik bak taarten")]
-        public void TestFilteren(string sorteerVar,string expected){
-            MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
-            List<Melding> output = meldingController.SorteerOpFiler(sorteerVar,getContext().Meldingen.ToList());
-            Assert.True(output.FirstOrDefault().Titel==expected);
-        }
     }
 }
