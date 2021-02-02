@@ -95,6 +95,17 @@ namespace Look.Tests
             meldingController.Edit(editedMelding);
             Assert.True(meldingen.Meldingen.Where(m=>m.Titel==expected).FirstOrDefault().Titel==expected);
         }
+        [Theory]
+        [InlineData("DeleteTestMelding1")]
+        [InlineData("DeleteTestMelding2")]
+        public void TestDelete(string titel){
+            MeldingController meldingController = new MeldingController(getContext(),GetUserManager());
+            Melding CreatedMelding = new Melding{Titel=titel,Inhoud="dit is een test demo", Categorie="Een leuke catagorie", IsPrive=false};
+            meldingController.CreateMelding(CreatedMelding,null);
+            var meldingen = getContext(); 
+            meldingController.DeleteConfirmed(CreatedMelding.MeldingId);
+            Assert.Null(meldingen.Meldingen.Where(m=>m.Titel==titel).ToList().FirstOrDefault());
+        }
         
 
     }
