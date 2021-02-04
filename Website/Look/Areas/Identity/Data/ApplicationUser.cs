@@ -38,6 +38,7 @@ namespace Look.Areas.Identity.Data
         [PersonalData]
         public Guid PriveCode { get; set; }
         public Nullable<DateTime> LastLogin { get; set; }
+        
         public ICollection<ReactieRapport> ReactieRapporten {get; set;}
         public ICollection<MeldingRapport> MeldingRapporten {get; set;}
 

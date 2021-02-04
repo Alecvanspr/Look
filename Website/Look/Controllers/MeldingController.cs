@@ -116,10 +116,11 @@ namespace Look.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,IsPrive")] Melding melding, IFormFile Afbeelding)
+        public async Task<IActionResult> CreateMelding([Bind("Titel,Inhoud,Categorie,PriveCode")] Melding melding, IFormFile Afbeelding)
         {
             if (ModelState.IsValid)
             {
+                
                 //dit kijkt of de titel van de gebruiker al in gebruik is
                 var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList();
                 Console.WriteLine(data.Count+"Dit is de datacount");
@@ -138,15 +139,26 @@ namespace Look.Controllers
                 ms.Dispose();
                 }catch{}
 
-                //dit zorgt ervoor dat de momenteele auteursnummer wordt opgeroepen
-                if(!melding.IsPrive){
-                    var auteur = _userManager.GetUserId(User);
-                    melding.Auteur = _context.Users.FirstOrDefault(g => g.Id == auteur);
+                if(melding.PriveCode != null)
+                {
+                    melding.IsPrive = true;
+                }
+                else
+                {
+                    melding.IsPrive = false;
+                }
+
+                if(melding.IsPrive)
+                {
+                    melding.Auteur = null;
+                }
+                else
+                {
+                    melding.Auteur = await _userManager.GetUserAsync(User);
                 }
                 
 
                 melding.AangemaaktOp = DateTime.Now;
-                // melding.Reacties = MaakFakeReacties();
                 melding.Likes=0;
                 melding.Views=0;
                 melding.IsActief = true;

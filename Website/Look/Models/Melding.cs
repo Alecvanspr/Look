@@ -22,6 +22,7 @@ namespace Look.Models
         public bool IsActief { get; set; }
         public string ApplicationUserID {get; set;}
         public ApplicationUser Auteur { get; set; }
+        public Nullable<Guid> PriveCode { get; set; }
         public List<Reactie> Reacties { get; set; }
         public string Categorie { get; set; }
 
