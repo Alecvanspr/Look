@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class MigratieMetRapportenMetNavProps : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +48,8 @@ namespace Look.Migrations
                     City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     ZipCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     IsAnonymous = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    PriveCode = table.Column<Guid>(type: "char(36)", nullable: false),
+                    LastLogin = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "varchar(256) CHARACTER SET utf8mb4", maxLength: 256, nullable: true),
@@ -104,6 +106,7 @@ namespace Look.Migrations
                     Views = table.Column<int>(type: "int", nullable: false),
                     IsActief = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ApplicationUserID = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
+                    PriveCode = table.Column<Guid>(type: "char(36)", nullable: true),
                     Categorie = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>

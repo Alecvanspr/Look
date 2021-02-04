@@ -285,8 +285,8 @@ namespace Look.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("PriveCode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<Guid?>("PriveCode")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Titel")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

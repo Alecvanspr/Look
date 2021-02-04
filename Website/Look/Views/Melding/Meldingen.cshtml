@@ -19,13 +19,16 @@
 <div id="meldingen-controls" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
         <div class="col-md-3 p-2 m-0">
-        <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
+            <a asp-area="" asp-controller="Melding" asp-action="Meldingen" asp-route-s="Gelikete Berichten"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" ><i class="fas fa-thumbs-up mr-2"></i>Mijn gelikte berichten</button></a>
         </div>
+
         <div class="col-md-3 p-2 m-0">
-        <a data-toggle="modal" href="#FilterModal" tabindex="1"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Filter Berichten<i></i></button></a>
-    </div>
-    <div class="col-md-3 p-2 m-0">
-        <a asp-area="" asp-controller="Melding" asp-action="Meldingen" asp-route-s="Gelikete Berichten"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Mijn gelikte berichten <i></i></button></a>
+            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" ><i class="fa fa-plus mr-2"></i>Nieuw bericht</button></a>
+        </div>
+        
+        <div class="col-md-3 p-2 m-0">
+            <a data-toggle="modal" href="#FilterModal" tabindex="1"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" ><i class="fas fa-filter mr-2"></i>Filter Berichten</button></a></div>
+        </div>
     </div>
 </div>
 
