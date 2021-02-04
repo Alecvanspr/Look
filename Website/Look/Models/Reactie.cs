@@ -12,9 +12,12 @@ namespace Look.Models
     {
         [Key]
         public long ReactieId {get; set;}
+        public string ApplicationUserID {get; set;}
         public ApplicationUser GeplaatstDoor {get; set;}
         public DateTime GeplaatstOp {get; set;}
         public string Bericht {get; set;}
         public int Likes{get;set;}
+
+        public ICollection<ReactieRapport> Rapporten {get; set;}
     }
 }

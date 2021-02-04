@@ -3,14 +3,16 @@ using System;
 using Look.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    partial class LookIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210204185416_MigratieMetRapportenMetNavProps")]
+    partial class MigratieMetRapportenMetNavProps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,9 +102,6 @@ namespace Look.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("LastName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -128,9 +127,6 @@ namespace Look.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("PriveCode")
-                        .HasColumnType("char(36)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

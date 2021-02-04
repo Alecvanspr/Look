@@ -15,7 +15,7 @@ namespace Look.Models
         [NotMapped]
         public ApplicationUser Gebruiker { get; set; }
         [Key]
-        public long MeldingId { get; set; }
+        public long MeldingID { get; set; }
         [NotMapped]
         public Melding Melding { get; set; }
     }

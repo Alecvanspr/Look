@@ -44,11 +44,17 @@ namespace Look.Controllers
             {
                 foreach(var melding in alleMeldingRapporten)
                 {
+                    var Rapporteur = _context.Users.Where(u => u.Id == melding.GemaaktDoor.Id).First();
+                    Console.WriteLine(Rapporteur.FullName());
+
                     meldingRapporten.Add(new MeldingRapport() {
                         RapportId = melding.RapportId,
-                        GemaaktDoor = melding.GemaaktDoor,
+                        // GemaaktDoor = melding.GemaaktDoor.FullName(),
+                        // MeldingTitel = melding.GerapporteerdeMelding.Titel,
+                        // MeldingID = melding.GerapporteerdeMelding.MeldingId,
+                        // MeldingAuteur = melding.GerapporteerdeMelding.Auteur.FullName(),
+                        // MeldingAuteurID = melding.GerapporteerdeMelding.Auteur.Id,
                         GeplaatstOp = melding.GeplaatstOp,
-                        GerapporteerdeMelding = melding.GerapporteerdeMelding,
                         Categorie = melding.Categorie
                     });
                 }
@@ -64,13 +70,17 @@ namespace Look.Controllers
 
             if(alleReactieRapporten?.Any() == true)
             {
+
                 foreach(var reactie in alleReactieRapporten)
                 {
                     reactieRapporten.Add(new ReactieRapport() {
                         RapportId = reactie.RapportId,
-                        GemaaktDoor = reactie.GemaaktDoor,
+                        // GemaaktDoor = reactie.GemaaktDoor.FullName(),
+                        // ReactieAuteur = reactie.GerapporteerdeReactie.GeplaatstDoor.FullName(),
+                        // ReactieAuteurID = reactie.GerapporteerdeReactie.GeplaatstDoor.Id,
+                        // Reactie = reactie.GerapporteerdeReactie.Bericht,
+                        // ReactieID = reactie.GerapporteerdeReactie.ReactieId,
                         GeplaatstOp = reactie.GeplaatstOp,
-                        GerapporteerdeReactie = reactie.GerapporteerdeReactie,
                         Categorie = reactie.Categorie
                     });
                 }
@@ -82,8 +92,8 @@ namespace Look.Controllers
         public async Task<IActionResult> Rapporten() 
         {
             RapportViewModel rapportViewModel = new RapportViewModel();
-            rapportViewModel.meldingRapporten = await GetMeldingRapportenAsync();;
-            rapportViewModel.reactieRapporten = await GetReactieRapportenAsync();;
+            rapportViewModel.meldingRapporten = await GetMeldingRapportenAsync();
+            rapportViewModel.reactieRapporten = await GetReactieRapportenAsync();
 
             return View(rapportViewModel);
         }
