@@ -28,8 +28,8 @@
                         <li class="nav-item text-center">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index" role="button" aria-pressed="false" >Home </a>
                         </li>
-                        <li class="nav-item text-center">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Profiel" role="button" aria-pressed="false">Buurten</a>
+                        <li class="nav-item text-center"> 
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/AccessDenied" role="button" aria-pressed="false">Buurten</a>
                         </li>
                         <li class="nav-item text-center">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Melding" asp-action="Meldingen"role="button" aria-pressed="false">Contact</a>
@@ -57,7 +57,7 @@
                 </div>
             </nav>
 
-            <div class="container-fluid">
+            <div class="container">
                 <main role="main" class="py-5">
                     @RenderBody()
                 </main>
@@ -187,8 +187,11 @@
             <div class="list-group list-group-flush w-100">
                 <a asp-area="Identity" asp-page="/Account/Manage/Index" class="list-group-item list-group-item-action list-group-item-dark">Profiel</a>
                 <a asp-controller="Melding" asp-action="Meldingen" class="list-group-item list-group-item-action list-group-item-dark">Meldingen</a>
+                <a asp-controller="Probleem" asp-action="Index" class="list-group-item list-group-item-action list-group-item-dark">Problemen</a>
                 <a href="#" class="list-group-item list-group-item-action list-group-item-dark">Chat</a>
-                <a id="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="list-group-item list-group-item-action list-group-item-white">Uitloggen</a>
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="list-group-item list-group-item-action list-group-item-white">Logout</button>
+                </form>
             </div>
         </div>
         }

@@ -15,7 +15,7 @@ namespace Look.Areas.Identity.Data
         ApplicationUser, ApplicationRole, string,
         ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin,
         ApplicationRoleClaim, ApplicationUserToken>
-    {
+    { 
         public DbSet<Melding> Meldingen {get; set;}
         public DbSet<Reactie> Reacties {get; set;}
         public DbSet<Liked> Likes { get; set; }
