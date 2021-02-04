@@ -69,7 +69,7 @@
 //         [InlineData("Testen Schrijven",4)]
 //         public void MockDataBaseTest(string expected,long id){
 //             var context = getContext();
-//             var output = context.Meldingen.Where(m=>m.MeldingId==id).FirstOrDefault().Titel;
+//             var output = context.Meldingen.Where(m=>m.MeldingID==id).FirstOrDefault().Titel;
 //             Assert.True(output==expected);
 //         }
 //         [Theory]
@@ -103,7 +103,7 @@
 //             Melding CreatedMelding = new Melding{Titel=titel,Inhoud="dit is een test demo", Categorie="Een leuke catagorie", IsPrive=false};
 //             meldingController.CreateMelding(CreatedMelding,null);
 //             var meldingen = getContext(); 
-//             meldingController.DeleteConfirmed(CreatedMelding.MeldingId);
+//             meldingController.DeleteConfirmed(CreatedMelding.MeldingID);
 //             Assert.Null(meldingen.Meldingen.Where(m=>m.Titel==titel).ToList().FirstOrDefault());
 //         }
         

@@ -22,10 +22,10 @@
         <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
         </div>
         <div class="col-md-3 p-2 m-0">
-        <a data-toggle="modal" href="#FilterModal" tabindex="1"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Filter Berichten<i class="fa fa-plus"></i></button></a></div>
+        <a data-toggle="modal" href="#FilterModal" tabindex="1"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Filter Berichten<i></i></button></a>
     </div>
     <div class="col-md-3 p-2 m-0">
-        <a asp-area="" asp-controller="Melding" asp-action="Meldingen" asp-route-s="Gelikete Berichten"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Mijn gelikte berichten <i class="fa fa-plus"></i></button></a>
+        <a asp-area="" asp-controller="Melding" asp-action="Meldingen" asp-route-s="Gelikete Berichten"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Mijn gelikte berichten <i></i></button></a>
     </div>
 </div>
 
@@ -116,7 +116,7 @@
                                             Geplaatst door:
                                                 <a href="#">
                                                     @try{
-                                                    @Model.Auteur.FullName()
+                                                    @Model.ApplicationUserID
                                                     }catch{
                                                         <a>Anoniem</a>
                                                     }
@@ -155,7 +155,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5 tabindex="1" >Geplaatst door: @try{
-                                                        @Model.Auteur.FullName()
+                                                        @Model.ApplicationUserID
                                             }catch
                                             {
                                                     <a>Anoniem</a>
