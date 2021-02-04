@@ -59,13 +59,13 @@ namespace Look.Controllers
         }
         
         public JsonResult Like(long id){
-            var CurrentSessionUserId = _userManager.GetUserId(User);
-            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserId).FirstOrDefault();
-            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
-            Liked _liked = _context.Likes.Where(p => p.MeldingId == id && p.UserId == IngelogdeGebruiker.Id).FirstOrDefault();
+            var CurrentSessionUserID = _userManager.GetUserId(User);
+            ApplicationUser IngelogdeGebruiker = _context.Users.Where(p => p.Id == CurrentSessionUserID).FirstOrDefault();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingID == id).FirstOrDefault();
+            Liked _liked = _context.Likes.Where(p => p.MeldingID == id && p.ApplicationUserID == IngelogdeGebruiker.Id).FirstOrDefault();
             Liked _newLiked = new Liked();
-            _newLiked.UserId = IngelogdeGebruiker.Id;
-            _newLiked.MeldingId = _melding.MeldingId;
+            _newLiked.ApplicationUserID = IngelogdeGebruiker.Id;
+            _newLiked.MeldingID = _melding.MeldingID;
                         
             var CurrentSession = _userManager.GetUserId(User);
             var DeveloperSession = "Developer";
@@ -83,7 +83,7 @@ namespace Look.Controllers
                     _context.SaveChanges();
                 }
             } 
-            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Likes});
+            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingID==id).First().Likes});
         }
 
         public IActionResult PlaatsBericht()
@@ -169,7 +169,7 @@ namespace Look.Controllers
         }
         
         public IActionResult Rapporteren(long Id) {
-            var Melding = _context.Meldingen.Where(M => M.MeldingId == Id).First();
+            var Melding = _context.Meldingen.Where(M => M.MeldingID == Id).First();
 
             return View(Melding);   
         }
@@ -180,11 +180,11 @@ namespace Look.Controllers
             if(ModelState.IsValid)
             {
                 var _user = await _userManager.GetUserAsync(User);
-                var _userId = await _userManager.GetUserIdAsync(_user);
-                var BestaandRapport = _context.MeldingRapporten.Where(M => M.GemaaktDoor.ToString() == _userId && M.GerapporteerdeMelding.ToString() == GerapporteerdeMelding);
+                var _UserID = await _userManager.GetUserIdAsync(_user);
+                var BestaandRapport = _context.MeldingRapporten.Where(M => M.GemaaktDoor.ToString() == _UserID && M.GerapporteerdeMelding.ToString() == GerapporteerdeMelding);
 
                 if(BestaandRapport == null) {
-                    var Melding = _context.Meldingen.Where(M => M.MeldingId.ToString() == GerapporteerdeMelding).First();
+                    var Melding = _context.Meldingen.Where(M => M.MeldingID.ToString() == GerapporteerdeMelding).First();
 
                     rapport.GerapporteerdeMelding = Melding;
                     rapport.GemaaktDoor = _user;
@@ -204,16 +204,16 @@ namespace Look.Controllers
         {
             
             var melding = await _context.Meldingen
-                .FirstOrDefaultAsync(m => m.MeldingId == id);
+                .FirstOrDefaultAsync(m => m.MeldingID == id);
             if (melding == null)
             {
                 return View(melding);
             }
-            var CurrentSessionUserId = _userManager.GetUserName(User);
+            var CurrentSessionUserID = _userManager.GetUserName(User);
             List<ApplicationUser> gebruikers = _context.Users.ToList();
-            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingID == id).FirstOrDefault();
             
-            var Gebruiker = CurrentSessionUserId.ToString();
+            var Gebruiker = CurrentSessionUserID.ToString();
             if(Gebruiker==_melding.Auteur.ToString()){ 
                 return View(melding);
             }else{
@@ -225,9 +225,9 @@ namespace Look.Controllers
         // POST: Student/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long MeldingId)
+        public async Task<IActionResult> DeleteConfirmed(long MeldingID)
         {
-            var melding = await _context.Meldingen.FindAsync(MeldingId);
+            var melding = await _context.Meldingen.FindAsync(MeldingID);
             _context.Meldingen.Remove(melding);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Meldingen));
@@ -237,7 +237,7 @@ namespace Look.Controllers
         public async Task<IActionResult> ModeratorDelete(long id)
         {
             var melding = await _context.Meldingen
-                .FirstOrDefaultAsync(m => m.MeldingId == id);
+                .FirstOrDefaultAsync(m => m.MeldingID == id);
             if (melding == null)
             {
                 return NotFound();
@@ -248,9 +248,9 @@ namespace Look.Controllers
         [Authorize(Roles = "Moderator")]
         [HttpPost, ActionName("ModeratorDelete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ModeratorDeleteConfirmed(long MeldingId)
+        public async Task<IActionResult> ModeratorDeleteConfirmed(long MeldingID)
         {
-            var melding = await _context.Meldingen.FindAsync(MeldingId);
+            var melding = await _context.Meldingen.FindAsync(MeldingID);
             _context.Meldingen.Remove(melding);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Meldingen));
@@ -274,8 +274,8 @@ namespace Look.Controllers
             List<Melding> meldings = _context.Meldingen.ToList();
             var ReactiesOphalen = _context.Reacties.ToList();
             var meldingenOphalen = _context.Meldingen;
-            var CurrentSessionUserId = _userManager.GetUserId(User);
-            if(CurrentSessionUserId==null){ 
+            var CurrentSessionUserID = _userManager.GetUserId(User);
+            if(CurrentSessionUserID==null){ 
                 ViewData["login"] ="Login";
                 return Redirect("~/Identity/Account/Login");
             }
@@ -321,7 +321,7 @@ namespace Look.Controllers
         public List<Melding> SorteerOpFiler(String s,List<Melding> Lijst){
             var ReactiesOphalen = _context.Reacties.ToList();
             var meldingenOphalen = _context.Meldingen.ToList();
-            var CurrentSessionUserId = _userManager.GetUserId(User);
+            var CurrentSessionUserID = _userManager.GetUserId(User);
             if(s!=null){
                     if(s.Equals("Meeste likes")){
                         return query.OrderByDescending(M=>M.Likes).ToList();
@@ -332,18 +332,18 @@ namespace Look.Controllers
                     }else if(s.Equals("Nieuwste")){
                         return query.OrderByDescending(M=>M.AangemaaktOp).ToList();
                     }else if(s.Equals("Gelikete Berichten")){
-                        return sorteerGelikedeMeldingen(query,CurrentSessionUserId);
+                        return sorteerGelikedeMeldingen(query,CurrentSessionUserID);
                     }
                 }
                 return query;
         }
-        public List<Melding> sorteerGelikedeMeldingen(List<Melding> query, string CurrentSessionUserId){
-                var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
-                var _meldingIds = _context.Meldingen.ToList().Select(m=>m.MeldingId);
+        public List<Melding> sorteerGelikedeMeldingen(List<Melding> query, string CurrentSessionUserID){
+                var _liked = _context.Likes.Where(p=>p.ApplicationUserID == CurrentSessionUserID).ToList().Select(m=>m.MeldingID);
+                var _MeldingIDs = _context.Meldingen.ToList().Select(m=>m.MeldingID);
 
-                var GelikteMeldingIDs = _meldingIds.Except(_liked).ToList();
+                var GelikteMeldingIDs = _MeldingIDs.Except(_liked).ToList();
                 foreach(var berichten in GelikteMeldingIDs){
-                query.Remove(query.Where(m=>m.MeldingId==berichten).FirstOrDefault());
+                query.Remove(query.Where(m=>m.MeldingID==berichten).FirstOrDefault());
              }
              return query;
         }
@@ -369,12 +369,12 @@ namespace Look.Controllers
             }
             ViewBag.Titels = titels;
             ViewBag.registerErrorText = "Deze titel van een bericht is al in gebruik.";
-            var melding = _context.Meldingen.Where(m => m.MeldingId == id).FirstOrDefault();
-            var CurrentSessionUserId = _userManager.GetUserName(User);
+            var melding = _context.Meldingen.Where(m => m.MeldingID == id).FirstOrDefault();
+            var CurrentSessionUserID = _userManager.GetUserName(User);
             List<ApplicationUser> gebruikers = _context.Users.ToList();
-            Melding _melding = _context.Meldingen.Where(p => p.MeldingId == id).FirstOrDefault();
+            Melding _melding = _context.Meldingen.Where(p => p.MeldingID == id).FirstOrDefault();
             
-            var Gebruiker = CurrentSessionUserId.ToString();
+            var Gebruiker = CurrentSessionUserID.ToString();
             if(Gebruiker==_melding.Auteur.ToString()){ 
                 return View(melding);
             }else{
@@ -383,25 +383,25 @@ namespace Look.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Titel,Inhoud,Categorie,MeldingId")] Melding melding)
+        public async Task<IActionResult> Edit([Bind("Titel,Inhoud,Categorie,MeldingID")] Melding melding)
         {
             if (ModelState.IsValid)
             {
 
                 Console.WriteLine(await _userManager.GetUserAsync(User));
-                if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Auteur == await _userManager.GetUserAsync(User)){
+                if(_context.Meldingen.Where(m=>m.MeldingID==melding.MeldingID).ToList().First().Auteur == await _userManager.GetUserAsync(User)){
                     //dit kijkt of de titel van de gebruiker al in gebruik is
                     var data = _context.Meldingen.Where(m=>m.Titel.Equals(melding.Titel)).ToList().Count;
                 
                     //dit checkt of de titel hetzelfde is als ervoor
-                    if(_context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).First().Titel==melding.Titel){
+                    if(_context.Meldingen.Where(m=>m.MeldingID==melding.MeldingID).First().Titel==melding.Titel){
                         data = 0;
                     }
 
                     if(data == 0) {
-                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Titel = melding.Titel;
-                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Inhoud = melding.Inhoud;
-                    _context.Meldingen.Where(m=>m.MeldingId==melding.MeldingId).ToList().First().Categorie = melding.Categorie;
+                    _context.Meldingen.Where(m=>m.MeldingID==melding.MeldingID).ToList().First().Titel = melding.Titel;
+                    _context.Meldingen.Where(m=>m.MeldingID==melding.MeldingID).ToList().First().Inhoud = melding.Inhoud;
+                    _context.Meldingen.Where(m=>m.MeldingID==melding.MeldingID).ToList().First().Categorie = melding.Categorie;
                     await _context.SaveChangesAsync();
 
                     //dit zorgt ervoor dat er een melding wordt weergegeven als het gewijzigd wordt
@@ -423,13 +423,13 @@ namespace Look.Controllers
         }
         public JsonResult AddView(int? id)
         {
-            _context.Meldingen.Where(m=>m.MeldingId==id).First().Views+=1;
+            _context.Meldingen.Where(m=>m.MeldingID==id).First().Views+=1;
             _context.SaveChanges();
-            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingId==id).First().Views});
+            return Json(new IntInfo { aantal =_context.Meldingen.Where(m=>m.MeldingID==id).First().Views});
         }
 
         public IActionResult PostComment(int? id, string inhoud){
-            ViewBag.Comments = _context.Meldingen.Where(m=>m.MeldingId==id).FirstOrDefault();
+            ViewBag.Comments = _context.Meldingen.Where(m=>m.MeldingID==id).FirstOrDefault();
             Reactie reactie = new Reactie();
             string auteur = _userManager.GetUserId(User);
             reactie.GeplaatstDoor = _context.Users.Where(g => g.Id == auteur).First();
@@ -439,12 +439,12 @@ namespace Look.Controllers
             try{
                 _context.Reacties.Add(reactie);
                  try{
-                        reacties =_context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties;
+                        reacties =_context.Meldingen.Where(m=>m.MeldingID==id).First().Reacties.ToList();
                         reacties.Add(reactie);
                  }catch{ //dit maakt een nieuwe list aan als deze er niet automatisch inzit
                         reacties = new List<Reactie>();
                         reacties.Add(reactie);
-                        _context.Meldingen.Where(m=>m.MeldingId==id).First().Reacties=reacties;
+                        _context.Meldingen.Where(m=>m.MeldingID==id).First().Reacties=reacties;
                  }
                 Console.WriteLine(reacties);
             }catch{
