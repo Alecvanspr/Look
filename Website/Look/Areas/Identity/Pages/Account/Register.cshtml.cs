@@ -144,18 +144,18 @@ namespace Look.Areas.Identity.Pages.Account
                                 ZipCode = Input.ZipCode,
                                 IsAnonymous = false,
                                 UserName = Input.Email,
-                                Email = Input.Email
+                                Email = Input.Email,
+                                PriveCode = Guid.NewGuid()
                             };
 
                             var result = await _userManager.CreateAsync(user, Input.Password);
 
                             if (result.Succeeded)
                             {
-                                StatusMessage = "Je bent succesvol geregistreerd.";
-
                                 _logger.LogInformation("User created a new account with password.");
                                 await _userManager.AddToRoleAsync(user, Enums.Roles.Member.ToString());
 
+                                var privatecode = user.PriveCode;
                                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                                 var callbackUrl = Url.Page(
@@ -165,7 +165,7 @@ namespace Look.Areas.Identity.Pages.Account
                                     protocol: Request.Scheme);
 
                                 await _emailSender.SendEmailAsync(Input.Email, "Look E-mailadresverificatie",
-                                    $"Verifieer je e-mailadres door <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier te klikken</a>.");
+                                    $"<h1>Look E-mailadresverificatie</h1><p>Verifieer je e-mailadres door <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>hier te klikken</a>.<p><p>Jouw unieke code om een privemelding aan te maken is: {privatecode}. <strong>Bewaar deze goed!</strong></p>");
 
                                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                                 {

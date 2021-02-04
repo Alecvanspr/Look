@@ -53,6 +53,11 @@ namespace Look.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "Huisnummer")]
             public string HouseNumber {get; set;}
+            
+            [Required(ErrorMessage = "Het {0} veld is verplicht.")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Prive Code")]
+            public Guid PriveCode {get; set;}
             [DataType(DataType.Text)]
             [Display(Name = "Toevoeging")]
             public string HouseNumberAddition {get; set;}
@@ -82,7 +87,8 @@ namespace Look.Areas.Identity.Pages.Account.Manage
                 HouseNumberAddition = user.HouseNumberAddition,
                 City = user.City,
                 ZipCode = user.ZipCode,
-                IsAnonymous = user.IsAnonymous
+                IsAnonymous = user.IsAnonymous,
+                PriveCode = user.PriveCode
             };
         }
 
@@ -155,6 +161,12 @@ namespace Look.Areas.Identity.Pages.Account.Manage
             if(Input.City != user.City)
             {
                 user.City = Input.City;
+            }
+
+            //privecode error message in profile
+            if(Input.PriveCode != user.PriveCode)
+            {
+                user.PriveCode = Input.PriveCode;
             }
 
             //zipcode error message in profile

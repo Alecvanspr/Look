@@ -136,6 +136,27 @@ a:hover {
   position: relative;
 }
 
+.copytoclipboard {
+  position: relative;
+}
+
+#privatecode {
+  display: none;
+}
+
+#privatecode.is-active {
+  display: block !important;
+}
+
+.copytoclipboardbutton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 38px;
+  font-size: 20px !important;
+}
+
 .form-subscribe button {
   position: absolute;
   top: 0;

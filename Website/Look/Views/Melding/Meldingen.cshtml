@@ -62,7 +62,7 @@
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
                                          <i class="far fa-thumbs-up"></i> 
-                                         <div class="d-inline-block mr-5" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
+                                         <div class="d-inline-block mr-5" id="AantalLikes-@Model.MeldingID">@Model.Likes</div>
                                         <i class="far fa-clock"></i> 
                                          @GetTime.GetTimeSince(Model.AangemaaktOp)
                                     </h6>
@@ -84,10 +84,10 @@
                                         }else{
                                         <p tabindex="1">@Model.Inhoud</p>
                                         }
-                                        <a data-toggle="modal" href="#melding-@Model.MeldingId" onclick="VoegToe(@Model.MeldingId)" tabindex="1">
+                                        <a data-toggle="modal" href="#melding-@Model.MeldingID" onclick="VoegToe(@Model.MeldingID)" tabindex="1">
                                             lees meer van dit bericht
                                         </a>
-                                        <input id="GetMeldingId" value='@Model.MeldingId' hidden>
+                                        <input id="GetMeldingId" value='@Model.MeldingID' hidden>
                                     </p>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                                                     @try{
                                                     @Model.Auteur.FullName()
                                                     }catch{
-                                                        <a>Annoniem</a>
+                                                        <a>Anoniem</a>
                                                     }
                                                 </a>
                                         </p>
@@ -136,19 +136,19 @@
 <!--- Modal voor een nieuw bericht---->
 @foreach (var Model in Model){
 <!--- Modal voor de reacties---->
-<div class="modal fade bd-example-modal-lg" id="melding-@Model.MeldingId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="melding-@Model.MeldingID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                  <div class="col-md-7" tabindex="1">
                      <div class="row">
                         @if(await UserManager.GetUserAsync(User) == Model.Auteur){
-                             <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></i></button></a>
-                            <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false"  aria-label="Bewerk uw bericht"><i class="far fa-edit"></i></button></a>
+                             <a class="button-href" asp-controller="Melding" asp-action="Delete" asp-route-id="@Model.MeldingID"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder uw bericht"><i class="fas fa-trash"></i></button></a>
+                            <a class="button-href" asp-controller="Melding" asp-action="Edit" asp-route-id="@Model.MeldingID"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false"  aria-label="Bewerk uw bericht"><i class="far fa-edit"></i></button></a>
                         } else if(await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Moderator")){
-                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder dit bericht"><i class="fas fa-trash"></i></button></a>
+                            <a class="button-href" asp-controller="Melding" asp-action="ModeratorDelete" asp-route-id="@Model.MeldingID"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Verwijder dit bericht"><i class="fas fa-trash"></i></button></a>
                         } else {
-                            <a class="button-href" asp-controller="Melding" asp-action="Rapporteren" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Rapporteer dit bericht"><i class="fas fa-exclamation-triangle"></i></button></a>
+                            <a class="button-href" asp-controller="Melding" asp-action="Rapporteren" asp-route-id="@Model.MeldingID"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Rapporteer dit bericht"><i class="fas fa-exclamation-triangle"></i></button></a>
                         }
                     <h5>@Model.Titel</h5>
                     </div>
@@ -169,9 +169,9 @@
                         }
                     </script>
                 <div class="col-md-1 d-inline-block">
-                    <button class="btn btn-link" onclick="MeldingLiken(@Model.MeldingId)" tabindex="1" role="button" aria-pressed="false"><p><a onclick="MeldingLiken()" data-id="@Model.MeldingId"><i class="far fa-thumbs-up"></i></a></p></button>
+                    <button class="btn btn-link" onclick="MeldingLiken(@Model.MeldingID)" tabindex="1" role="button" aria-pressed="false"><p><a onclick="MeldingLiken()" data-id="@Model.MeldingID"><i class="far fa-thumbs-up"></i></a></p></button>
                     <input id="refresh" value="false" hidden>
-                    <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
+                    <div class="d-inline-block" id="AantalLikes-@Model.MeldingID">@Model.Likes</div>
                 </div>
             </div>
             <div class="modal-body">
@@ -192,11 +192,11 @@
                     <div class="row p-2 m-1">
                     <div class="col-md-10">
                         <div class="form-group">
-                        <input class="form-control" id="reactie-@Model.MeldingId" minlength="3" maxlength="30"/>
+                        <input class="form-control" id="reactie-@Model.MeldingID" minlength="3" maxlength="30"/>
                     </div>
                     </div>
-                        <button class="btn btn-primary" onclick="PlaatsReactie(@Model.MeldingId)"><a >Plaats Reactie</a></button>     
-                        <div id="ReactieOutput-@Model.MeldingId"></div>
+                        <button class="btn btn-primary" onclick="PlaatsReactie(@Model.MeldingID)"><a >Plaats Reactie</a></button>     
+                        <div id="ReactieOutput-@Model.MeldingID"></div>
                     </div>
                     </div>
                 </div>

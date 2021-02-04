@@ -50,11 +50,9 @@
                 <span asp-validation-for="Categorie" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsPrive" class="control-label" ></label>
-                <div class= "col-md-2">
-                <input type="checkbox" role="checkbox" asp-for="IsPrive" class="form-control" tabindex="1" alt="Had u deze melding annoniem willen plaatsen" value="true"/>
-                <span asp-validation-for="IsPrive" class="text-danger"></span>
-                </div>
+                <label for="PriveCode" class="control-label">Privé Code</label>
+                <input id="PriveCode" name="PriveCode" class="form-control"/> 
+                <div class="invalid-feedback">Privé code is incorrect</div>
             </div>
             <div class="form-group">
                 <input type="submit" value="CreateMelding" tabindex="1" class="btn btn-primary" role="button" aria-pressed="false"/>

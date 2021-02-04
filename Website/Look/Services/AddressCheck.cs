@@ -25,9 +25,28 @@ namespace Look.Services
                 }
                 catch(WebException exception)
                 {
-                    Console.WriteLine(exception.Message);
-                    Root address = new Root {status = "failed"};
-                    return address;
+                    if(exception.Equals("404"))
+                    {
+                        Console.WriteLine("404 ZERO_RESULTS");
+                        Console.WriteLine(exception.Message);
+                        Root address = new Root {status = "failed"};
+                        return address;
+                    }
+                    if(exception.Equals("429"))
+                    {
+                        Console.WriteLine("429 QUOTA_REACHED");
+                        Console.WriteLine(exception.Message);
+                        Root address = new Root {status = "failed"};
+                        return address;
+                    }
+                    else
+                    {
+                        Console.WriteLine("505 UNKNOWN_ERROR");
+                        Console.WriteLine(exception.Message);
+                        Root address = new Root {status = "failed"};
+                        return address;
+                    }
+                    
                 }
             }
         }

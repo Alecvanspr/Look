@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210122210536_MigratieMetRapporten")]
-    partial class MigratieMetRapporten
+    [Migration("20210204153323_AddPriveCodeMelding")]
+    partial class AddPriveCodeMelding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,6 +127,9 @@ namespace Look.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("PriveCode")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -280,6 +283,9 @@ namespace Look.Migrations
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("PriveCode")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Titel")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

@@ -75,6 +75,15 @@
             </div>
 
             <div class="form-row">
+                <div class="form-group col-12">
+                    <label asp-for="Input.PriveCode">Privé Code<i class="ml-2 text-secondary far fa-question-circle" data-toggle="tooltip" data-placement="top" title="Deze code kan je gebruiken in het meldingenscherm om een melding prive aan te maken. Deze code is voor jou alleen en dus niet bedoeld om te delen."></i></label>
+                    <a href="#" class="opener">laat mijn code zien</a>
+                    <input id="privatecode" asp-for="Input.PriveCode" class="form-control form-validation" required readonly />
+                    <span asp-validation-for="Input.PriveCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
                 <div class="form-check">
                     <input type="checkbox" asp-for="Input.IsAnonymous" class="form-check-input">
                     <label class="form-check-label" asp-for="Input.IsAnonymous">Ik wil anoniem blijven</label>
@@ -87,6 +96,18 @@
         </form>
     </div>
 </div>
+
+<script>
+  // Look for .hamburger
+  var opener = document.querySelector(".opener");
+  var privatecode = document.querySelector("#privatecode");
+  // On click
+  opener.addEventListener("click", function() {
+    // Toggle class "is-active"
+    privatecode.classList.toggle("is-active");
+    // Do something else, like open/close menu
+  });
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
