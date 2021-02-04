@@ -12,7 +12,6 @@ namespace Look.Models
     {
         [Key]
         public long RapportId {get; set;}
-        public string ApplicationUserID {get; set;}
         public ApplicationUser GemaaktDoor {get; set;}
         public DateTime GeplaatstOp {get; set;}
         public string Categorie {get; set;}
@@ -20,14 +19,12 @@ namespace Look.Models
 
     public class MeldingRapport : Rapport
     {
-        public long MeldingID {get; set;}
         public Melding GerapporteerdeMelding {get; set;}
     }
 
     public class ReactieRapport : Rapport
     {
-        public long ReactieID {get; set;}
-        public Reactie GerapporteerdeReactie {get; set;}
+        public Melding GerapporteerdeReactie {get; set;}
     }
 
     public class RapportViewModel {

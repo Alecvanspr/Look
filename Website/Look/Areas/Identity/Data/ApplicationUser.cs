@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Look.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -20,9 +19,6 @@ namespace Look.Areas.Identity.Data
         [PersonalData]
         public override string UserName { get; set; }
         [PersonalData]
-        public Guid PriveCode { get; set; }
-
-        [PersonalData]
         public string FirstName { get; set; }
         [PersonalData]
         public string LastName { get; set; }
@@ -38,13 +34,6 @@ namespace Look.Areas.Identity.Data
         public string ZipCode { get; set; }
         [PersonalData]
         public bool IsAnonymous {get; set;}
-
-        //Navigation propperties
-        public ICollection<Melding> Meldingen {get; set;}
-        public ICollection<Reactie> Reacties {get; set;}
-        public ICollection<Liked> Likes {get; set;}
-        public ICollection<MeldingRapport> MeldingRapporten {get; set;}
-        public ICollection<ReactieRapport> ReactieRapporten {get; set;}
 
         public string FullName()
         {

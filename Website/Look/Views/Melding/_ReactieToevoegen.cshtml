@@ -1,9 +1,9 @@
                @model Look.Models.Melding
-                    @if(Model.Reacties.ToList()==null){
+                    @if(Model.Reacties==null){
                         <p>Dit bericht heeft nog geen reacties.<br>Wees de eerste!</p>
                     }else{
                         <div class="overflow-auto" style="max-width: 1150px; max-height: 500px;">
-                            @foreach (var reacties in Model.Reacties.ToList())
+                            @foreach (var reacties in Model.Reacties)
                             {
                                 
                                 <div class="container border col-md-8 p-2">

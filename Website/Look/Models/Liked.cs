@@ -11,10 +11,12 @@ namespace Look.Models
     public class Liked
     {
         [Key]
-        public string ApplicationUserID {get; set;}
+        public string UserId { get; set; }
+        [NotMapped]
         public ApplicationUser Gebruiker { get; set; }
         [Key]
-        public long MeldingID { get; set; }
+        public long MeldingId { get; set; }
+        [NotMapped]
         public Melding Melding { get; set; }
     }
 }
