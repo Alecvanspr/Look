@@ -1,0 +1,80 @@
+<!--Dit is de sorteerModal-->
+<div class="modal fade bd-example-modal-lg" id="FilterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <div class="col-md-7" tabindex="1">
+                        <div class="row">
+                            Filteren
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-body">
+                <form asp-action="Meldingen" method="get">
+                    <div class="row">
+                        <div class="form-group">
+                            <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" tabindex="1"/>  <!--dit is de link naar het stukje data wat het moet vervangen denk ik--> 
+                        </div>
+
+                        <div class="col-md-3 p-2 m-0">
+                            <div class="form-inline m-0 select-box">
+                                <select id="inputSorteer" class="form-control w-100" tabindex="1" name="zo">
+                                    <option selected>@ViewData["ZoekenOp"]</option>
+                                    <option value="t">Titel</option>
+                                    <option value="i">Inhoud</option>
+                                    <option value="ti">Inhoud en titel</option>
+                                </select>
+                                <i class="fas fa-angle-down selector"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 p-2 m-0">
+                        <div class="form-inline m-0 select-box">
+                            <select id="inputSorteer" class="form-control w-100" tabindex="1" name="s">
+                                <option selected>@ViewData["Sorteer"]</option>
+                                <option value="Nieuwste">Nieuwste</option>
+                                <option value="Meeste likes">Meeste likes</option>
+                                <option value="Meeste weergaven">Meeste weergaven</option>
+                                <option value="reacties">Meeste reacties</option>
+                                <option value="Naam">Naam</option>
+                                <option value="Gelikete Berichten">Uw gelikete berichten</option>
+                            </select>
+                            <i class="fas fa-angle-down selector"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 p-2 m-0">
+                        <div class="form-inline m-0 select-box">
+                            <select id="inputSorteer" class="form-control w-100" tabindex="1" name="c">
+                                <option selected>@ViewData["Categorie"]</option>
+                                <option value="Bijeenkomst">Bijeenkomst</option>
+                                <option value="Overlast">Overlast</option>
+                                <option value="Verdachte Activiteit">Verdachte activiteit</option>
+                                <option value="Verloren Voorwerp">Verloren voorwerp</option>
+                                <option value="Gevonden Voorwerp">Gevonden voorwerp</option>
+                            </select>
+                            <i class="fas fa-angle-down selector"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 p-2 m-0">
+                        <div class="form-inline m-0 select-box">
+                            <select id="inputSorteer" class="form-control w-100" tabindex="1" name="v">
+                                <option selected>@ViewData["Volgorde"]</option>
+                                <option value="Oplopend">Oplopend</option>
+                                <option value="Aflopend">Aflopend</option>
+                            </select>
+                            <i class="fas fa-angle-down selector"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Meldingen" tabindex="1" class="btn btn-primary" role="button" aria-pressed="false"/>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,7 +3,8 @@
 <div>
     @foreach (var rapport in Model.meldingRapporten)
     {
-        <p>Melding</p>
+        <h3>@rapport.RapportId</h3>
+        <p>@rapport.GemaaktDoor</p>
     }
 
     @foreach (var rapport in Model.reactieRapporten)

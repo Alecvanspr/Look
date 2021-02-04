@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Look.Migrations
 {
-    public partial class EersteMigratie : Migration
+    public partial class MigratieMetRapportenMetNavProps : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Liked",
+                name: "Likes",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: false),
-                    MeldingId = table.Column<long>(type: "bigint", nullable: false)
+                    MeldingID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Liked", x => new { x.UserId, x.MeldingId });
+                    table.PrimaryKey("PK_Likes", x => new { x.UserId, x.MeldingID });
                 });
 
             migrationBuilder.CreateTable(
@@ -92,7 +92,7 @@ namespace Look.Migrations
                 name: "Meldingen",
                 columns: table => new
                 {
-                    MeldingId = table.Column<long>(type: "bigint", nullable: false)
+                    MeldingID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IsPrive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     AangemaaktOp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -103,18 +103,18 @@ namespace Look.Migrations
                     Likes = table.Column<int>(type: "int", nullable: false),
                     Views = table.Column<int>(type: "int", nullable: false),
                     IsActief = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    AuteurId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
+                    ApplicationUserID = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
                     Categorie = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Meldingen", x => x.MeldingId);
+                    table.PrimaryKey("PK_Meldingen", x => x.MeldingID);
                     table.ForeignKey(
-                        name: "FK_Meldingen_User_AuteurId",
-                        column: x => x.AuteurId,
+                        name: "FK_Meldingen_User_ApplicationUserID",
+                        column: x => x.ApplicationUserID,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,48 +203,124 @@ namespace Look.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MeldingRapporten",
+                columns: table => new
+                {
+                    RapportId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    MeldingID = table.Column<long>(type: "bigint", nullable: false),
+                    ApplicationUserID = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
+                    GeplaatstOp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Categorie = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeldingRapporten", x => x.RapportId);
+                    table.ForeignKey(
+                        name: "FK_MeldingRapporten_Meldingen_MeldingID",
+                        column: x => x.MeldingID,
+                        principalTable: "Meldingen",
+                        principalColumn: "MeldingID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MeldingRapporten_User_ApplicationUserID",
+                        column: x => x.ApplicationUserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reacties",
                 columns: table => new
                 {
                     ReactieId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    GeplaatstDoorId = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
+                    ApplicationUserID = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
                     GeplaatstOp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Bericht = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
                     Likes = table.Column<int>(type: "int", nullable: false),
-                    MeldingId = table.Column<long>(type: "bigint", nullable: true)
+                    MeldingID = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reacties", x => x.ReactieId);
                     table.ForeignKey(
-                        name: "FK_Reacties_Meldingen_MeldingId",
-                        column: x => x.MeldingId,
+                        name: "FK_Reacties_Meldingen_MeldingID",
+                        column: x => x.MeldingID,
                         principalTable: "Meldingen",
-                        principalColumn: "MeldingId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "MeldingID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reacties_User_GeplaatstDoorId",
-                        column: x => x.GeplaatstDoorId,
+                        name: "FK_Reacties_User_ApplicationUserID",
+                        column: x => x.ApplicationUserID,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReactieRapporten",
+                columns: table => new
+                {
+                    RapportId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ReactieID = table.Column<long>(type: "bigint", nullable: false),
+                    ApplicationUserID = table.Column<string>(type: "varchar(255) CHARACTER SET utf8mb4", nullable: true),
+                    GeplaatstOp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Categorie = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReactieRapporten", x => x.RapportId);
+                    table.ForeignKey(
+                        name: "FK_ReactieRapporten_Reacties_ReactieID",
+                        column: x => x.ReactieID,
+                        principalTable: "Reacties",
+                        principalColumn: "ReactieId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReactieRapporten_User_ApplicationUserID",
+                        column: x => x.ApplicationUserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Meldingen_AuteurId",
+                name: "IX_Meldingen_ApplicationUserID",
                 table: "Meldingen",
-                column: "AuteurId");
+                column: "ApplicationUserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reacties_GeplaatstDoorId",
-                table: "Reacties",
-                column: "GeplaatstDoorId");
+                name: "IX_MeldingRapporten_ApplicationUserID",
+                table: "MeldingRapporten",
+                column: "ApplicationUserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reacties_MeldingId",
+                name: "IX_MeldingRapporten_MeldingID",
+                table: "MeldingRapporten",
+                column: "MeldingID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReactieRapporten_ApplicationUserID",
+                table: "ReactieRapporten",
+                column: "ApplicationUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReactieRapporten_ReactieID",
+                table: "ReactieRapporten",
+                column: "ReactieID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reacties_ApplicationUserID",
                 table: "Reacties",
-                column: "MeldingId");
+                column: "ApplicationUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reacties_MeldingID",
+                table: "Reacties",
+                column: "MeldingID");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -287,10 +363,13 @@ namespace Look.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Liked");
+                name: "Likes");
 
             migrationBuilder.DropTable(
-                name: "Reacties");
+                name: "MeldingRapporten");
+
+            migrationBuilder.DropTable(
+                name: "ReactieRapporten");
 
             migrationBuilder.DropTable(
                 name: "Role Claim");
@@ -308,10 +387,13 @@ namespace Look.Migrations
                 name: "User Token");
 
             migrationBuilder.DropTable(
-                name: "Meldingen");
+                name: "Reacties");
 
             migrationBuilder.DropTable(
                 name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "Meldingen");
 
             migrationBuilder.DropTable(
                 name: "User");

@@ -85,13 +85,13 @@ namespace Look.Areas.Identity.Data
 
             
             modelBuilder.Entity<Melding>()
-                .Property(i => i.MeldingId)
+                .Property(i => i.MeldingID)
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<Reactie>()
                 .Property(i => i.ReactieId)
                 .ValueGeneratedOnAdd();   
             modelBuilder.Entity<Liked>()
-                .HasKey(p => new { p.UserId, p.MeldingId});
+                .HasKey(p => new { p.UserId, p.MeldingID});
         }
     }
 }

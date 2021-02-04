@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    [Migration("20210122115827_EersteMigratie")]
-    partial class EersteMigratie
+    [Migration("20210204185931_MigratieMetPriveCode")]
+    partial class MigratieMetPriveCode
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,6 +102,9 @@ namespace Look.Migrations
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<DateTime?>("LastLogin")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("LastName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -127,6 +130,9 @@ namespace Look.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("PriveCode")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -240,17 +246,17 @@ namespace Look.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<long>("MeldingId")
+                    b.Property<long>("MeldingID")
                         .HasColumnType("bigint");
 
-                    b.HasKey("UserId", "MeldingId");
+                    b.HasKey("UserId", "MeldingID");
 
-                    b.ToTable("Liked");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Look.Models.Melding", b =>
                 {
-                    b.Property<long>("MeldingId")
+                    b.Property<long>("MeldingID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
@@ -263,7 +269,7 @@ namespace Look.Migrations
                     b.Property<string>("AfbeeldingTitel")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("AuteurId")
+                    b.Property<string>("ApplicationUserID")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Categorie")
@@ -287,11 +293,38 @@ namespace Look.Migrations
                     b.Property<int>("Views")
                         .HasColumnType("int");
 
-                    b.HasKey("MeldingId");
+                    b.HasKey("MeldingID");
 
-                    b.HasIndex("AuteurId");
+                    b.HasIndex("ApplicationUserID");
 
                     b.ToTable("Meldingen");
+                });
+
+            modelBuilder.Entity("Look.Models.MeldingRapport", b =>
+                {
+                    b.Property<long>("RapportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ApplicationUserID")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Categorie")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("GeplaatstOp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("MeldingID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RapportId");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("MeldingID");
+
+                    b.ToTable("MeldingRapporten");
                 });
 
             modelBuilder.Entity("Look.Models.Reactie", b =>
@@ -300,11 +333,11 @@ namespace Look.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ApplicationUserID")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<string>("Bericht")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("GeplaatstDoorId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("GeplaatstOp")
                         .HasColumnType("datetime(6)");
@@ -312,16 +345,43 @@ namespace Look.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<long?>("MeldingId")
+                    b.Property<long?>("MeldingID")
                         .HasColumnType("bigint");
 
                     b.HasKey("ReactieId");
 
-                    b.HasIndex("GeplaatstDoorId");
+                    b.HasIndex("ApplicationUserID");
 
-                    b.HasIndex("MeldingId");
+                    b.HasIndex("MeldingID");
 
                     b.ToTable("Reacties");
+                });
+
+            modelBuilder.Entity("Look.Models.ReactieRapport", b =>
+                {
+                    b.Property<long>("RapportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ApplicationUserID")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Categorie")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("GeplaatstOp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("ReactieID")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("RapportId");
+
+                    b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("ReactieID");
+
+                    b.ToTable("ReactieRapporten");
                 });
 
             modelBuilder.Entity("Look.Areas.Identity.Data.ApplicationRoleClaim", b =>
@@ -391,22 +451,56 @@ namespace Look.Migrations
                 {
                     b.HasOne("Look.Areas.Identity.Data.ApplicationUser", "Auteur")
                         .WithMany()
-                        .HasForeignKey("AuteurId");
+                        .HasForeignKey("ApplicationUserID");
 
                     b.Navigation("Auteur");
+                });
+
+            modelBuilder.Entity("Look.Models.MeldingRapport", b =>
+                {
+                    b.HasOne("Look.Areas.Identity.Data.ApplicationUser", "GemaaktDoor")
+                        .WithMany("MeldingRapporten")
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Look.Models.Melding", "GerapporteerdeMelding")
+                        .WithMany("Rapporten")
+                        .HasForeignKey("MeldingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GemaaktDoor");
+
+                    b.Navigation("GerapporteerdeMelding");
                 });
 
             modelBuilder.Entity("Look.Models.Reactie", b =>
                 {
                     b.HasOne("Look.Areas.Identity.Data.ApplicationUser", "GeplaatstDoor")
                         .WithMany()
-                        .HasForeignKey("GeplaatstDoorId");
+                        .HasForeignKey("ApplicationUserID");
 
                     b.HasOne("Look.Models.Melding", null)
                         .WithMany("Reacties")
-                        .HasForeignKey("MeldingId");
+                        .HasForeignKey("MeldingID");
 
                     b.Navigation("GeplaatstDoor");
+                });
+
+            modelBuilder.Entity("Look.Models.ReactieRapport", b =>
+                {
+                    b.HasOne("Look.Areas.Identity.Data.ApplicationUser", "GemaaktDoor")
+                        .WithMany("ReactieRapporten")
+                        .HasForeignKey("ApplicationUserID");
+
+                    b.HasOne("Look.Models.Reactie", "GerapporteerdeReactie")
+                        .WithMany("Rapporten")
+                        .HasForeignKey("ReactieID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GemaaktDoor");
+
+                    b.Navigation("GerapporteerdeReactie");
                 });
 
             modelBuilder.Entity("Look.Areas.Identity.Data.ApplicationRole", b =>
@@ -422,6 +516,10 @@ namespace Look.Migrations
 
                     b.Navigation("Logins");
 
+                    b.Navigation("MeldingRapporten");
+
+                    b.Navigation("ReactieRapporten");
+
                     b.Navigation("Tokens");
 
                     b.Navigation("UserRoles");
@@ -429,7 +527,14 @@ namespace Look.Migrations
 
             modelBuilder.Entity("Look.Models.Melding", b =>
                 {
+                    b.Navigation("Rapporten");
+
                     b.Navigation("Reacties");
+                });
+
+            modelBuilder.Entity("Look.Models.Reactie", b =>
+                {
+                    b.Navigation("Rapporten");
                 });
 #pragma warning restore 612, 618
         }
