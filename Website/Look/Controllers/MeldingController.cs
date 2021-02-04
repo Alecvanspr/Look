@@ -374,27 +374,31 @@ public IActionResult Meldingen(string s,string z,string zo, string c, string v, 
                 return Lijst;
         }
 
-        public List<Melding> SorteerOpCategorie(string s, List<Melding> Lijst)
+        public List<Melding> SorteerOpCategorie(string c, List<Melding> Lijst)
         {
             var meldingenOphalen = _context.Meldingen.ToList();
             var CurrentSessionUserId = _userManager.GetUserId(User);
-            if (s != null)
+            if (c != null)
             {
-                if (s.Equals("Bijeenkomst"))
+                if (c.Equals("Bijeenkomst"))
                 {
-                    return Lijst.Where(p => p.Categorie.Equals("Bijeenkomst")).ToList();
-                } else if (s.Equals("Overlast"))
+                    return Lijst.Where(p => p.Categorie=="Bijeenkomst").ToList();
+                } 
+                if (c.Equals("Overlast"))
                 {
-                    return Lijst.Where(p => p.Categorie.Equals("Overlast")).ToList();
-                } else if (s.Equals("Verdachte Activiteit"))
+                    return Lijst.Where(p => p.Categorie=="Overlast").ToList();
+                } 
+                if (c.Equals("Verdachte Activiteit"))
                 {
-                    return Lijst.Where(p => p.Categorie.Equals("Verdachte activiteit")).ToList();
-                } else if (s.Equals("Verloren Voorwerp"))
+                    return Lijst.Where(p => p.Categorie=="Verdachte activiteit").ToList();
+                } 
+                if (c.Equals("Verloren Voorwerp"))
                 {
-                    return Lijst.Where(p => p.Categorie.Equals("Verloren voorwerp")).ToList();
-                } else if (s.Equals("Gevonden Voorwerp"))
+                    return Lijst.Where(p => p.Categorie=="Verloren voorwerp").ToList();
+                } 
+                if (c.Equals("Gevonden Voorwerp"))
                 {
-                    return Lijst.Where(p => p.Categorie.Equals("Gevonden voorwerp")).ToList();
+                    return Lijst.Where(p => p.Categorie=="Gevonden voorwerp").ToList();
                 }
             } 
             return Lijst;
