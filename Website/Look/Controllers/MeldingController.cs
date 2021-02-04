@@ -152,6 +152,8 @@ namespace Look.Controllers
                 // melding.Reacties = MaakFakeReacties();
                 melding.Likes=0;
                 melding.Views=0;
+                melding.IsActief = true;
+                
                 _context.Add(melding);
                 await _context.SaveChangesAsync();
             }

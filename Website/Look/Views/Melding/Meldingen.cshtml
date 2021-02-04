@@ -92,9 +92,9 @@
                                 <div class="col-md-6 w-100 m-0 p-0 align-content-end align-items-end">
                                     <h6 class="text-secondary ls-0 float-md-right">
                                          <i class="far fa-thumbs-up"></i> 
-                                         <div class="d-inline-block" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
+                                         <div class="d-inline-block mr-5" id="AantalLikes-@Model.MeldingId">@Model.Likes</div>
                                         <i class="far fa-clock"></i> 
-                                         @Model.AangemaaktOp
+                                         @GetTime.GetTimeSince(Model.AangemaaktOp)
                                     </h6>
                                 </div>
                                 @if(Model.IsActief==true)
