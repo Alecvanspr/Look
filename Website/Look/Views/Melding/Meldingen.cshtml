@@ -119,7 +119,7 @@
                                             Geplaatst door:
                                                 <a href="#">
                                                     @try{
-                                                    @Model.ApplicationUserID
+                                                    @Model.Auteur.FullName()
                                                     }catch{
                                                         <a>Anoniem</a>
                                                     }
@@ -158,7 +158,7 @@
                 </div>
                 <div class="col-md-4">
                     <h5 tabindex="1" >Geplaatst door: @try{
-                                                        @Model.ApplicationUserID
+                                                        @Model.Auteur.FullName()
                                             }catch
                                             {
                                                     <a>Anoniem</a>
