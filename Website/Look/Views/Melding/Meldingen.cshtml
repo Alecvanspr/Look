@@ -16,48 +16,18 @@
         </div>
     </div>
 </header>
-
 <div id="meldingen-controls" class="container bg-white py-3">
     <div class ="row m-0 bg-white px-2 text-dark justify-content-center align-content-center align-items-center">
-        <div class="col-md-4 p-2 m-0">
-            <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
+        <div class="col-md-3 p-2 m-0">
+        <a asp-area="" asp-controller="Melding" asp-action="CreateMelding"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Nieuw bericht <i class="fa fa-plus"></i></button></a>
         </div>
-
-        <div class="col-md-4 p-2 m-0">
-            <div class="form-inline form-search w-100 m-0 justify-content-center">
-        <form asp-action="Meldingen" method="get">
-                <input id="zoekbalk" class="form-control w-100 m-0" type="text" placeholder="Search" aria-label="Search" name="z" tabindex="1" value="@ViewData["Zoek"]">
-                 <input hidden type="text" placeholder="inputSorteer" aria-label="inputSorteer" name="s" value="@ViewData["Sorteer"]">
-                <button class="btn btn-dark m-0" type="submit"role="button" aria-pressed="false"><i class="fa fa-search"></i></button>
-        </form>
-            </div>
-        </div>
-
-        <div class="col-md-4 p-2 m-0">
-            <div class="form-inline m-0 select-box">
-                <select id="inputSorteer" class="form-control w-100" tabindex="1" onchange="javascript:SorterenOpQuery(this)">
-                    <option selected>@ViewData["Sorteer"]</option>
-                    <option value="s=Nieuwste">Nieuwste</option>
-                    <option value="s=Meeste likes">Meeste likes</option>
-                    <option value="s=Meeste weergaven">Meeste weergaven</option>
-                    <option value="s=reacties">Meeste reacties</option>
-                    <option value="s=Naam">Naam</option>
-                    <option value="s=Gelikete Berichten">Uw gelikete berichten</option>
-                </select>
-                <i class="fas fa-angle-down selector"></i>
-            </div>
-        </div>
+        <div class="col-md-3 p-2 m-0">
+        <a data-toggle="modal" href="#FilterModal" tabindex="1"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Filter Berichten<i class="fa fa-plus"></i></button></a></div>
     </div>
-    <br />
+    <div class="col-md-3 p-2 m-0">
+        <a asp-area="" asp-controller="Melding" asp-action="Meldingen" asp-route-s="Gelikete Berichten"><button class="btn btn-dark w-100" tabindex="1" role="button" aria-pressed="false" >Mijn gelikte berichten <i class="fa fa-plus"></i></button></a>
+    </div>
 </div>
-
-<script>
-      function SorterenOpQuery(elm)
-  {
-     window.location = "/Melding/Meldingen?z="+document.getElementById("zoekbalk").value+"&"+elm.value;
-  }
-</script>
-
 
 <div id="meldingen-content" class="container bg-white py-3">
        @if(ViewBag.Success==true){
@@ -181,7 +151,7 @@
                             <a class="button-href" asp-controller="Melding" asp-action="Rapporteren" asp-route-id="@Model.MeldingId"><button type="button" class="btn btn-dark nav-link ml-2" tabindex="1" role="button" aria-pressed="false" aria-label="Rapporteer dit bericht"><i class="fas fa-exclamation-triangle"></i></button></a>
                         }
                     <h5>@Model.Titel</h5>
-                </div>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <h5 tabindex="1" >Geplaatst door: @try{
@@ -241,7 +211,7 @@
             
             document.getElementById('ReactieOutput-'+id).innerHTML = id;
             var inhoud = document.getElementById('reactie-'+id).value;
-            window.location.href = "https://localhost:5001/Melding/PostComment?id="+id+"&inhoud="+inhoud;
+            window.location.href = "https://localhost:5001/Melding/PostComment?id="+id+"&inhoud="+inhoud; //dit kan wel eens niet gaan werken
             //fetch("/Melding/PostComment?id="+id+"&inhoud="+inhoud);
         }
         function refresh(){
@@ -270,3 +240,4 @@
         </a>
     }
 </div>
+@Html.Partial("_Filteren")

@@ -38,7 +38,7 @@ namespace Look.Controllers
             _userManager = userManager;
             //_singInManager = signInManager;
             CheckErrors();
-            CheckMeldingenOpDatum();
+            //CheckMeldingenOpDatum();
         }
 
          public void CheckErrors(){
@@ -260,14 +260,17 @@ namespace Look.Controllers
 
         //s is sorteren, z is zoeken
 
-        public IActionResult Meldingen(string s,string z, int page = 0)
+public IActionResult Meldingen(string s,string z,string zo, string c, string v, int page = 0)
         {
             if (query==null){
                 query = new List<Melding>();
             }
             //dit zijn de de termen waarop het gesorteerd wordt
-            ViewData["Sorteer"] = s ?? "datum";
+            ViewData["Sorteer"] = s ?? "Nieuwste";
             ViewData["Zoek"] = z ?? "";
+            ViewData["Categorie"] = c ?? "Zoek op een categorie";
+            ViewData["ZoekenOp"] = zo ?? "Zoeken op";
+            ViewData["Volgorde"] = v ?? "Volgorde";
 
             //dit maakt een lijst aan waarop het gesorteerd wordt
             List<ApplicationUser> gebruikers = _context.Users.ToList();
@@ -280,13 +283,16 @@ namespace Look.Controllers
                 return Redirect("~/Identity/Account/Login");
             }
             
-            //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere pagias gaat
+            //dit zorgt ervoor dat je kan sorteren als je op pagina 0 zit zonder dat je lijst weg gaat als je naar andere paginas gaat
             if(page==0){
                 //dit zorgt ervoor dat je kan zoeken
-                query = ZoekenOpFilter(z,query);
+                query = ZoekenOpFilter(z,zo,query);
 
                 //dit zorgt ervoor dat je kan sorteren
-                query = SorteerOpFiler(s,query);
+                query = SorteerOpFiler(s,v,query);
+
+                //dit zorgt ervoor dat je kan sorteren op een categorie
+                query = SorteerOpCategorie(c,query);
             }
             //dit geeft het aantal tabs
             const int pageSize = 10;
@@ -310,32 +316,78 @@ namespace Look.Controllers
             }
             return View(data);
         }
-        public List<Melding> ZoekenOpFilter(String z, List<Melding> Lijst){
+        public List<Melding> ZoekenOpFilter(string z,string zo, List<Melding> Lijst){
             var meldingenOphalen = _context.Meldingen.ToList();
             if(z!=null){
+                if(zo=="t"){
+                    return _context.Meldingen.Where(m=>m.Titel.Contains(z)).ToList();
+                }else if(zo=="i"){
+                    return _context.Meldingen.Where(m=>m.Inhoud.Contains(z)).ToList();
+                } else{
                     return _context.Meldingen.Where(m=>m.Titel.Contains(z)||m.Inhoud.Contains(z)).ToList();
+                }
                 }else{
                     return _context.Meldingen.ToList();
                 }
         }
-        public List<Melding> SorteerOpFiler(String s,List<Melding> Lijst){
+        public List<Melding> SorteerOpFiler(string s,string v,List<Melding> Lijst){
             var ReactiesOphalen = _context.Reacties.ToList();
             var meldingenOphalen = _context.Meldingen.ToList();
             var CurrentSessionUserId = _userManager.GetUserId(User);
             if(s!=null){
-                    if(s.Equals("Meeste likes")){
-                        return query.OrderByDescending(M=>M.Likes).ToList();
-                    }else if(s.Equals("Meeste weergaven")){
-                        return query.OrderByDescending(M=>M.Views).ToList();
-                    }else if(s.Equals("Naam")){
-                        return query.OrderByDescending(M=>M.Titel).ToList();
-                    }else if(s.Equals("Nieuwste")){
-                        return query.OrderByDescending(M=>M.AangemaaktOp).ToList();
-                    }else if(s.Equals("Gelikete Berichten")){
-                        return sorteerGelikedeMeldingen(query,CurrentSessionUserId);
+                if(v=="Oplopend"){
+                        if(s.Equals("Meeste likes")){
+                            return query.OrderBy(M=>M.Likes).ToList();
+                        }else if(s.Equals("Meeste weergaven")){
+                            return query.OrderBy(M=>M.Views).ToList();
+                        }else if(s.Equals("Naam")){
+                            return query.OrderBy(M=>M.Titel).ToList();
+                        }else if(s.Equals("Nieuwste")){
+                            return query.OrderBy(M=>M.AangemaaktOp).ToList();
+                        }else if(s.Equals("Gelikete Berichten")){
+                            return sorteerGelikedeMeldingen(query,CurrentSessionUserId);
+                        }
+                    }else{
+                        if(s.Equals("Meeste likes")){
+                            return query.OrderByDescending(M=>M.Likes).ToList();
+                        }else if(s.Equals("Meeste weergaven")){
+                            return query.OrderByDescending(M=>M.Views).ToList();
+                        }else if(s.Equals("Naam")){
+                            return query.OrderByDescending(M=>M.Titel).ToList();
+                        }else if(s.Equals("Nieuwste")){
+                            return query.OrderByDescending(M=>M.AangemaaktOp).ToList();
+                        }else if(s.Equals("Gelikete Berichten")){
+                            return sorteerGelikedeMeldingen(query,CurrentSessionUserId);
+                        }
                     }
                 }
                 return query;
+        }
+
+        public List<Melding> SorteerOpCategorie(String s, List<Melding> Lijst)
+        {
+            var meldingenOphalen = _context.Meldingen.ToList();
+            var CurrentSessionUserId = _userManager.GetUserId(User);
+            if (s != null)
+            {
+                if (s.Equals("Bijeenkomst"))
+                {
+                    return query.Where(p => p.Categorie.Equals("Bijeenkomst")).ToList();
+                } else if (s.Equals("Overlast"))
+                {
+                    return query.Where(p => p.Categorie.Equals("Overlast")).ToList();
+                } else if (s.Equals("Verdachte Activiteit"))
+                {
+                    return query.Where(p => p.Categorie.Equals("Verdachte activiteit")).ToList();
+                } else if (s.Equals("Verloren Voorwerp"))
+                {
+                    return query.Where(p => p.Categorie.Equals("Verloren voorwerp")).ToList();
+                } else if (s.Equals("Gevonden Voorwerp"))
+                {
+                    return query.Where(p => p.Categorie.Equals("Gevonden voorwerp")).ToList();
+                }
+            } 
+            return query;
         }
         public List<Melding> sorteerGelikedeMeldingen(List<Melding> query, string CurrentSessionUserId){
                 var _liked = _context.Likes.Where(p=>p.UserId == CurrentSessionUserId).ToList().Select(m=>m.MeldingId);
