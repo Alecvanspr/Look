@@ -20,6 +20,7 @@ namespace Look.Models
         public int Likes { get; set; }
         public int Views { get; set; }
         public bool IsActief { get; set; }
+        public Nullable<Guid> PriveCode { get; set; }
         public ApplicationUser Auteur { get; set; }
         public List<Reactie> Reacties { get; set; }
         public string Categorie { get; set; }

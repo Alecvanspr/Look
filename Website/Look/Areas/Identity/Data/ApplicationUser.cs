@@ -34,6 +34,8 @@ namespace Look.Areas.Identity.Data
         public string ZipCode { get; set; }
         [PersonalData]
         public bool IsAnonymous {get; set;}
+        [PersonalData]
+        public Guid PriveCode { get; set; }
 
         public string FullName()
         {

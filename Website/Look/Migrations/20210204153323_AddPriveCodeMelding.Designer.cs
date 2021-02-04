@@ -3,14 +3,16 @@ using System;
 using Look.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Look.Migrations
 {
     [DbContext(typeof(LookIdentityDbContext))]
-    partial class LookIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210204153323_AddPriveCodeMelding")]
+    partial class AddPriveCodeMelding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,8 +284,8 @@ namespace Look.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("PriveCode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<Guid>("PriveCode")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Titel")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
